@@ -1,0 +1,16 @@
+<mat-accordion>
+  <ng-template ngFor let-item [ngForOf]="(items)">
+    <mat-expansion-panel class="submenu-panel"  [class.submenu-child-panel]="!item.hasChildren()" *ngIf="shouldShow(item)"
+                         [hideToggle]="!item.hasChildren()">
+      <mat-expansion-panel-header (click)="onClick(item)" collapsedHeight="40px" expandedHeight="40px"  >
+        <mat-panel-title>
+          <i [class.submenu-icon]="root" class="icon material-icons">{{item.icon}}</i>
+          <span class="label">{{item.label}}</span>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <app-sub-menu *ngIf="item.hasChildren()" root="false" [items]="item.children">
+      </app-sub-menu>
+    </mat-expansion-panel>
+
+  </ng-template>
+</mat-accordion>

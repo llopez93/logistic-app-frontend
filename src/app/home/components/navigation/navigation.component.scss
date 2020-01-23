@@ -1,0 +1,68 @@
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav {
+  width: 250px;
+  border: none;
+  box-shadow: 0px 0px 11px -4px rgba(0,0,0,0.64);
+}
+
+.sidenav .mat-toolbar {
+
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.fiscalia-title {
+  color: #eeeeee;
+  background: #37474F;
+  display: inline-block;
+  margin: 0;
+  padding-top: 10px;
+}
+
+.fiscalia-title h2 {
+  font-size: 0.9em;
+  line-height: 0.9em;
+}
+
+.fiscalia-title h3 {
+  color: #a7a7a7;
+  font-size: 0.8em;
+}
+.fiscalia-title h2, .fiscalia-title h3 {
+  font-family: 'Helvetica Neue', 'Roboto', 'sans-serif';
+  font-weight: 700 !important;
+  margin: auto;
+}
+
+
+
+
+mat-sidenav > div{
+  ::-webkit-scrollbar-track
+  {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    background-color: #F5F5F5;
+  }
+
+  ::-webkit-scrollbar
+  {
+    width: 12px;
+    background-color: #F5F5F5;
+  }
+
+  ::-webkit-scrollbar-thumb
+  {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #D62929;
+  }
+
+}

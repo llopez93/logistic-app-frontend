@@ -1,0 +1,115 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="container">
+
+  <mat-card *ngIf="!requestSaved" fxFlex="30">
+
+    <mat-card-content fxLayout="column">
+      <div class="header" fxFlex="100">
+        <img src="/assets/images/logo-grn.png" class="logo-grn">
+        <div class="header-text">
+          <h1 class="company-name">ABOGADOS DEL ESTADO</h1>
+          <span class="msg">Registro del abogado</span>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+
+      <form novalidate [formGroup]="registerForm" (ngSubmit)="registerUser(registerForm)" class="login-form}"
+            fxLayout="column">
+
+        <mat-form-field class="field" fxFlex="100">
+          <input matInput placeholder="Nombre" formControlName="firstname">
+          <mat-error *ngFor="let error  of validation.errorMessages(registerForm.controls.firstname)">
+            {{ error }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="field">
+          <input matInput placeholder="Apellido" formControlName="lastname">
+          <mat-error *ngFor="let error  of validation.errorMessages(registerForm.controls.lastname)">
+            {{ error }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="field">
+          <input matInput placeholder="Documento" formControlName="dni">
+          <mat-error *ngFor="let error  of validation.errorMessages(registerForm.controls.dni)">
+            {{ error }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="field">
+          <input matInput placeholder="Correo electronico" formControlName="email">
+          <mat-error *ngFor="let error  of validation.errorMessages(registerForm.controls.email)">
+            {{ error }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="field">
+          <input matInput placeholder="Telefono" formControlName="phone">
+          <mat-error *ngFor="let error  of validation.errorMessages(registerForm.controls.phone)">
+            {{ error }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="field">
+          <mat-label>Lugar de trabajo</mat-label>
+          <mat-select formControlName="ministry">
+            <mat-select-search [formControl]="ministrieSearchControl"></mat-select-search>
+            <mat-option *ngFor="let m of ministriesFilter | async" [value]="m.value">
+              {{m.label}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!--          <div class="ui-g-11 field input-container ministry-dropdown">-->
+        <!--            <label for="ministry-sector">Lugar de trabajo</label>-->
+        <!--            <p-dropdown formControlName="ministry" id="ministry-sector" [style]="{'max-width': '100%'}"-->
+        <!--                        [autoWidth]="false"-->
+        <!--                        [options]="ministries" [filter]="true">-->
+        <!--            </p-dropdown>-->
+
+        <!--          </div>
+
+                  <div class="ui-g-11 field input-container" *ngIf="showWorkplaceInput">
+                        <span class="md-inputfield" for="username">
+                            <input type="text" formControlName="workplace" name="workplace" pInputText>
+                            <label>Lugar de trabajo</label>
+                        </span>
+                  </div>
+                  -->
+
+        <div class="button">
+          <!-- TODO: Aca tengo que mostrar los errores de validación -->
+
+
+          <button type="submit" mat-raised-button [disabled]="registerForm.invalid" class="dark-green-btn">
+            <mat-icon>person</mat-icon>
+            <span class="ui-button-text ui-c">Registrarse</span>
+          </button>
+
+        </div>
+      </form>
+
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card *ngIf="requestSaved">
+    <div class="ui-g-12 success-request">
+      <img src="/assets/images/logo-grn.png" class="logo">
+      <div class="text">
+        <h1 class="company-name">ABOGADOS DEL ESTADO</h1>
+        <span class="msg">
+                <span class="big-text"> Sus datos fueron registrados con exito. </span><br> Cuando sean comprobados por el administrador <br> sera notificado al correo electronico que ingreso. </span>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+    <div class="clearfix"></div>
+  </mat-card>
+</div>
+
+<div class="card register-panel ui-fluid ui-lg-4 ui-sm-11 ui-md-11" *ngIf="!requestSaved">
+
+</div>
+
+<div class="card success-msg-panel ui-fluid ui-lg-3 ui-sm-11 ui-md-6" *ngIf="requestSaved">
+
+</div>

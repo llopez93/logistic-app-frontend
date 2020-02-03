@@ -1,0 +1,439 @@
+<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+
+<mat-card-content *ngIf="!loading" >
+  <form [formGroup]="curriculumFormGroup" >
+
+
+
+    <div class="cv-section">
+      <h4 class="bold">Experiencia laboral</h4>
+      <div formArrayName="workArray">
+        <mat-card *ngFor="let education of curriculumFormGroup.get('workArray').controls; let i=index"
+             class="card card-add">
+          <div>
+            <button *ngIf="curriculumFormGroup.get('workArray').controls.length >= 1" mat-icon-button
+                    type="button"
+                    matTooltip="Eliminar experiencia laboral"
+                    (click)="removeWork(i)" class="button-remove">
+              <mat-icon>clear</mat-icon>
+            </button>
+          </div>
+          <div [formGroupName]="i">
+            <div class="form-group">
+              <mat-form-field>
+                <input id="occupationWork" matInput placeholder="Cargo" formControlName="occupation">
+              </mat-form-field>
+              <mat-form-field>
+                <input id="companyWork" matInput placeholder="Empresa" formControlName="company">
+              </mat-form-field>
+            </div>
+            <div class="form-group" style="margin-left: 20px">
+              <mat-slide-toggle id="work_hereWork" formControlName="workHere">Trabajo aquí actualmente</mat-slide-toggle>
+            </div>
+            <div class="form-group">
+
+              <mat-form-field>
+                <input matInput [matDatepicker]="startPicker" formControlName="startDate" placeholder="Desde">
+                <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                <mat-datepicker #startPicker></mat-datepicker>
+              </mat-form-field>
+
+              <mat-form-field>
+                <input matInput [matDatepicker]="endPicker" formControlName="endDate" placeholder="Hasta">
+                <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                <mat-datepicker #endPicker></mat-datepicker>
+              </mat-form-field>
+
+            </div>
+            <div class="form-group">
+              <mat-form-field class="textarea-field">
+                <mat-label>Descripción</mat-label>
+                <textarea formControlName="description"
+                          matInput
+                          cdkTextareaAutosize
+                          #autosize="cdkTextareaAutosize"
+                          cdkAutosizeMinRows="3"
+                          cdkAutosizeMaxRows="6"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+      <div>
+        <div class="button-container-centered" fxFlex="100" fxLayoutAlign="center center">
+          <button type="button" mat-mini-fab (click)="addWork()"
+                  matTooltip="Agregar experiencia laboral"
+                  class="button-add dark-green-btn">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="cv-section">
+      <h4 class="bold">Educación</h4>
+      <div formArrayName="educationArray">
+        <mat-card *ngFor="let education of curriculumFormGroup.get('educationArray').controls; let i=index"
+                  class="card card-add">
+          <div>
+            <button *ngIf="curriculumFormGroup.get('educationArray').controls.length >= 1" mat-icon-button
+                    type="button"
+                    matTooltip="Eliminar educacion"
+                    (click)="removeEducation(i)" class="button-remove">
+              <mat-icon>clear</mat-icon>
+            </button>
+          </div>
+          <div [formGroupName]="i">
+            <div class="form-group">
+              <mat-form-field>
+                <input id="universityeducation" matInput placeholder="Universidad" formControlName="university">
+              </mat-form-field>
+              <mat-form-field>
+                <input id="titleeducation" matInput placeholder="Titulación" formControlName="title">
+              </mat-form-field>
+            </div>
+
+            <div class="form-group">
+              <mat-form-field>
+                <input id="academiceducation" matInput placeholder="Disciplina académica" formControlName="academic">
+              </mat-form-field>
+            </div>
+
+            <div class="form-group">
+
+              <mat-form-field>
+                <input matInput [matDatepicker]="startPicker" formControlName="startDate" placeholder="Desde">
+                <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                <mat-datepicker #startPicker></mat-datepicker>
+              </mat-form-field>
+
+              <mat-form-field>
+                <input matInput [matDatepicker]="endPicker" formControlName="endDate" placeholder="Hasta">
+                <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                <mat-datepicker #endPicker></mat-datepicker>
+              </mat-form-field>
+
+            </div>
+            <div class="form-group">
+              <mat-form-field class="textarea-field">
+                <mat-label>Descripción</mat-label>
+                <textarea formControlName="description"
+                          matInput
+                          cdkTextareaAutosize
+                          #autosize="cdkTextareaAutosize"
+                          cdkAutosizeMinRows="3"
+                          cdkAutosizeMaxRows="6"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+      <div>
+        <div class="button-container-centered" fxFlex="100" fxLayoutAlign="center center">
+          <button type="button" mat-mini-fab (click)="addEducation()"
+                  matTooltip="Agregar educación"
+                  class="button-add dark-green-btn">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="cv-section">
+      <h4 class="bold">Certificaciones</h4>
+      <div formArrayName="certificationArray">
+        <mat-card *ngFor="let certification of curriculumFormGroup.get('certificationArray').controls; let i=index"
+                  class="card card-add">
+          <div>
+            <button *ngIf="curriculumFormGroup.get('certificationArray').controls.length >= 1" mat-icon-button
+                    type="button"
+                    matTooltip="Eliminar certificación"
+                    (click)="removeCertification(i)" class="button-remove">
+              <mat-icon>clear</mat-icon>
+            </button>
+          </div>
+          <div [formGroupName]="i">
+            <div class="form-group">
+              <mat-form-field>
+                <input id="nameCertification" matInput placeholder="Nombre de la certificación" formControlName="name">
+              </mat-form-field>
+              <mat-form-field>
+                <input id="certificationAuthority" matInput placeholder="Autoridad emisora" formControlName="certificationAuthority">
+              </mat-form-field>
+            </div>
+
+            <div class="form-group">
+              <mat-form-field>
+                <input id="certificationURL" matInput placeholder="Url de la certificación" formControlName="certificationURL">
+              </mat-form-field>
+            </div>
+
+            <div class="form-group">
+
+              <mat-form-field>
+                <input matInput [matDatepicker]="startPicker" formControlName="startDate" placeholder="Desde">
+                <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                <mat-datepicker #startPicker></mat-datepicker>
+              </mat-form-field>
+
+              <mat-form-field>
+                <input matInput [matDatepicker]="endPicker" formControlName="endDate" placeholder="Hasta">
+                <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                <mat-datepicker #endPicker></mat-datepicker>
+              </mat-form-field>
+
+            </div>
+
+          </div>
+        </mat-card>
+      </div>
+      <div>
+        <div class="button-container-centered" fxFlex="100" fxLayoutAlign="center center">
+          <button type="button" mat-mini-fab (click)="addCertification()"
+                  matTooltip="Agregar certificación"
+                  class="button-add dark-green-btn">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="cv-section">
+      <h4 class="bold">Cursos</h4>
+      <div formArrayName="courseArray">
+        <mat-card *ngFor="let course of curriculumFormGroup.get('courseArray').controls; let i=index"
+                  class="card card-add">
+          <div>
+            <button *ngIf="curriculumFormGroup.get('courseArray').controls.length >= 1" mat-icon-button
+                    type="button"
+                    matTooltip="Eliminar curso"
+                    (click)="removeCourse(i)" class="button-remove">
+              <mat-icon>clear</mat-icon>
+            </button>
+          </div>
+          <div [formGroupName]="i">
+            <div class="form-group">
+              <mat-form-field>
+                <input id="namecourse" matInput placeholder="Nombre del curso" formControlName="name">
+              </mat-form-field>
+            </div>
+
+            <div class="form-group">
+              <mat-form-field class="textarea-field">
+                <mat-label>Descripción</mat-label>
+                <textarea formControlName="description"
+                          matInput
+                          cdkTextareaAutosize
+                          #autosize="cdkTextareaAutosize"
+                          cdkAutosizeMinRows="3"
+                          cdkAutosizeMaxRows="6"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+      <div>
+        <div class="button-container-centered" fxFlex="100" fxLayoutAlign="center center">
+          <button type="button" mat-mini-fab (click)="addCourse()"
+                  matTooltip="Agregar curso"
+                  class="button-add dark-green-btn">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <div class="cv-section">
+      <h4 class="bold">Idiomas</h4>
+      <div formArrayName="languageArray">
+        <mat-card *ngFor="let languaje of curriculumFormGroup.get('languageArray').controls; let i=index"
+                  class="card card-add">
+          <div>
+            <button *ngIf="curriculumFormGroup.get('languageArray').controls.length >= 1" mat-icon-button
+                    type="button"
+                    matTooltip="Eliminar idioma"
+                    (click)="removeLanguage(i)" class="button-remove">
+              <mat-icon>clear</mat-icon>
+            </button>
+          </div>
+          <div [formGroupName]="i">
+            <div class="form-group">
+              <mat-form-field>
+                <input id="namelanguage" matInput placeholder="Idioma" formControlName="name">
+              </mat-form-field>
+
+              <mat-form-field>
+                <input id="levellanguage" matInput placeholder="Nivel" formControlName="level">
+              </mat-form-field>
+
+            </div>
+          </div>
+        </mat-card>
+      </div>
+      <div>
+        <div class="button-container-centered" fxFlex="100" fxLayoutAlign="center center">
+          <button type="button" mat-mini-fab (click)="addLanguage()"
+                  matTooltip="Agregar idioma"
+                  class="button-add dark-green-btn">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="cv-section">
+      <h4 class="bold">Proyectos</h4>
+      <div formArrayName="projectArray">
+        <mat-card *ngFor="let project of curriculumFormGroup.get('projectArray').controls; let i=index"
+                  class="card card-add">
+          <div>
+            <button *ngIf="curriculumFormGroup.get('projectArray').controls.length >= 1" mat-icon-button
+                    type="button"
+                    matTooltip="Eliminar proyecto"
+                    (click)="removeProject(i)" class="button-remove">
+              <mat-icon>clear</mat-icon>
+            </button>
+          </div>
+          <div [formGroupName]="i">
+            <div class="form-group">
+              <mat-form-field>
+                <input id="nameProject" matInput placeholder="Nombre del proyecto" formControlName="name">
+              </mat-form-field>
+              <mat-form-field>
+                <input id="occupationProject" matInput placeholder="Ocupación" formControlName="occupation">
+              </mat-form-field>
+            </div>
+            <div class="form-group" style="margin-left: 20px">
+              <mat-slide-toggle id="workNow" formControlName="workNow">Trabajo aquí actualmente</mat-slide-toggle>
+            </div>
+            <div class="form-group">
+
+              <mat-form-field>
+                <input matInput [matDatepicker]="startPicker" formControlName="startDate" placeholder="Desde">
+                <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                <mat-datepicker #startPicker></mat-datepicker>
+              </mat-form-field>
+
+              <mat-form-field>
+                <input matInput [matDatepicker]="endPicker" formControlName="endDate" placeholder="Hasta">
+                <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                <mat-datepicker #endPicker></mat-datepicker>
+              </mat-form-field>
+
+            </div>
+            <div class="form-group">
+              <mat-form-field class="textarea-field">
+                <mat-label>Descripción</mat-label>
+                <textarea formControlName="description"
+                          matInput
+                          cdkTextareaAutosize
+                          #autosize="cdkTextareaAutosize"
+                          cdkAutosizeMinRows="3"
+                          cdkAutosizeMaxRows="6"></textarea>
+              </mat-form-field>
+            </div>
+            <div class="form-group">
+              <mat-form-field>
+                <input id="projectURL" matInput placeholder="URL del proyecto" formControlName="projectURL">
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+      <div>
+        <div class="button-container-centered" fxFlex="100" fxLayoutAlign="center center">
+          <button type="button" mat-mini-fab (click)="addProject()"
+                  matTooltip="Agregar proyecto"
+                  class="button-add dark-green-btn">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="cv-section">
+      <h4 class="bold">Publicaciones</h4>
+      <div formArrayName="publicationArray">
+        <mat-card *ngFor="let publication of curriculumFormGroup.get('publicationArray').controls; let i=index"
+                  class="card card-add">
+          <div>
+            <button *ngIf="curriculumFormGroup.get('publicationArray').controls.length >= 1" mat-icon-button
+                    type="button"
+                    matTooltip="Eliminar publicaciòn"
+                    (click)="removePublication(i)" class="button-remove">
+              <mat-icon>clear</mat-icon>
+            </button>
+          </div>
+          <div [formGroupName]="i">
+            <div class="form-group">
+              <mat-form-field>
+                <input id="titlePublication" matInput placeholder="Titulo de la publicación" formControlName="title">
+              </mat-form-field>
+              <mat-form-field>
+                <input id="urlPublication" matInput placeholder="URL de la publicación" formControlName="publicationURL">
+              </mat-form-field>
+            </div>
+
+            <div class="form-group">
+              <mat-form-field>
+                <input id="certificationURL" matInput placeholder="Url de la certificación" formControlName="certificationURL">
+              </mat-form-field>
+            </div>
+
+            <div class="form-group">
+
+              <mat-form-field>
+                <input matInput [matDatepicker]="startPicker" formControlName="publicationDate" placeholder="Fecha de publicación">
+                <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                <mat-datepicker #startPicker></mat-datepicker>
+              </mat-form-field>
+            </div>
+
+            <div class="form-group">
+              <mat-form-field class="textarea-field">
+                <mat-label>Descripción</mat-label>
+                <textarea formControlName="description"
+                          matInput
+                          cdkTextareaAutosize
+                          #autosize="cdkTextareaAutosize"
+                          cdkAutosizeMinRows="3"
+                          cdkAutosizeMaxRows="6"></textarea>
+              </mat-form-field>
+            </div>
+
+          </div>
+        </mat-card>
+      </div>
+      <div>
+        <div class="button-container-centered" fxFlex="100" fxLayoutAlign="center center">
+          <button type="button" mat-mini-fab (click)="addPublication()"
+                  matTooltip="Agregar publicación"
+                  class="button-add dark-green-btn">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+
+
+  </form>
+</mat-card-content>
+<mat-card-actions fxLayout="row" fxLayoutAlign="end center">
+  <button mat-button type="button" class="red-btn" (click)="goBack()">Cancelar</button>
+  <button mat-button type="submit" class="dark-green-btn" (click)="onSubmit($event)">Guardar</button>
+</mat-card-actions>

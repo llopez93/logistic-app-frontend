@@ -1,0 +1,9 @@
+<h5 mat-dialog-title *ngIf="data.title">{{data.title}}</h5>
+<div mat-dialog-content>
+  <mat-icon aria-hidden="false" *ngIf="data.icon">{{data.icon}}</mat-icon>
+  <span>{{data.message}}</span>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="cancel()" class="red-text">{{data.closeBtnText}}</button>
+  <button mat-button (click)="accept()" cdkFocusInitial class="dark-green-text">{{data.acceptBtnText}}</button>
+</div>

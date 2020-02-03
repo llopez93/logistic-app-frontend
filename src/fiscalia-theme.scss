@@ -1,0 +1,63 @@
+$green: #8bc34a;
+$green-dark: #5a9216;
+$green-light: #bef67a;
+
+$red: #d50000;
+$red-dark: #9b0000;
+$red-light: #ff5131;
+
+$dark-indigo: #283593;
+$almost-white: #fafafa;
+$white: #ffffff;
+$lightgrey: #eaeaea;
+$dark-grey: #606060;
+
+
+.dark-grey-text:not(:disabled) {
+  color: $dark-grey !important;
+}
+
+.green-btn:not(:disabled) {
+  color: $white !important;
+  background-color: $green !important;
+}
+
+
+.ligth-green-btn:not(:disabled) {
+  color: #000000 !important;
+  background-color: $green-light !important;
+}
+
+.dark-green-btn:not(:disabled) {
+  color: $white !important;
+  background-color: $green-dark !important;
+}
+
+.dark-green-text:not(:disabled) {
+  color: $green-dark !important;
+}
+
+.red-text {
+  color: $red !important;
+}
+
+.red-btn:not(:disabled) {
+  color: $white !important;
+  background-color: $red !important;
+}
+
+.ligth-red-btn:not(:disabled) {
+  color: #000000 !important;
+  background-color: $red-light !important;
+}
+
+.dark-red-btn:not(:disabled) {
+  color: $white !important;
+  background-color: $red-dark !important;
+}
+
+.error-text{
+  color: $red !important;
+  font-size: 0.9em;
+}
+

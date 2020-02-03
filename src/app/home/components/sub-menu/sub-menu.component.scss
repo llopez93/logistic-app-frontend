@@ -1,0 +1,48 @@
+.mat-expansion-panel{
+  box-shadow: none;
+  border-radius: 0px;
+}
+
+.mat-expansion-panel-header{
+  padding-left: 10px ;
+}
+
+
+.mat-expansion-panel-body {
+  padding: 0 !important;
+}
+
+.mat-expansion-panel-spacing {
+  margin: 0 !important;
+}
+
+.mat-panel-title, mat-panel-title.mat-expansion-panel-header-title{
+  width: 100%;
+  margin-right: 0;
+}
+
+.icon{
+  font-size: 21px;
+  margin-right: 10px;
+  color: grey;
+}
+
+.submenu-icon .icon {
+  margin-left: 5px;
+}
+
+.label{
+  width: 100%;
+  color: #404040;
+  font-size: 0.96em;
+  white-space: pre;
+}
+
+.submenu-child-panel > .label {
+  font-size: 0.9em;
+}
+
+.active{
+  background-color: #eaeaea;
+}
+

@@ -1,0 +1,113 @@
+@import "../../../../fiscalia-theme";
+
+.container{
+  min-height: calc(100% - 70px);
+  padding: 20px 40px;
+  margin: auto;
+}
+
+mat-card-content {
+  padding: 20px 0;
+}
+
+.panel{
+  padding: 0 !important;
+}
+
+.tab-content{
+  padding: 20px !important;
+  padding-bottom: 0 !important;
+}
+
+.inputs-column{
+  margin: 0 20px 20px;
+
+  mat-form-field{
+    width: 90%;
+  }
+
+}
+
+.container-card{
+  max-width: 750px !important;
+}
+
+.form{
+  margin-bottom: 20px;
+}
+
+.wide{
+  min-width: 400px !important;
+}
+
+mat-card.card {
+
+  box-shadow: 0px 0px 15px -3px rgba(0,0,0,0.3);
+  min-width: 400px;
+  padding: 8px;
+  border-radius: 10px;
+  margin: 20px;
+  background-color: $almost-white;
+
+  mat-form-field{
+    margin: 0 15px;
+    padding: 8px 0 0 0;
+  }
+
+  .form-group{
+    padding-right: 30px;
+    width: auto;
+    display: inline-block;
+  }
+
+  .button-remove{
+    padding: 0;
+    color: lightgrey;
+    float: right;
+    margin-top: -10px;
+    margin-right: -10px;
+    transition: 0.3s color;
+  }
+}
+
+mat-card.card:hover {
+
+  .button-remove{
+    color: $red;
+  }
+}
+
+
+
+.add-btn-container{
+  min-width: 400px;
+  .button-add{
+    box-shadow: 0px 0px 15px -3px rgba(0,0,0,0.3);
+    display: block;
+  }
+
+}
+
+
+
+
+
+mat-card-actions{
+  button{
+    margin: 10px;
+  }
+
+  margin-bottom: 5px;
+}
+
+.curriculum-btn{
+  margin-bottom: 12px;
+}
+
+.imagePreview{
+  margin: 10px;
+  max-width: 100px;
+  border-radius: 50%;
+}
+
+

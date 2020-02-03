@@ -1,0 +1,23 @@
+<div class="container" fxLayout="row" fxLayoutAlign="center center" fxLayoutAlign.xs="center start"
+     ngClass.lt-md="mobile-panel" >
+  <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+
+  <mat-card class="panel container-card" *ngIf="!loading" fxLayout="row" fxFlex="100%" >
+    <div fxFlex="30">
+      <app-conversation-list  (conversationSelected)="showConversation($event)"></app-conversation-list>
+    </div>
+    <div fxFlex="70">
+      <app-message-box *ngIf="conversation" [conversation]="conversation" ></app-message-box>
+      <div *ngIf="!conversation" class="empty-message-box" fxLayout="column" fxLayoutAlign="center center">
+        <img src="assets/images/chat_draw.png">
+      </div>
+    </div>
+  </mat-card>
+</div>
+
+<div class="ui-g-4">
+
+</div>
+<div class="ui-g-8">
+
+</div>

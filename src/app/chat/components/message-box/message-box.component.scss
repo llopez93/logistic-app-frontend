@@ -1,0 +1,136 @@
+@import "../../../../fiscalia-theme";
+
+.message-box{
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+
+  .header{
+    min-height: 69px;
+    padding: 4px 16px;
+    margin: 0 10px;
+    background-color: white;
+    z-index: 3;
+
+    .participants{
+      margin-left: 15px;
+    }
+
+  }
+
+}
+
+.msg-list {
+  overflow-y: auto;
+  display: block;
+  overflow-x: hidden;
+  width: 100%;
+  padding-top: 10px;
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 10px;
+    li {
+      width: 100%;
+    }
+    .time {
+      font-size: 0.8em;
+      margin-bottom: 5px;
+      color: #7d7d7d;
+    }
+    .msg-image-preview{
+      width: 100%;
+      max-width: 300px;
+      border-radius: 10px;
+    }
+
+    .msg {
+      width: auto;
+      background-color: rgb(233, 237, 242);
+      display: inline-block;
+      padding: 9px 12px;
+      margin: 0 0 10px 0;
+      .text {
+        display: block;
+        min-width: 70px;
+        margin-bottom: 3px;
+        max-width: 260px;
+        text-align: left;
+        color: #565656;
+        font-size: 14px;
+        line-height: 14px;
+      }
+      .textLink {
+        display: block;
+        min-width: 70px;
+        margin-bottom: 3px;
+        max-width: 260px;
+        text-align: left;
+        color: blue;
+        font-size: 14px;
+        line-height: 14px;
+        cursor: pointer;
+      }
+    }
+    .left {
+      text-align: left;
+
+      .msg{
+        border-radius: 0px 10px 10px 10px;
+      }
+
+    }
+    .right {
+      text-align: right;
+
+      .msg {
+
+        background-color: #b8e994;
+        border-radius: 10px 0px 10px 10px;
+
+        .text {
+          color: #1e1e1e;
+        }
+        .attached {
+          color: #565656;
+        }
+      }
+    }
+  }
+}
+
+
+.msg-input{
+  background-color: $almost-white;
+  padding: 4px 8px;
+  position: relative;
+  bottom: 0;
+  border-top: 1px solid $lightgrey;
+}
+
+::-webkit-scrollbar-track{
+  background-color: transparent;
+}
+
+::-webkit-scrollbar
+{
+  width: 6px;
+  background-color: rgba(200, 200, 200, 0.0);
+}
+
+::-webkit-scrollbar-thumb
+{
+  background-color: rgba(200, 200, 200, 0.5);
+}
+
+li.added.right{
+  transform: translateX(500px);
+}
+
+li.added.left{
+  transform: translateX(-500px);
+}
+
+li{
+  transition: transform 0.5s ease-out !important;
+}

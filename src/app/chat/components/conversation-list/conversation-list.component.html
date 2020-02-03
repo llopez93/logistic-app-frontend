@@ -1,0 +1,51 @@
+<div class="container">
+  <mat-form-field >
+    <mat-label style="font-size: 0.85em">Buscar mensajes o iniciar una conversación</mat-label>
+    <input class="conversation-input" matInput [formControl]="searchControl">
+  </mat-form-field>
+  <mat-divider></mat-divider>
+  <div class="conversation-list-container inset-shadow" *ngIf="conversations">
+    <p class="title" *ngIf="isSearch">Mensajes</p>
+    <mat-divider class="no-expand" *ngIf="isSearch"></mat-divider>
+    <p class="empty-msg" *ngIf="isSearch && conversations.length == 0">
+      No se encontraron conversaciones
+    </p>
+    <mat-action-list class="conversation-list" >
+        <button *ngFor="let c of conversations" mat-list-item class="conversation-item"
+                fxLayout="row" fxLayoutAlign="space-evenly center" (click)="getConversation(c)">
+          <app-user-photo [ownPhoto]="false"  [size]="50" [photo]="c.participants[0].profilePhoto"
+                          [matBadge]="c.unreadedMessages > 0 ? c.unreadedMessages : null"
+                          matBadgeColor="warn"
+                          matBadgeSize="small"
+                          [matBadgeOverlap]="true"
+                          matBadgePosition="below after" ></app-user-photo>
+          <div class="user-info" fxLayout="column" fxLayoutAlign="space-evenly start">
+            <p class="user-name" [class.new-messages]="(c.unreadedMessages > 0)">
+              {{ c.participants[0].firstname +" "+ c.participants[0].lastname }}
+            </p>
+            <p class="create-time">
+               {{ getCreateTime(c.lastMessageTime) }}
+            </p>
+          </div>
+        </button>
+    </mat-action-list>
+    <p class="title" *ngIf="isSearch">Contactos</p>
+    <mat-divider class="no-expand" *ngIf="isSearch"></mat-divider>
+    <p class="empty-msg" *ngIf="isSearch && userList.length == 0">
+      No se encontró ningún contacto
+    </p>
+    <mat-action-list class="conversation-list" >
+      <button *ngFor="let u of userList" mat-list-item class="conversation-item"
+              fxLayout="row" fxLayoutAlign="space-evenly center"(click)="createConversation(u)">
+        <app-user-photo  [ownPhoto]="false"  [size]="50" [photo]="u.profilePhoto"></app-user-photo>
+        <div class="user-info" fxLayout="column" fxLayoutAlign="space-evenly start">
+          <p class="user-name">
+            {{ u.firstname +" "+ u.lastname }}
+          </p>
+        </div>
+      </button>
+    </mat-action-list>
+
+
+  </div>
+</div>

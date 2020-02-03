@@ -1,0 +1,72 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="opened">
+    <mat-toolbar class="fiscalia-title">
+        <h2>Abogados del Estado</h2>
+        <h3>Provincia de Río Negro</h3>
+    </mat-toolbar>
+    <app-sidenav-profile></app-sidenav-profile>
+    <app-menu></app-menu>
+    <app-home-root></app-home-root>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar fxLayout="row" fxLayoutAlign.gt-sm="end center"
+                 fxLayoutAlign.lt-md="space-between center" color="primary">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <div>
+        <mat-menu class="toolbar-menu" #notificationsMenu="matMenu">
+          <ng-template matMenuContent>
+              <mat-card  *ngFor="let item of items"
+                (click)="navigate(item)"
+                class="item-card"
+                [style.background-color]="getColor(item.viewed)"
+                matRipple
+                >
+                <mat-card-header>
+                  <div mat-card-avatar class="notification-item">
+                    <i class="material-icons">{{ item.icon }}</i>
+                  </div>
+                  <mat-card-title class="notification-title">{{ item.title }}</mat-card-title>
+                  <mat-card-subtitle class="notification-subtitle">
+                    {{ item.body }}
+                    <p class="date">{{ getDate(item.emittedTime) }}</p>
+                  </mat-card-subtitle>
+                </mat-card-header>
+              </mat-card>
+          </ng-template>
+        </mat-menu>
+
+
+        <button class="toolbar-button" mat-icon-button [matMenuTriggerFor]="notificationsMenu">
+          <mat-icon [matBadge]="newNotifications > 0 ? newNotifications : null" matBadgeSize="small" matBadgeColor="warn">
+            {{showNotificationIcon() ? 'notifications_active' : 'notifications_none' }}
+          </mat-icon>
+        </button>
+
+        <mat-menu class="toolbar-menu" #settingsMenu="matMenu">
+          <ng-template matMenuContent>
+            <button mat-menu-item (click)="logout()">
+              <mat-icon>power_settings_new</mat-icon>
+              <span>Cerrar sesión</span>
+            </button>
+          </ng-template>
+        </mat-menu>
+        <button class="toolbar-button" mat-icon-button [matMenuTriggerFor]="settingsMenu">
+          <mat-icon>settings</mat-icon>
+        </button>
+      </div>
+
+
+    </mat-toolbar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

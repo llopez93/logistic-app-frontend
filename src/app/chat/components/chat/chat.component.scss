@@ -1,0 +1,24 @@
+.container{
+  padding: 20px 40px;
+  margin: auto;
+  height: 85%;
+  border-left: 1px solid lightgrey !important;
+}
+
+mat-card{
+  padding: 0 !important;
+  height: 100%;
+
+}
+
+mat-card, .container {
+}
+
+.empty-message-box{
+  height: 100%;
+  img{
+    max-width: 300px;
+    width: 50%;
+    margin: auto;
+  }
+}

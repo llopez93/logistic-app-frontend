@@ -1,0 +1,39 @@
+@import "../../../../fiscalia-theme";
+
+.container{
+  padding: 20px 20px 0;
+}
+
+mat-form-field{
+  display: block !important;
+  max-width: 200px;
+}
+
+mat-card-actions{
+  margin-bottom: 5px;
+  padding: 0;
+  margin-right: 15px;
+}
+
+p.password-error{
+  margin-left: 15px;
+  transition: opacity 0.3s linear;
+}
+
+.section{
+  .control{
+    padding-left: 15px;
+    p{
+      display: inline-block;
+      margin-right: 15px;
+    }
+
+    mat-slide-toggle{
+      display: inline-block;
+    }
+
+  }
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid $lightgrey;
+}

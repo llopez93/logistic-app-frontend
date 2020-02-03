@@ -1,0 +1,45 @@
+<div class="container" fxLayout="row"
+     fxLayoutAlign="center center" fxLayoutAlign.xs="center start"
+     ngClass.lt-md="mobile-login" >
+
+  <mat-card class="login-panel" fxFlex.md="35" fxFlex.gt-md="25" fxFlex.sm="95" fxFlex.xs="99">
+
+    <div class="header-login">
+      <img src="/assets/images/logo-grn.png" class="logo-grn">
+      <div class="header-text">
+        <h1 class="company-name">ABOGADOS DEL ESTADO</h1>
+        <span class="msg">Ingreso al sistema</span>
+      </div>
+    </div>
+    <form [formGroup]="loginForm" (ngSubmit)="login($event)" class="login-form">
+
+      <mat-form-field class="field">
+        <input matInput placeholder="Email" formControlName="username">
+        <mat-error *ngFor="let error  of validation.errorMessages(loginForm.controls.username)">
+          {{ error }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="field">
+        <input matInput placeholder="Contraseña" formControlName="password" type="password" autocomplete="off">
+        <mat-error *ngFor="let error  of validation.errorMessages(loginForm.controls.password)">
+          {{ error }}
+        </mat-error>
+      </mat-form-field>
+
+      <div class="buttons-container">
+
+        <button type="submit" mat-raised-button color="primary" [disabled]="loginForm.invalid && !loginForm.pristine">
+          <mat-icon>perm_identity</mat-icon>
+          <span class="ui-button-text ui-c">Ingresar</span>
+        </button>
+
+        <button type="submit" mat-raised-button (click)="goToRegister()" class="dark-green-btn">
+          <mat-icon>arrow_forward</mat-icon>
+          <span class="ui-button-text ui-c">Registrarse</span>
+        </button>
+
+      </div>
+    </form>
+  </mat-card>
+</div>

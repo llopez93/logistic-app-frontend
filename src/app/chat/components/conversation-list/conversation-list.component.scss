@@ -1,0 +1,94 @@
+@import "../../../../fiscalia-theme";
+
+.container > mat-form-field{
+  padding:  4px 16px 0;
+  height: 65px;
+  width: 90%;
+  border-right: 3px solid black !important;
+  z-index: 5;
+  position: relative;
+  border-block: black;
+}
+
+::-webkit-scrollbar-track{
+  background-color: transparent;
+}
+
+::-webkit-scrollbar
+{
+  width: 6px;
+  background-color: rgba(200, 200, 200, 0.0);
+}
+
+::-webkit-scrollbar-thumb
+{
+  background-color: rgba(200, 200, 200, 0.5);
+}
+
+.container{
+  height: 100%;
+  overflow: hidden;
+}
+
+.title{
+  margin-left: 20px;
+}
+
+mat-divider.no-expand{
+  position: relative!important;
+  width: 100% !important;
+}
+
+.empty-msg{
+  margin: 20px 20px 10px;
+  text-align: center;
+  color: lightgrey;
+}
+
+.inset-shadow{
+  -webkit-box-shadow: inset -12px 12px 9px -13px rgba(0,0,0,0.17);
+  -moz-box-shadow: inset -12px 12px 9px -13px rgba(0,0,0,0.17);
+  box-shadow: inset -12px 12px 9px -13px rgba(0,0,0,0.17);
+}
+
+.conversation-list-container{
+  border-right: 1px solid $almost-white;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 100%;
+
+  button {
+    padding: 0 !important;
+  }
+
+
+  .conversation-item{
+    height: 65px;
+    padding: 5px;
+    width: 100% !important;
+
+    app-user-photo{
+      margin-right: 10px;
+    }
+
+    .mat-badge-active {
+      margin-top: -10;
+      margin-left: -10;
+    }
+
+    .user-name{
+      font-size: 0.9em;
+      margin: 0;
+    }
+
+    .create-time{
+      margin: 0;
+      font-size: 0.75em;
+      color: grey;
+    }
+
+  }
+
+
+}

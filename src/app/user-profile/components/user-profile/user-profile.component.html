@@ -1,0 +1,162 @@
+<div class="container" fxLayout="row"
+
+     fxLayoutAlign="center center" fxLayoutAlign.xs="center start"
+     ngClass.lt-md="mobile-panel" >
+  <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+
+  <mat-card class="panel container-card" *ngIf="!loading" fxFlex.gt-md="90%" fxFlex.lt-md="100%" >
+    <mat-tab-group dynamicHeight>
+      <mat-tab label="Mi Perfil">
+        <mat-card-content class="tab-content">
+          <form class="form" [formGroup]="profileFormGroup">
+            
+            <div fxLayout="row" fxLayout.lt-sm="column" >
+                <div class="inputs-column" fxFlex.gt-sm="30" fxFlex.lt-sm="100" fxLayout="column">
+
+                  <mat-form-field>
+                    <input matInput placeholder="Nombre" formControlName="firstname">
+                  </mat-form-field>
+
+                  <mat-form-field>
+                    <input matInput [matDatepicker]="picker" formControlName="birthDate" placeholder="Fecha de nacimiento">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+
+                </div>
+                <div class="inputs-column" fxFlex.gt-sm="30" fxFlex.lt-sm="100" fxLayout="column">
+
+                  <mat-form-field>
+                    <input matInput placeholder="Apellido" formControlName="lastname">
+                  </mat-form-field>
+
+                  <mat-form-field>
+                    <input matInput placeholder="Documento" formControlName="dni">
+                  </mat-form-field>
+
+                </div>
+                <div class="inputs-column" fxFlex.gt-sm="30" fxFlex.lt-sm="100" fxLayout="column">
+
+                  <div class="imageSelector" fxLayout="column" fxLayoutAlign="center center" >
+                    <h4 style="margin: 0" class="bold">Imagen de perfil</h4>
+                    <img *ngIf="imagePreview" [src]="imagePreview" class="imagePreview">
+                    <div>
+                        <input hidden type="file" #photoUploader (change)="onPhotoUpload($event)" accept="image/jpeg, image/png" />
+                        <button mat-raised-button style="margin-top: 8px" type="button"
+                                (click)="photoUploader.click()" color="primary">
+                          {{imagePreview ? "Cambiar" : "Subir"}}
+                        </button>
+                      </div>
+                  </div>
+
+                </div>
+              </div>
+
+            <mat-divider></mat-divider>
+
+
+
+            <div >
+                <h4  class="bold">Area de interes</h4>
+                <mat-form-field class="wide" style="margin-left: 20px">
+                  <mat-label>Seleccione un area de interes</mat-label>
+                  <mat-select formControlName="areaOfInterest">
+                    <mat-option *ngFor="let area of areasOfInterest" [value]="area.value">
+                      {{area.label}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <h4 class="bold">Domicilio de trabajo</h4>
+
+              <div fxLayout="row" fxLayout.lt-md="column">
+                <div class="inputs-column" style="min-width: 420px"   fxLayout="column" formGroupName="workplace">
+
+                  <mat-form-field class="wide">
+                    <mat-label>Organismo</mat-label>
+                    <mat-select formControlName="ministry" [compareWith]="comparator" (selectionChange)="changeArea($event)">
+                      <mat-option *ngFor="let m of ministries" [value]="m.value">
+                        {{m.label}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field style="max-width: 150px">
+                    <input matInput placeholder="Teléfono" formControlName="phone">
+                  </mat-form-field>
+
+                </div>
+                <div class="inputs-column"   fxLayout="column" formGroupName="workplace">
+                  <mat-form-field>
+                    <input matInput placeholder="Calle" formControlName="street">
+                  </mat-form-field>
+
+                  <mat-form-field *ngIf="profileFormGroup.get('workplace').get('city').value">
+                    <input matInput placeholder="Ciudad" [value]="profile.address.city.toString()"
+                           [disabled]="true">
+                  </mat-form-field>
+                </div>
+              </div>
+
+            <mat-divider></mat-divider>
+
+              <h4 class="bold">Teléfonos</h4>
+
+              <div fxLayout="column" class="phones-container" fxLayoutAlign="center start">
+                <div formArrayName="phonesArray">
+                  <mat-card *ngFor="let telefono of profileFormGroup.get('phonesArray').controls; let i=index" class="card">
+                    <button mat-icon-button *ngIf="profileFormGroup.get('phonesArray').controls.length >= 1" type="button"
+                            matTooltip="Eliminar telefono" (click)="removePhone(i)" class="button-remove">
+                      <mat-icon>clear</mat-icon>
+                    </button>
+                    <div [formGroupName]="i">
+                      <div class="form-group">
+                        <mat-form-field>
+                          <input matInput placeholder="Número" formControlName="phone">
+                        </mat-form-field>
+                        <mat-form-field style="max-width: 80px">
+                          <mat-label>Tipo</mat-label>
+                          <mat-select  formControlName="phoneType" [compareWith]="comparator" (selectionChange)="changeArea($event)">
+                            <mat-option *ngFor="let p of phonetypesSelectItems" [value]="p.value">
+                              {{p.label}}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+
+                      </div>
+                    </div>
+                  </mat-card>
+                  <div class="add-btn-container" fxLayout="row" fxLayoutAlign="center center">
+                    <button mat-mini-fab class="button-add dark-green-btn" (click)="addPhone()" matTooltip="Agregar telefono">
+                      <mat-icon>add</mat-icon>
+                    </button>
+                  </div>
+
+                </div>
+
+
+
+              </div>
+
+
+            </form>
+          <mat-divider></mat-divider>
+
+          <mat-card-actions fxLayout="row" fxLayoutAlign="end center">
+            <button mat-button type="button" class="red-btn" (click)="goBack()">Cancelar</button>
+            <button mat-button type="submit" class="dark-green-btn" (click)="onSubmit($event)" [disabled]="profileFormGroup.invalid">Guardar</button>
+          </mat-card-actions>
+        </mat-card-content>
+      </mat-tab>
+      <mat-tab label="Curriculum Vitae">
+        <app-curriculum></app-curriculum>
+      </mat-tab>
+      <mat-tab label="Configuración">
+        <app-settings></app-settings>
+      </mat-tab>
+    </mat-tab-group>
+
+
+  </mat-card>
+</div>

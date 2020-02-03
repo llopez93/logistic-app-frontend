@@ -1,0 +1,46 @@
+@import '../../../../theme.scss';
+
+
+.photo-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  color: white;
+}
+
+mat-expansion-panel{
+  border-radius: 0 !important;
+}
+
+mat-expansion-panel-header {
+  min-height: 130px;
+}
+
+div.mat-expansion-panel-body {
+  padding: 0 0 0 0 !important;
+}
+mat-expansion-panel {
+  transition: background-color 0.3s;
+  background-color: mat-color($primary) !important;
+}
+
+mat-expansion-panel.mat-expanded  {
+  background-color: $primary-dark !important
+}
+
+
+mat-expansion-panel:hover {
+  background-color: $primary-dark !important;
+}
+
+.mat-list-item-content{
+  color: white !important;
+  font-size: 1em !important;
+}
+
+.name{
+  padding-top: 5px;
+  font-size: 0.93em;
+}

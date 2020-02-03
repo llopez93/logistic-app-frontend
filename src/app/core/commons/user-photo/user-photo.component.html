@@ -1,0 +1,6 @@
+<div class="container">
+  <mat-spinner [diameter]="size" *ngIf="loading" [strokeWidth]="4" color="accent"></mat-spinner>
+  <div *ngIf="loading" [style.width.px]="size" [style.height.px]="size" ></div>
+  <img class="profile-circle-img" *ngIf="!loading" [style.width.px]="size" [style.height.px]="size"
+       [src]="profilePhoto">
+</div>

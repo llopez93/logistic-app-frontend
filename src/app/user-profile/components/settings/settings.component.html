@@ -1,0 +1,53 @@
+<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+<div class="container" *ngIf="!loading">
+   <mat-card-content>
+     <div class="section">
+       <h4 class="bold">Notificaciones</h4>
+       <div class="control">
+         <p>Enviar alerta de notificaciones no leidas por mail</p>
+         <mat-slide-toggle  [(ngModel)]="preferences.sendUnreadedNotificationsByEmail" [ngModelOptions]="{standalone: true}"></mat-slide-toggle>
+       </div>
+
+       <div *ngFor="let topic of topics; let i = index;">
+         <div class="control">
+           <p>{{topic.displayName}}</p>
+           <mat-slide-toggle [(ngModel)]="topicsSelected[i]" [ngModelOptions]="{standalone: true}"></mat-slide-toggle>
+         </div>
+       </div>
+
+       <mat-card-actions fxLayout="row" fxLayoutAlign="end center">
+         <button mat-button type="submit" class="dark-green-text" (click)="onSubmit($event)">Guardar configuración</button>
+       </mat-card-actions>
+
+     </div>
+
+     <form autocomplete="off" class="section" [formGroup]="passwordFormGroup">
+       <h4 class="bold">Cambiar contraseña</h4>
+       <mat-form-field class="control">
+         <input autocomplete="off" type="password" name="oldPass" matInput placeholder="Contraseña Actual" formControlName="old">
+       </mat-form-field>
+       <mat-form-field style="margin-bottom: 20px" class="control">
+         <input autocomplete="off" type="password" name="newPass" matInput placeholder="Contraseña Nueva" formControlName="newPass">
+         <mat-hint>Mínimo 6 caracteres</mat-hint>
+       </mat-form-field>
+       <mat-form-field class="control">
+         <input autocomplete="off" type="password" name="oldPassRepeat" matInput placeholder="Repita la contraseña nueva" formControlName="repeatNewPass">
+       </mat-form-field>
+       <p class="error-text password-error"
+          [style.opacity]="shouldShowPasswordsDontMatch() ? 1 : 0">
+          Las contraseñas no coinciden
+       </p>
+
+
+       <mat-card-actions fxLayout="row" fxLayoutAlign="end center">
+         <button mat-button type="submit" class="dark-green-text"
+                 [disabled]="passwordFormGroup && passwordFormGroup.invalid"
+                 (click)="onUpdatePassword()">Actualizar contraseña</button>
+       </mat-card-actions>
+     </form>
+
+   </mat-card-content>
+
+
+ </div>
+

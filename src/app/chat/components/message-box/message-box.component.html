@@ -1,0 +1,48 @@
+<div class="message-box" *ngIf="_conversation" fxLayout="column">
+  <div class="header" fxLayout="row" fxLayoutAlign="start center">
+    <app-user-photo [ownPhoto]="false"  [photo]="photo | async" [size]="40"></app-user-photo>
+    <p class="participants">
+      {{ participants }}
+    </p>
+
+  </div>
+  <div fxFlex="100">
+    <mat-progress-bar mode="indeterminate"  *ngIf="loading"></mat-progress-bar>
+  </div>
+  <div class="msg-list" *ngIf="!loading" fxFlex="1 00">
+      <ul>
+        <li *ngFor="let m of msgList; index as i" [ngClass]="(user.id === m.user.id) ? 'right':'left'" [class.added]="addedMsg && i === msgList.length - 1 ">
+          <div class="time" *ngIf="shouldHaveTime(i)">
+            {{ getMsgTime(m.createTime) }}
+          </div>
+          <p class="msg">
+            <span class="text">
+                {{ m.content }}
+            </span>
+            <span *ngIf="m.attachedFile != null" (click)="getAttached(m)" class="textLink">
+                <img *ngIf="m.attachedFile.extension != 'pdf'; else pdf" class="msg-image-preview"
+                     src="{{ m.attachedFile.contentType }},{{ m.attachedFile.data }}" alt="{{m.attachedFile.name}">
+                <ng-template #pdf>{{m.attachedFile.name}}</ng-template>
+            </span>
+          </p>
+        </li>
+      </ul>
+    </div>
+
+  <div class="msg-input" fxLayout="row" fxLayoutAlign="start center">
+    <mat-form-field fxFlex="100" appearance="outline">
+      <input placeholder="Escriba un mensaje" name="mensaje" matInput (keyup.enter)="sendMsg()" [(ngModel)]="msgText"
+             type="text" >
+    </mat-form-field>
+
+          <button class mat-icon-button matTooltip="Adjuntar archivo" (click)="fileUploader.click()">
+            <mat-icon>attach_file</mat-icon>
+          </button>
+         <input hidden #fileUploader id="file-upload" (change)="seleccionFile($event.target.files[0])"
+                type="file" style='display: none;' accept="image/*,application/pdf">
+
+           <button class="dark-green-text" mat-icon-button matTooltip="Enviar"  (keydown.enter)="sendMsg()" (click)="sendMsg()">
+            <mat-icon>send</mat-icon>
+          </button>
+  </div>
+</div>

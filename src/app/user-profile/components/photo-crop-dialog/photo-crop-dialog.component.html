@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>Editar foto</h1>
+<mat-dialog-content style="height: 95%; overflow: hidden">
+  <div fxFlex="95" >
+    <image-cropper
+      [maintainAspectRatio]="true"
+      [aspectRatio]="1"
+      outputType="base64"
+      [imageBase64]="imageBase64"
+      format="png"
+      [resizeToWidth]="500"
+      [cropperMinWidth]="100"
+      [onlyScaleDown]="true"
+      roundCropper="true"
+      (imageCropped)="imageCropped($event)"
+    ></image-cropper>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button class="red-btn" (click)="onNoClick()">Cancelar</button>
+  <button mat-button class="dark-green-btn" (click)="confirm()">Confirmar</button>
+</mat-dialog-actions>

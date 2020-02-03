@@ -1,0 +1,50 @@
+.container {
+  height: 100%;
+}
+
+.header .logo-grn {
+  margin: 0;
+  padding: 5% 5% 5% 3% !important;
+  width: 100px;
+  float: left;
+}
+
+.header .header-text {
+  display: inline;
+  float: left;
+  margin: 25px 0 0 0;
+  padding-left: 20px;
+}
+
+.header .header-text .company-name {
+  text-align: center;
+  font-size: 1.1em;
+  font-weight: 600;
+  margin: 20px 0 0 0;
+}
+
+.header .header-text .subtitle {
+  margin-top: 5px;
+  margin-bottom: 0;
+}
+
+.header .header-text .msg {
+  display: block;
+  font-size: 0.99em;
+  text-align: center;
+}
+
+
+.mat-raised-button {
+  width: 100%;
+}
+
+.field {
+  padding: 0 10px;
+}
+
+.mat-icon {
+  float: left;
+  top: 7px;
+  position: relative;
+}

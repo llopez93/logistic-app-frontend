@@ -129,7 +129,7 @@ export class ConversationService extends GenericService<Conversation>{
       return this.conversationList;
     return this.conversationList.filter(c =>
       c.participants.filter(p =>
-        p.firstname.toLowerCase().concat(' ').concat(p.lastname.toLowerCase()).includes(searchTerm.toLowerCase())
+        p.firstName.toLowerCase().concat(' ').concat(p.lastName.toLowerCase()).includes(searchTerm.toLowerCase())
       ).length > 0)
   }
 

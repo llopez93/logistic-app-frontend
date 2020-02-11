@@ -4,8 +4,8 @@ import {Role} from './role';
 
 export default class User extends Entity {
   //username = "";
-  firstname = "";
-  lastname = "";
+  firstName = "";
+  lastName = "";
   email = "";
   enabled = true;
   profilePhoto = '';
@@ -37,7 +37,7 @@ export default class User extends Entity {
   }
 
   public getFullName(): string {
-    return this.firstname + " " + this.lastname;
+    return this.firstName + " " + this.lastName;
   }
 
   public hasFx(fxname: string): boolean {

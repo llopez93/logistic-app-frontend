@@ -5,6 +5,8 @@ import {Observable} from 'rxjs';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {map} from "rxjs/operators";
 import {PaginationPage} from "../domain/requests/pagination-page";
+import {PageRequest} from "../domain/pagination/page-request";
+import {PageResponse} from "../domain/pagination/page-response";
 
 
 @Injectable()
@@ -25,7 +27,7 @@ export abstract class GenericService<T extends Entity> {
     } catch (e) {
       return [];
     }
-  };
+  }
 
   protected mapToPaginationPage = (o: any): PaginationPage<T> => {
     const page = new PaginationPage<T>(o);
@@ -35,35 +37,41 @@ export abstract class GenericService<T extends Entity> {
 
   public getAll(): Observable<T[]> {
     const url = this.baseUrl + this.getResourcePath() + '/all';
-    return this.doRequest({url, method: "GET", map: this.mapToEntityArray})
+    return this.doRequest({url, method: "GET", map: this.mapToEntityArray});
   }
 
   public get(id: number): Observable<T> {
     const url = this.baseUrl + this.getResourcePath() + '/' + id;
-    return this.doRequest({url, method: "GET", map: this.valueToEntity})
+    return this.doRequest({url, method: "GET", map: this.valueToEntity});
   }
 
   public create(t: T): Observable<T> {
     const url = this.baseUrl + this.getResourcePath();
-    return this.doRequest({url, method: "POST", options: {body: t}, map: this.valueToEntity})
+    return this.doRequest({url, method: "POST", options: {body: t}, map: this.valueToEntity});
   }
 
   public update(t: T): Observable<T> {
     const url = this.baseUrl + this.getResourcePath();
-    return this.doRequest({url, method: "PUT", options: {body: t}, map: this.valueToEntity})
+    return this.doRequest({url, method: "PUT", options: {body: t}, map: this.valueToEntity});
 
   }
 
   public delete(t: number | T): Observable<number> {
     const id = typeof t !== 'number' ? (t as T).id : t as number;
     const url = this.baseUrl + this.getResourcePath() + '/' + id;
-    return this.doRequest({url, method: "DELETE"})
+    return this.doRequest({url, method: "DELETE"});
 
   }
 
-  public getPage(args: {page?: number, size?: number, requestParams?: {[param: string]: string | string[]}, urlSegment?: string }): Observable<PaginationPage<T>> {
+  /*
+
+   public getPage(args: {
+    page?: number, size?: number,
+    requestParams?: { [param: string]: string | string[] },
+    urlSegment?: string
+  }): Observable<PaginationPage<T>> {
     let url = "";
-    if ( args.urlSegment )
+    if (args.urlSegment)
       url = this.baseUrl + this.getResourcePath() + args.urlSegment;
     else
       url = this.baseUrl + this.getResourcePath();
@@ -77,9 +85,29 @@ export abstract class GenericService<T extends Entity> {
       url,
       method: "GET",
       options: {
-        params : args.requestParams
+        params: args.requestParams
       },
-      map: this.mapToPaginationPage})
+      map: this.mapToPaginationPage
+    });
+  }
+
+   */
+
+  public getPage(page: PageRequest): Observable<PageResponse<T>> {
+
+    const url = this.baseUrl + this.getResourcePath();
+    var params: HttpParams = new HttpParams();
+    params = params.set("filter", page.buildRequestParamsFilters());
+    params = params.set("page", page.page.toString());
+    params = params.set("limit", page.limit.toString());
+    return this.doRequest({
+      url,
+      method: "GET",
+      options: {
+        params: params
+      }
+      // map: this.mapToPaginationPage
+    });
   }
 
 
@@ -99,7 +127,7 @@ export abstract class GenericService<T extends Entity> {
     if (args.errorHandler) {
       if (args.options == null)
         args.options = {};
-      args.options.params = new ErrorHandlingHttpParams({...args.options.params, onError: args.errorHandler})
+      args.options.params = new ErrorHandlingHttpParams({...args.options.params, onError: args.errorHandler});
     }
 
     const response = this.http.request(args.method, args.url, args.options);

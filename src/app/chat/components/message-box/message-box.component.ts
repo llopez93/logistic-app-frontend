@@ -138,12 +138,12 @@ export class MessageBoxComponent implements OnInit {
     if (this._conversation.groupConversation) {
       this._conversation.participants.forEach(p => {
         if (p.id === this._conversation.participants[this._conversation.participants.length - 1].id) {
-          participants = participants + p.firstname + ' ' + p.lastname;
+          participants = participants + p.firstName + ' ' + p.lastName;
         }
-        participants = participants + p.firstname + ' ' + p.lastname + ', ';
+        participants = participants + p.firstName + ' ' + p.lastName + ', ';
       });
     }
-    participants = this._conversation.participants[0].firstname + ' ' + this._conversation.participants[0].lastname;
+    participants = this._conversation.participants[0].firstName + ' ' + this._conversation.participants[0].lastName;
     this.photo.next(this._conversation.participants[0].profilePhoto);
     this.participants = participants;
   }

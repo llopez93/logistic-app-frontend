@@ -29,8 +29,8 @@ export class ProfileStoreService {
           return this.confirmProfileCreate()
             .pipe(switchMap(b => {
               const profile = new Profile();
-              profile.firstname = userIn.firstname;
-              profile.lastname = userIn.lastname;
+              profile.firstname = userIn.firstName;
+              profile.lastname = userIn.lastName;
               return of(profile);
             }))
         } else return throwError(e);

@@ -72,11 +72,12 @@ export class NavigationComponent implements OnInit {
   }
 
   initNotificationPanel(): void {
+    /**
     this.notificationService.getPage({page: 0, size: 0})
       .subscribe(items => {
         this.items = items.content;
         this.refreshNewNotifications();
-      });
+      });*/
   }
 
   refreshNewNotifications(): void {

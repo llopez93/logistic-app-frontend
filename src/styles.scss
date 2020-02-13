@@ -9,7 +9,7 @@ body {
   background-color: #f7f7f7;
 }
 
-h4.bold, h3.bold{
+h4.bold, h3.bold {
   font-weight: 500 !important;
 }
 
@@ -62,20 +62,18 @@ mat-sidenav {
     padding-left: 10px;
   }
 
-  .mat-list-item{
+  .mat-list-item {
     color: white !important;
     font-size: 1em !important;
     height: 36px !important;
   }
 
-  .mat-list-item-content{
+  .mat-list-item-content {
     padding-left: 0 !important;
   }
 }
 
-
-
-.conversation-item > .mat-list-item-content{
+.conversation-item > .mat-list-item-content {
   width: 100% !important;
 }
 
@@ -84,12 +82,13 @@ mat-sidenav {
 }
 
 
-.msg-input{
+.msg-input {
 
-  .mat-form-field-wrapper{
+  .mat-form-field-wrapper {
     padding-bottom: 0 !important;
   }
-  div.mat-form-field-infix{
+
+  div.mat-form-field-infix {
     padding: 10px 4px !important;
     border-top: 0 !important;
   }
@@ -99,26 +98,23 @@ mat-sidenav {
 .cdk-overlay-pane {
   max-height: 400px !important;
 
-  ::-webkit-scrollbar-track
-  {
+  ::-webkit-scrollbar-track {
     background-color: white;
   }
 
-  ::-webkit-scrollbar
-  {
+  ::-webkit-scrollbar {
     width: 6px;
     background-color: rgba(200, 200, 200, 0.5);
   }
 
-  ::-webkit-scrollbar-thumb
-  {
+  ::-webkit-scrollbar-thumb {
     border-radius: 3px;
     background-color: rgba(200, 200, 200, 0.5);
   }
 
 }
 
-.conversation-item{
+.conversation-item {
   span.mat-badge-active {
     bottom: 0px !important;
     right: 0px !important;
@@ -130,7 +126,7 @@ mat-sidenav {
   padding: 20px 40px;
   margin: auto;
   height: 85%;
-  border-left: 1px solid lightgrey !important;
+  //border-left: 1px solid lightgrey !important;
 }
 
 .header-filter {
@@ -147,5 +143,20 @@ mat-sidenav {
 
   .mat-form-field {
     font-size: 12px;
+  }
+}
+
+.padding-right {
+  padding: 0 10px 0 0;
+}
+
+.mat-card-content {
+  padding-top: 20px;
+}
+
+.mat-card-title {
+  h5 {
+    margin: 0;
+    font-weight: 300;
   }
 }

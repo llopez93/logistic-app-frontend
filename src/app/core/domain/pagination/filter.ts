@@ -12,11 +12,15 @@ export class Filter {
   }
 
   public buildFilter(): string {
-    return  this.value && this.value !== '' ? this.field + "||" + this.operator + "||" + this.value : '';
+    return this.value && this.value !== '' ? this.field + "||" + this.operator + "||" + this.value : '';
   }
 
   public buildParam(): { [p: string]: string } {
     return {filter: this.field + "||" + this.operator + "||" + this.value};
+  }
+
+  public hasValue(): boolean {
+    return this.value !== "";
   }
 
 }

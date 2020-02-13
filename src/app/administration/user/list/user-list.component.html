@@ -1,13 +1,17 @@
-<div class="container" fxLayout="row" fxLayoutAlign="center center" fxLayoutAlign.xs="center start">
+<div class="container" fxLayout="row" fxLayoutAlign="start">
 
   <mat-card>
     <mat-card-title>
-      Listado de usuarios
+      <h5>
+        Listado de usuarios
+      </h5>
     </mat-card-title>
+    <mat-divider></mat-divider>
     <mat-card-content>
       <mat-table [dataSource]="data" matSort matSortDirection="asc">
         <ng-container matColumnDef="lastname">
-          <mat-header-cell *matHeaderCellDef>Apellido
+          <mat-header-cell *matHeaderCellDef>
+            Apellido
             <mat-form-field class="header-filter">
               <input
                 [formControl]="lastNameFilterControl"
@@ -29,12 +33,48 @@
         </ng-container>
 
         <ng-container matColumnDef="firstname">
-          <mat-header-cell *matHeaderCellDef>Nombre</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef>
+            Nombre
+            <mat-form-field class="header-filter">
+              <input
+                [formControl]="firstNameFilterControl"
+                matInput
+                placeholder="Filtrar"
+              />
+              <button
+                mat-button
+                *ngIf="isClearIconVisible(firstNameFilterControl)"
+                matSuffix
+                mat-icon-button
+                aria-label="Clear"
+                (click)="clearInputValue(firstNameFilterControl)">
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+          </mat-header-cell>
           <mat-cell *matCellDef="let user">{{ user.firstName }}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="email">
-          <mat-header-cell *matHeaderCellDef>Correo electrónico</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef>
+            Correo electrónico
+            <mat-form-field class="header-filter">
+              <input
+                [formControl]="emailNameFilterControl"
+                matInput
+                placeholder="Filtrar"
+              />
+              <button
+                mat-button
+                *ngIf="isClearIconVisible(emailNameFilterControl)"
+                matSuffix
+                mat-icon-button
+                aria-label="Clear"
+                (click)="clearInputValue(emailNameFilterControl)">
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+          </mat-header-cell>
           <mat-cell *matCellDef="let user">{{ user.email }}</mat-cell>
         </ng-container>
 
@@ -49,6 +89,39 @@
             >
             </mat-checkbox>
           </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="acciones">
+          <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
+          <mat-cell *matCellDef="let user" class="actions-cell">
+            <button
+              mat-mini-fab
+              (click)="gotoDetail(user)"
+              matTooltip="Ver detalle"
+              matTooltipPosition="above"
+              class="green-btn"
+            >
+              <i class="icon material-icons">edit</i>
+            </button>
+
+            <button
+              mat-mini-fab
+              (click)="resetPass(user)"
+              matTooltip="Restablecer contraseña"
+              matTooltipPosition="above"
+              class="ligth-green-btn">
+              <i class="icon material-icons">vpn_key</i>
+            </button>
+
+            <button
+              mat-mini-fab
+              matTooltip="Eliminar"
+              matTooltipPosition="above"
+              class="red-btn">
+              <i class="icon material-icons">delete</i>
+            </button>
+          </mat-cell>
+
         </ng-container>
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

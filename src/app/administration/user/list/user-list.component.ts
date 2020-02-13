@@ -7,7 +7,8 @@ import {PageRequest} from "../../../core/domain/pagination/page-request";
 import {FormControl} from "@angular/forms";
 import {Filter} from "../../../core/domain/pagination/filter";
 import {Operators} from "../../../core/domain/pagination/operators";
-import {debounceTime, filter} from "rxjs/operators";
+import {debounceTime} from "rxjs/operators";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-user-list',
@@ -20,7 +21,7 @@ export class UserListComponent implements OnInit {
   paginator: MatPaginator;
   @ViewChild(MatSort, {static: false})
   sort: MatSort;
-  displayedColumns = ["lastname", "firstname", "email", "activado"];
+  displayedColumns = ["lastname", "firstname", "email", "activado", "acciones"];
   data = new MatTableDataSource([]);
   paginationOptions: PageRequest = new PageRequest();
   resultsLength: number;
@@ -28,19 +29,25 @@ export class UserListComponent implements OnInit {
 
   // Filtros
   lastNameFilterControl: FormControl;
+  firstNameFilterControl: FormControl;
+  emailNameFilterControl: FormControl;
 
   constructor(private readonly userService: UserService,
-              private readonly authService: AuthService) {
+              private readonly authService: AuthService,
+              private readonly router: Router) {
   }
 
   ngOnInit() {
     this.lastNameFilterControl = new FormControl("");
+    this.firstNameFilterControl = new FormControl("");
+    this.emailNameFilterControl = new FormControl("");
+
     this.authService.user.subscribe(value => this.userLogged = value);
 
     this.applyFilter();
 
     this.paginator.page.subscribe(() => {
-      this.paginationOptions.page = this.paginator.pageIndex;
+      this.paginationOptions.page = this.paginator.pageIndex + 1;
       this.paginationOptions.limit = this.paginator.pageSize;
       this.applyFilter();
     });
@@ -52,6 +59,28 @@ export class UserListComponent implements OnInit {
       )
       .subscribe(value => {
           this.paginationOptions.addFilter(new Filter("lastName", Operators.CONTAINS, value));
+          this.applyFilterAndReset();
+        }
+      );
+
+    this.firstNameFilterControl
+      .valueChanges
+      .pipe(
+        debounceTime(400)
+      )
+      .subscribe(value => {
+          this.paginationOptions.addFilter(new Filter("firstName", Operators.CONTAINS, value));
+          this.applyFilterAndReset();
+        }
+      );
+
+    this.emailNameFilterControl
+      .valueChanges
+      .pipe(
+        debounceTime(400)
+      )
+      .subscribe(value => {
+          this.paginationOptions.addFilter(new Filter("email", Operators.CONTAINS, value));
           this.applyFilterAndReset();
         }
       );
@@ -89,28 +118,16 @@ export class UserListComponent implements OnInit {
     control.patchValue("");
   }
 
-  public updateUser(user: User, event) {
-    console.info("update del user");
-    /**
-     if (user.id !== this.userInID) {
-      /**
-       this.confirmationService.confirm({
-        message: "Está seguro que desea cambiar el valor?",
-        icon: "fa ui-icon-warning",
-        accept: () => {
-          this.appService.setLoading(true);
-          this.userService.update(user).subscribe(() => {
-            this.applyFilter();
-            this.appService.setLoading(false);
-          });
-        },
-        reject: () => {
-          user.enabled = !user.enabled;
-        }
-      });
+  public gotoDetail(user: User) {
+    this.router.navigate(["home", "administration", "users", user.id]);
+  }
 
-    }
-     */
+  public create(user: User) {
+    this.router.navigate(["home", "administration", "users", "new"]);
+  }
+
+  resetPass(u: User): void {
+    console.log("Reset pass....");
   }
 
 }

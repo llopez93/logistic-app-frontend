@@ -1,21 +1,23 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {UserListComponent} from './user/list/user-list.component';
-import {AdministrationRoutingModule} from "./user/administration-routing.module";
+import {AdministrationRoutingModule} from "./administration-routing.module";
 import {
   MatButtonModule,
   MatCardModule,
-  MatCheckboxModule,
+  MatCheckboxModule, MatDividerModule,
   MatFormFieldModule,
   MatIconModule, MatInputModule,
-  MatPaginatorModule,
-  MatTableModule
+  MatPaginatorModule, MatSelectModule,
+  MatTableModule, MatTooltipModule
 } from "@angular/material";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { UserFormComponent } from './user/form/user-form.component';
+import {FlexLayoutModule} from "@angular/flex-layout";
 
 
 @NgModule({
-  declarations: [UserListComponent],
+  declarations: [UserListComponent, UserFormComponent],
   imports: [
     CommonModule,
     AdministrationRoutingModule,
@@ -29,6 +31,10 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     MatButtonModule,
     MatIconModule,
     MatInputModule,
+    MatTooltipModule,
+    FlexLayoutModule,
+    MatDividerModule,
+    MatSelectModule,
   ]
 })
 export class AdministrationModule {

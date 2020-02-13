@@ -26,7 +26,7 @@ export class PageRequest {
 
 
   public buildRequestParamsFilters(): string {
-    return this.filters.map(value => value.buildFilter()).join(",");
+    return this.filters.filter(f => f.hasValue()).map(value => value.buildFilter()).join(",");
   }
 
 }

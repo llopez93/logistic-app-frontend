@@ -33,10 +33,10 @@ export abstract class GenericService<T extends Entity> {
     const page = new PaginationPage<T>(o);
     page.content = page.content.map(x => this.valueToEntity(x));
     return page;
-  };
+  }
 
   public getAll(): Observable<T[]> {
-    const url = this.baseUrl + this.getResourcePath() + '/all';
+    const url = this.baseUrl + this.getResourcePath();
     return this.doRequest({url, method: "GET", map: this.mapToEntityArray});
   }
 
@@ -52,7 +52,7 @@ export abstract class GenericService<T extends Entity> {
 
   public update(t: T): Observable<T> {
     const url = this.baseUrl + this.getResourcePath();
-    return this.doRequest({url, method: "PUT", options: {body: t}, map: this.valueToEntity});
+    return this.doRequest({url, method: "PATCH", options: {body: t}, map: this.valueToEntity});
 
   }
 
@@ -113,7 +113,7 @@ export abstract class GenericService<T extends Entity> {
 
   protected doRequest(args: {
     url: string,
-    method: "GET" | "POST" | "PUT" | "DELETE",
+    method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH",
     options?: RequestOptions,
     map?: (any) => any,
     errorHandler?: (error: HttpErrorResponse) => Observable<any>

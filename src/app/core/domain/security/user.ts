@@ -8,24 +8,15 @@ export default class User extends Entity {
   lastName = "";
   email = "";
   enabled = true;
-  profilePhoto = '';
-  fxs: FX[] = [];
-  role: Role = null;
+  //profilePhoto = '';
+  //fxs: FX[] = [];
+  role: Role = new Role();
 
   constructor(value: Partial<User> = {}) {
     super();
     Object.assign(this, value);
-    /*
-    if (this.fxs) {
-      this.fxs = this.fxs.map(fx => new FX(fx));
-    }
-    if (this.roles) {
-      this.roles = this.roles.map(role => new Role(role));
-    }
-    */
-    if (this.role) {
+    if (this.role)
       this.role = new Role(this.role);
-    }
   }
 
   public addFxs(fxs: FX[]) {
@@ -42,5 +33,9 @@ export default class User extends Entity {
 
   public hasFx(fxname: string): boolean {
     return false;//this.fxs.some(fx => fx.fxname === fxname);
+  }
+
+  public hasRole(roleName: string): boolean {
+    return this.role.compareNameTo(roleName);
   }
 }

@@ -5,7 +5,7 @@ import {AuthService} from "../core/security/service/auth.service";
   selector: 'app-home-root',
   template: "",
 })
-export class HomeComponent implements OnInit{
+export class HomeComponent implements OnInit {
 
   constructor(private authService: AuthService) {
 
@@ -13,7 +13,6 @@ export class HomeComponent implements OnInit{
 
 
   ngOnInit(): void {
-    //this.authService.login("llopez", "UNRN.fiscalia2018").subscribe();
     this.authService.setUserIn();
   }
 

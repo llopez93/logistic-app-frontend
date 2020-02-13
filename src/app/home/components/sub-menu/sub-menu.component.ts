@@ -1,17 +1,15 @@
-import {Component, EventEmitter, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import MenuItem from "../../domain/menu-item";
 import {Router} from "@angular/router";
-import {animate, state, style, transition, trigger} from "@angular/animations";
 import {AuthService} from "../../../core/security/service/auth.service";
 import User from "../../../core/domain/security/user";
-import {FX} from "../../../core/domain/security/fx";
 
 @Component({
   selector: 'app-sub-menu',
   templateUrl: './sub-menu.component.html',
   styleUrls: ['./sub-menu.component.scss'],
 })
-export class SubMenuComponent implements OnInit{
+export class SubMenuComponent implements OnInit {
 
   @Input() items: MenuItem[];
 
@@ -27,21 +25,25 @@ export class SubMenuComponent implements OnInit{
   }
 
   shouldShow(item: MenuItem): boolean {
-    if(this.user)
+    if (this.user)
       return item.canBeShownUser(this.user);
     return false;
   }
 
-  onClick(item: MenuItem){
-    this.router.navigate(["home", item.route]);
+  onClick(item: MenuItem) {
+    if (item.route) {
+      let urlSegments: string[] = item.route.split('/');
+      urlSegments.unshift("home");
+      this.router.navigate(urlSegments);
+    }
   }
 
-  isActive(item: MenuItem): boolean{
-    if(item.route == null) return false;
-    return this.router.isActive(item.route, false );
+  isActive(item: MenuItem): boolean {
+    if (item.route == null) return false;
+    return this.router.isActive(item.route, false);
   }
 
-  hasChildActive(item: MenuItem): boolean{
+  hasChildActive(item: MenuItem): boolean {
     return item.children.some(item => this.isActive(item));
   }
 

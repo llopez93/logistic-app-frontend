@@ -1,0 +1,68 @@
+<div class="container"
+     fxLayout="row"
+     fxLayoutAlign="start">
+
+  <mat-card fxFlex="90">
+    <mat-card-title>
+      <h5>
+        {{ isEdition() ? "Edición de un usuario" : "Nuevo usuario" }}
+      </h5>
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+
+      <form novalidate [formGroup]="userForm" (ngSubmit)="saveData()"
+            fxLayout="column">
+        <div fxLayout="row">
+          <mat-form-field appearance="outline" fxFlex="30" class="padding-right">
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="firstName">
+            <mat-error *ngFor="let error  of validation.errorMessages(userForm.controls.firstName)">
+              {{ error }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex="30">
+            <mat-label>Apellido</mat-label>
+            <input matInput formControlName="lastName">
+            <mat-error *ngFor="let error  of validation.errorMessages(userForm.controls.lastName)">
+              {{ error }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="row wrap" >
+
+          <mat-form-field appearance="outline" fxFlex="60">
+            <mat-label>Correo electrónico</mat-label>
+            <input matInput formControlName="email">
+            <mat-error *ngFor="let error  of validation.errorMessages(userForm.controls.email)">
+              {{ error }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex="60">
+            <mat-label>
+              Rol
+            </mat-label>
+            <mat-select required formControlName="role" [compareWith]="compareRole">
+              <mat-option>Seleccione un rol</mat-option>
+              <mat-option *ngFor="let r of rolesAsync | async" [value]="r">
+                {{r.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-error *ngFor="let error  of validation.errorMessages(userForm.controls.role)">
+            {{ error }}
+          </mat-error>
+        </div>
+
+        <button type="submit" mat-raised-button [disabled]="userForm.invalid" class="dark-green-btn">
+          <mat-icon>send</mat-icon>
+          <span class="ui-button-text ui-c">Guardar</span>
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+</div>

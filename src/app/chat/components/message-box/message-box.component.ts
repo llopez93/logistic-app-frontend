@@ -144,7 +144,7 @@ export class MessageBoxComponent implements OnInit {
       });
     }
     participants = this._conversation.participants[0].firstName + ' ' + this._conversation.participants[0].lastName;
-    this.photo.next(this._conversation.participants[0].profilePhoto);
+    // this.photo.next(this._conversation.participants[0].profilePhoto);
     this.participants = participants;
   }
 

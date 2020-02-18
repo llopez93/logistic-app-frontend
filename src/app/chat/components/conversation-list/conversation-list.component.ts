@@ -55,6 +55,7 @@ export class ConversationListComponent implements OnInit, OnDestroy {
 
     this.searchControl = new FormControl('');
 
+    /*
     this.searchControl.valueChanges
       .pipe(debounceTime(300), distinctUntilChanged(),
         tap(term => this.isSearch = true),
@@ -74,12 +75,12 @@ export class ConversationListComponent implements OnInit, OnDestroy {
         this.userList = u;
         this.userList.forEach(user => {
           this.profileService.getProfilePhotoByUserId(user.id)
-            .subscribe(profile => {
-              user.profilePhoto = profile.profilePhoto;
-            })
+            .subscribe()
         })
         // this.cd.markForCheck();
       });
+
+     */
   }
 
   ngOnDestroy() {
@@ -87,12 +88,13 @@ export class ConversationListComponent implements OnInit, OnDestroy {
   }
 
   loadProfilePhotos() {
+    /*
     this.conversations.forEach(c => {
       this.profileService.getProfilePhotoByUserId(c.participants[0].id)
-        .subscribe(profile => {
-          c.participants[0].profilePhoto = profile.profilePhoto;
-        })
+        .subscribe();
     });
+
+     */
   }
 
   public getConversation(c: Conversation) {

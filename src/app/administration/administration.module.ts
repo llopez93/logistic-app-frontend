@@ -14,10 +14,11 @@ import {
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { UserFormComponent } from './user/form/user-form.component';
 import {FlexLayoutModule} from "@angular/flex-layout";
+import { ListComponent } from './role/list/list.component';
 
 
 @NgModule({
-  declarations: [UserListComponent, UserFormComponent],
+  declarations: [UserListComponent, UserFormComponent, ListComponent],
   imports: [
     CommonModule,
     AdministrationRoutingModule,

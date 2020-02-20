@@ -5,8 +5,8 @@ import {Observable} from 'rxjs';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {map} from "rxjs/operators";
 import {PaginationPage} from "../domain/requests/pagination-page";
-import {PageRequest} from "../domain/pagination/page-request";
-import {PageResponse} from "../domain/pagination/page-response";
+import {Pageable} from "../domain/pagination/pageable";
+import {PaginatedPage} from "../domain/pagination/paginatedPage";
 
 
 @Injectable()
@@ -27,13 +27,13 @@ export abstract class GenericService<T extends Entity> {
     } catch (e) {
       return [];
     }
-  }
+  };
 
   protected mapToPaginationPage = (o: any): PaginationPage<T> => {
     const page = new PaginationPage<T>(o);
     page.content = page.content.map(x => this.valueToEntity(x));
     return page;
-  }
+  };
 
   public getAll(): Observable<T[]> {
     const url = this.baseUrl + this.getResourcePath();
@@ -52,7 +52,7 @@ export abstract class GenericService<T extends Entity> {
 
   public update(t: T): Observable<T> {
     const url = this.baseUrl + this.getResourcePath();
-    return this.doRequest({url, method: "PATCH", options: {body: t}, map: this.valueToEntity});
+    return this.doRequest({url, method: "PUT", options: {body: t}, map: this.valueToEntity});
 
   }
 
@@ -93,18 +93,23 @@ export abstract class GenericService<T extends Entity> {
 
    */
 
-  public getPage(page: PageRequest): Observable<PageResponse<T>> {
+  public getPage(page: Pageable): Observable<PaginatedPage<T>> {
 
-    const url = this.baseUrl + this.getResourcePath();
-    var params: HttpParams = new HttpParams();
-    params = params.set("filter", page.buildRequestParamsFilters());
+    const url = this.baseUrl + this.getResourcePath() + "/page";
+    let params: HttpParams = new HttpParams();
+    if (page.hasFilters()) {
+      const filters = page.parseFilters();
+      filters.forEach(f => {
+        params = params.append("filters", f.key + "||" + f.value);
+      });
+    }
     params = params.set("page", page.page.toString());
-    params = params.set("limit", page.limit.toString());
+    params = params.set("size", page.size.toString());
     return this.doRequest({
       url,
       method: "GET",
       options: {
-        params: params
+        params
       }
       // map: this.mapToPaginationPage
     });

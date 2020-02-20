@@ -3,12 +3,11 @@ import {MatPaginator, MatSort, MatTableDataSource} from "@angular/material";
 import User from "../../../core/domain/security/user";
 import {UserService} from "../../service/user.service";
 import {AuthService} from "../../../core/security/service/auth.service";
-import {PageRequest} from "../../../core/domain/pagination/page-request";
 import {FormControl} from "@angular/forms";
-import {Filter} from "../../../core/domain/pagination/filter";
-import {Operators} from "../../../core/domain/pagination/operators";
 import {debounceTime} from "rxjs/operators";
 import {Router} from "@angular/router";
+import {Pageable} from "../../../core/domain/pagination/pageable";
+import {GlobalAppService} from "../../../core/commons/service/global-app.service";
 
 @Component({
   selector: 'app-user-list',
@@ -23,7 +22,7 @@ export class UserListComponent implements OnInit {
   sort: MatSort;
   displayedColumns = ["lastname", "firstname", "email", "activado", "acciones"];
   data = new MatTableDataSource([]);
-  paginationOptions: PageRequest = new PageRequest();
+  paginationOptions: Pageable = new Pageable();
   resultsLength: number;
   userLogged: User = new User();
 
@@ -34,6 +33,7 @@ export class UserListComponent implements OnInit {
 
   constructor(private readonly userService: UserService,
               private readonly authService: AuthService,
+              private readonly appService: GlobalAppService,
               private readonly router: Router) {
   }
 
@@ -47,8 +47,8 @@ export class UserListComponent implements OnInit {
     this.applyFilter();
 
     this.paginator.page.subscribe(() => {
-      this.paginationOptions.page = this.paginator.pageIndex + 1;
-      this.paginationOptions.limit = this.paginator.pageSize;
+      this.paginationOptions.page = this.paginator.pageIndex;
+      this.paginationOptions.size = this.paginator.pageSize;
       this.applyFilter();
     });
 
@@ -58,7 +58,7 @@ export class UserListComponent implements OnInit {
         debounceTime(400)
       )
       .subscribe(value => {
-          this.paginationOptions.addFilter(new Filter("lastName", Operators.CONTAINS, value));
+          this.paginationOptions.addFilter("lastName", value);
           this.applyFilterAndReset();
         }
       );
@@ -69,7 +69,7 @@ export class UserListComponent implements OnInit {
         debounceTime(400)
       )
       .subscribe(value => {
-          this.paginationOptions.addFilter(new Filter("firstName", Operators.CONTAINS, value));
+          this.paginationOptions.addFilter("firstName", value);
           this.applyFilterAndReset();
         }
       );
@@ -80,7 +80,7 @@ export class UserListComponent implements OnInit {
         debounceTime(400)
       )
       .subscribe(value => {
-          this.paginationOptions.addFilter(new Filter("email", Operators.CONTAINS, value));
+          this.paginationOptions.addFilter("email", value);
           this.applyFilterAndReset();
         }
       );
@@ -92,6 +92,7 @@ export class UserListComponent implements OnInit {
         this.paginationOptions
       )
       .subscribe(page => {
+        console.log(this.paginationOptions);
         this.data.data = page.data;
         this.resultsLength = page.total;
       });
@@ -101,7 +102,7 @@ export class UserListComponent implements OnInit {
     // Reset paginator
     this.paginator.pageIndex = 0;
     // Reset query options
-    this.paginationOptions.limit = 5;
+    this.paginationOptions.size = 5;
     this.paginationOptions.page = 0;
     this.applyFilter();
   }
@@ -129,5 +130,34 @@ export class UserListComponent implements OnInit {
   resetPass(u: User): void {
     console.log("Reset pass....");
   }
+
+  public updateUser(user: User, event) {
+    // TODO: Agregar confirmación
+    if (user.id !== this.userLogged.id) {
+      user.enabled = !user.enabled;
+      this.appService.setLoading(true);
+      this.userService.update(user).subscribe(value => {
+        this.appService.setLoading(false);
+        this.applyFilter();
+      });
+    }
+    /*
+    this.confirmationService.confirm({
+      message: "Está seguro que desea cambiar el valor?",
+      icon: "fa ui-icon-warning",
+      accept: () => {
+        this.appService.setLoading(true);
+        this.userService.update(user).subscribe(() => {
+          this.applyFilter();
+          this.appService.setLoading(false);
+        });
+      },
+      reject: () => {
+        user.enabled = !user.enabled;
+      }
+    });
+  }*/
+  }
+
 
 }

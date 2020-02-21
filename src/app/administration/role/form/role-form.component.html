@@ -1,0 +1,38 @@
+<div class="container">
+  <mat-card fxFlex="80">
+    <mat-card-title>
+      <h5>
+        {{ isEdition() ? "Edición de un rol" : "Nuevo rol" }}
+      </h5>
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-card-content fxLayoutAlign="strech">
+
+      <form novalidate [formGroup]="roleForm" (ngSubmit)="saveData()"
+            fxLayout="column" fxFlex="100">
+        <div fxLayout="row">
+          <mat-form-field appearance="outline" fxFlex="100" class="padding-right">
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="name">
+            <mat-error *ngFor="let error  of validation.errorMessages(roleForm.controls.name)">
+              {{ error }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="end end" fxLayoutGap="10px" fxFill>
+          <button fxFlex="15" type="submit" mat-raised-button [disabled]="roleForm.invalid" class="dark-green-btn">
+            <mat-icon>send</mat-icon>
+            <span class="ui-button-text ui-c">Guardar</span>
+          </button>
+
+          <button fxFlex="15" mat-raised-button (click)="goBack()">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+</div>
+

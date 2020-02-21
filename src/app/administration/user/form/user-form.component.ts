@@ -70,4 +70,8 @@ export class UserFormComponent implements OnInit {
     return role1.compareTo(role2);
   }
 
+  goBack() {
+    this.router.navigate(["home", "administration", "users"]);
+  }
+
 }

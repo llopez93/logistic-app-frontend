@@ -16,7 +16,7 @@ span {
 
 .mat-dialog-content {
   max-height: unset;
-  overflow-y: hidden;
+  overflow: visible;
 }
 
 .mat-dialog-actions {

@@ -9,6 +9,7 @@ $red-light: #ff5131;
 $dark-indigo: #283593;
 $almost-white: #fafafa;
 $white: #ffffff;
+$black: #000000;
 $lightgrey: #eaeaea;
 $dark-grey: #606060;
 
@@ -54,6 +55,11 @@ $dark-grey: #606060;
 .dark-red-btn:not(:disabled) {
   color: $white !important;
   background-color: $red-dark !important;
+}
+
+.yellow-btn:not(:disabled) {
+  color: $black !important;
+  background-color: #fdd835 !important;
 }
 
 .error-text{

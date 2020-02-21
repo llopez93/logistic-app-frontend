@@ -8,6 +8,7 @@ import {debounceTime} from "rxjs/operators";
 import {Router} from "@angular/router";
 import {Pageable} from "../../../core/domain/pagination/pageable";
 import {GlobalAppService} from "../../../core/commons/service/global-app.service";
+import {ConfirmDialogService} from "../../../core/commons/service/confirm-dialog.service";
 
 @Component({
   selector: 'app-user-list',
@@ -34,6 +35,7 @@ export class UserListComponent implements OnInit {
   constructor(private readonly userService: UserService,
               private readonly authService: AuthService,
               private readonly appService: GlobalAppService,
+              private readonly confirmationService: ConfirmDialogService,
               private readonly router: Router) {
   }
 
@@ -92,7 +94,6 @@ export class UserListComponent implements OnInit {
         this.paginationOptions
       )
       .subscribe(page => {
-        console.log(this.paginationOptions);
         this.data.data = page.data;
         this.resultsLength = page.total;
       });
@@ -123,40 +124,40 @@ export class UserListComponent implements OnInit {
     this.router.navigate(["home", "administration", "users", user.id]);
   }
 
-  public create(user: User) {
+  public create() {
     this.router.navigate(["home", "administration", "users", "new"]);
   }
 
   resetPass(u: User): void {
-    console.log("Reset pass....");
+    this.confirmationService.showDialog({
+      title: "Atención",
+      message: "¿Está seguro que desea reestablecer la contraseña del usuario?",
+      icon: "warning",
+      onAccept: () => {
+        this.appService.setLoading(true);
+        this.userService.resetPassword(u).subscribe(value => {
+          this.applyFilter();
+        });
+      }
+    }, 400).subscribe(value => this.appService.setLoading(false));
   }
 
   public updateUser(user: User, event) {
-    // TODO: Agregar confirmación
     if (user.id !== this.userLogged.id) {
-      user.enabled = !user.enabled;
-      this.appService.setLoading(true);
-      this.userService.update(user).subscribe(value => {
-        this.appService.setLoading(false);
-        this.applyFilter();
-      });
+      const action = user.enabled ? "deshabilitar" : "habilitar";
+      this.confirmationService.showDialog({
+        title: "Atención",
+        message: "¿Está seguro que desea " + action + " al usuario?",
+        icon: "warning",
+        onAccept: () => {
+          this.appService.setLoading(true);
+          this.userService.update(user).subscribe(value => {
+            this.applyFilter();
+          });
+        },
+        onClose: () => user.enabled = !user.enabled
+      }, 400).subscribe(value => this.appService.setLoading(false));
     }
-    /*
-    this.confirmationService.confirm({
-      message: "Está seguro que desea cambiar el valor?",
-      icon: "fa ui-icon-warning",
-      accept: () => {
-        this.appService.setLoading(true);
-        this.userService.update(user).subscribe(() => {
-          this.applyFilter();
-          this.appService.setLoading(false);
-        });
-      },
-      reject: () => {
-        user.enabled = !user.enabled;
-      }
-    });
-  }*/
   }
 
 

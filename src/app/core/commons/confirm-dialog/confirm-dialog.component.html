@@ -2,8 +2,9 @@
 <div mat-dialog-content>
   <mat-icon aria-hidden="false" *ngIf="data.icon">{{data.icon}}</mat-icon>
   <span>{{data.message}}</span>
+  <div class="clearfix"></div>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="cancel()" class="red-text">{{data.closeBtnText}}</button>
-  <button mat-button (click)="accept()" cdkFocusInitial class="dark-green-text">{{data.acceptBtnText}}</button>
+  <button mat-button (click)="cancel()">{{data.closeBtnText ? data.closeBtnText : "Cancelar"}}</button>
+  <button mat-button (click)="accept()" cdkFocusInitial>{{data.acceptBtnText ? data.closeBtnText : "Aceptar"}}</button>
 </div>

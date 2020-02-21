@@ -1,10 +1,17 @@
-<div class="container" fxLayout="row" fxLayoutAlign="start">
-
+<div class="container">
   <mat-card>
     <mat-card-title>
       <h5>
         Listado de usuarios
       </h5>
+
+      <button
+        mat-button
+        class="green-btn create-btn"
+        (click)="create()">
+        Nuevo usuario
+        <mat-icon>add</mat-icon>
+      </button>
     </mat-card-title>
     <mat-divider></mat-divider>
     <mat-card-content>
@@ -80,7 +87,7 @@
 
         <ng-container matColumnDef="activado">
           <mat-header-cell *matHeaderCellDef>Activado</mat-header-cell>
-          <mat-cell *matCellDef="let user">
+          <mat-cell *matCellDef="let user" class="actions-cell">
             <mat-checkbox
               [(ngModel)]="user.enabled"
               name="'{{ user.id }}'"
@@ -109,7 +116,7 @@
               (click)="resetPass(user)"
               matTooltip="Restablecer contraseña"
               matTooltipPosition="above"
-              class="ligth-green-btn">
+              class="yellow-btn">
               <i class="icon material-icons">vpn_key</i>
             </button>
 
@@ -127,7 +134,7 @@
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
       </mat-table>
-      <div *ngIf="resultsLength === 0" id="noResults">
+      <div *ngIf="resultsLength === 0" id="noResults" class="no-results">
         No se encontraron usuarios
       </div>
       <mat-paginator

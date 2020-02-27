@@ -1,13 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Params, Router} from "@angular/router";
-import {UserService} from "../../service/user.service";
+import {UserService} from "../../../service/user.service";
 import {Observable} from "rxjs";
-import {ValidationMessages} from "../../../core/service/validation-messages";
+import {ValidationMessages} from "../../../../core/service/validation-messages";
 import {filter, map, switchMap} from "rxjs/operators";
-import {RoleService} from "../../service/role.service";
-import {Role} from "../../../core/domain/security/role";
-import User from "../../../core/domain/security/user";
+import {RoleService} from "../../../service/role.service";
+import {Role} from "../../../../core/domain/security/role";
+import User from "../../../../core/domain/security/user";
 
 @Component({
   selector: 'app-user-form',

@@ -6,7 +6,7 @@ import {Observable} from "rxjs";
 @Injectable({providedIn: 'root'})
 export class UserService extends GenericService<User> {
 
-  private userUrl = '/users';
+  private userUrl = 'users';
 
   protected valueToEntity(value: Object): User {
     return new User(value);
@@ -27,10 +27,10 @@ export class UserService extends GenericService<User> {
 
   public changePass(oldPassword: string, newPassword: string): Observable<User> {
     return this.doRequest({
-      url: this.baseUrl + this.userUrl + '/change_password',
+      url: this.baseUrl + this.userUrl + '/change-password',
       method: 'POST',
       options: {
-        body: {oldPassword, newPassword}
+        body: {actualPassword: oldPassword, newPassword: newPassword}
       },
       map: this.valueToEntity
     });
@@ -46,33 +46,5 @@ export class UserService extends GenericService<User> {
       map: this.mapToEntityArray
     });
   }
-
-
-  //TODO Migrar estos dos
- /* public pagedSearch(terms: string, enabled: string,
-                     queryOptions: QueryOptions = this.getDefaultQueryOptions()): Observable<PaginationPage<User>> {
-    const ro = queryOptions.getQueryRequestOptions().merge({
-      url: this.baseUrl + this.getResourcePath() + '/search'});
-    if (terms) {
-      ro.params.append('terms', terms)
-    }
-
-    ro.params.append('enabled', enabled);
-    return this.doRequest(ro)
-      .map(res => res.json())
-      .concatMap(json => Observable.from(json.content)
-        .concatMap(value => this.mapValueToEntityQuery(value))
-        .toArray()
-        .map(content => new PaginationPage({...json, content: content}))
-      );
-  }
-
-  public findByRole(role: Role): Observable<User[]> {
-    const req = this.buildRequest(RequestMethod.Get);
-    return this.authService.authRequest(this.baseUrl + this.userUrl + '/by_rol/' + role.id , req)
-      .map(res => res.json().map( t => this.valueToEntity(t) ) );
-  }
-*/
-
 
 }

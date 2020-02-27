@@ -1,13 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {UserPreferences} from "../../domain/user-preferences";
-import {NotificationTopic} from "../../../notifications/domain/notification-topic";
-import {ProfileService} from "../../service/profile-service.service";
-import {GlobalAppService} from "../../../core/commons/service/global-app.service";
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {SnackbarService} from "../../../core/service/snackbar.service";
-import {NotificationTopicService} from "../../../notifications/service/notification-topic.service";
 import {UserService} from "../../../core/commons/service/user.service";
 import {Router} from "@angular/router";
+import {AuthService} from "../../../core/security/service/auth.service";
+import {ValidationMessages} from "../../../core/service/validation-messages";
 
 const minPasswordLength = 6;
 
@@ -18,47 +15,33 @@ const minPasswordLength = 6;
   styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent implements OnInit {
-  loading: boolean = true;
-  preferences: UserPreferences;
-  topics: NotificationTopic[];
-  topicsSelected = [];
+  loading = true;
   passwordFormGroup: FormGroup;
+  changeDefaultPassword = false;
+  validation: ValidationMessages = new ValidationMessages();
 
-  constructor(private fb: FormBuilder,
-              private profileService: ProfileService,
-              private snackbarService: SnackbarService,
-              private topicService: NotificationTopicService,
-              private userService: UserService,
-              private router: Router) {
+  constructor(private readonly fb: FormBuilder,
+              private readonly snackbarService: SnackbarService,
+              private readonly userService: UserService,
+              private readonly authService: AuthService,
+              private readonly router: Router) {
 
     this.passwordFormGroup = fb.group({
       old: ['', [Validators.required]],
-      newPass: ['', [Validators.required, Validators.min(minPasswordLength)]],
-      repeatNewPass: ['', [Validators.required, Validators.min(minPasswordLength)]],
-    }, {validators: this.checkPasswords })
+      newPass: ['', [Validators.required, Validators.minLength(minPasswordLength)]],
+      repeatNewPass: ['', [Validators.required, Validators.minLength(minPasswordLength)]],
+    }, {validators: this.checkPasswords});
 
   }
 
 
   ngOnInit() {
-
-
-    this.topicService.getAll().subscribe(t => {
-      this.topics = t;
-      this.profileService.getUserPreferences().subscribe(p => {
-        this.preferences = p;
-        this.topics.forEach(topic => {
-          if(p.suscribedTopics.find(suscribedTopic => suscribedTopic.id === topic.id)){
-            this.topicsSelected.push(true);
-          } else {
-            this.topicsSelected.push(false);
-          }
-        });
-        this.loading = false;
-      })
+    this.authService.user.subscribe(u => {
+      this.changeDefaultPassword = u.firstLogin;
+      if (this.changeDefaultPassword)
+        this.passwordFormGroup.get("old").disable();
+      this.loading = false;
     });
-
-
 
   }
 
@@ -66,47 +49,17 @@ export class SettingsComponent implements OnInit {
     let pass = group.get('newPass').value;
     let confirmPass = group.get('repeatNewPass').value;
 
-    return pass === confirmPass ? null : { notSame: true }
+    return pass === confirmPass ? null : {notSame: true};
   }
 
-  onSubmit(event: any) {
-
-    const topicsToSubmit: NotificationTopic[] = [];
-    for (let index = 0; index < this.topicsSelected.length; index++) {
-      if (this.topicsSelected[index]) {
-        topicsToSubmit.push(this.topics[index])
-      }
-    }
-
-
-    this.preferences.suscribedTopics = topicsToSubmit;
-
-    this.profileService.updateUserPreferences(this.preferences).subscribe(res => {
-      this.snackbarService.show({
-        type: "success",
-        title: "Éxito",
-        body: "Se ha guardado la configuración exitosamente"
-      });    }, err => {
-      this.snackbarService.show({
-        type: "error",
-        title: "Error",
-        body: "Ha ocurrido un error al guardar la configuración"
-      });
-    });
-
-
-
-    event.preventDefault();
-  }
-
-  shouldShowPasswordsDontMatch(): boolean{
+  shouldShowPasswordsDontMatch(): boolean {
     const newPass = this.passwordFormGroup.get('newPass').value;
     const repeat = this.passwordFormGroup.get('repeatNewPass').value;
 
-    return (newPass.length > 0 && repeat.length > 0 && newPass != repeat)
+    return (newPass.length > 0 && repeat.length > 0 && newPass != repeat);
   }
 
-  onUpdatePassword(){
+  onUpdatePassword() {
     const newPass = this.passwordFormGroup.get('newPass').value;
     const oldPass = this.passwordFormGroup.get('old').value;
 
@@ -123,7 +76,7 @@ export class SettingsComponent implements OnInit {
         err => this.snackbarService.show({
           type: "error",
           title: "Error",
-          body: "Ha ocurrido un error al intentar cambiar su contraseña"
+          body: err
         })
       );
 

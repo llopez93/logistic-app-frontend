@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {UserListComponent} from './user/list/user-list.component';
+import {UserListComponent} from './component/user/list/user-list.component';
 import {AdministrationRoutingModule} from "./administration-routing.module";
 import {
   MatButtonModule,
@@ -12,10 +12,10 @@ import {
   MatTableModule, MatTooltipModule
 } from "@angular/material";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import { UserFormComponent } from './user/form/user-form.component';
+import { UserFormComponent } from './component/user/form/user-form.component';
 import {FlexLayoutModule} from "@angular/flex-layout";
-import { RoleListComponent } from './role/list/list.component';
-import { RoleFormComponent } from './role/form/role-form.component';
+import { RoleListComponent } from './component/role/list/list.component';
+import { RoleFormComponent } from './component/role/form/role-form.component';
 
 
 @NgModule({

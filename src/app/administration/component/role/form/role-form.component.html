@@ -8,8 +8,7 @@
     <mat-divider></mat-divider>
     <mat-card-content fxLayoutAlign="strech">
 
-      <form novalidate [formGroup]="roleForm" (ngSubmit)="saveData()"
-            fxLayout="column" fxFlex="100">
+      <form novalidate [formGroup]="roleForm" (ngSubmit)="saveData()" fxLayout="column" fxFlex="100">
         <div fxLayout="row">
           <mat-form-field appearance="outline" fxFlex="100" class="padding-right">
             <mat-label>Nombre</mat-label>
@@ -20,7 +19,7 @@
           </mat-form-field>
         </div>
 
-        <div fxLayout="row" fxLayoutAlign="end end" fxLayoutGap="10px" fxFill>
+        <div fxLayout="row">
           <button fxFlex="15" type="submit" mat-raised-button [disabled]="roleForm.invalid" class="dark-green-btn">
             <mat-icon>send</mat-icon>
             <span class="ui-button-text ui-c">Guardar</span>

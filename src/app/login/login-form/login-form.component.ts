@@ -28,7 +28,7 @@ export class LoginFormComponent implements OnInit {
   ngOnInit() {
     if (this.authService.isLoggedIn())
       this.router.navigate(['home']);
-    setTimeout(this.cd.markForCheck, 2000)
+    setTimeout(this.cd.markForCheck, 2000);
   }
 
   public login(event) {

@@ -24,6 +24,8 @@ export class NavigationComponent implements OnInit {
   newNotifications = 0;
   items: Notification[] = [];
 
+  defaultPasswordMsg = false;
+
   constructor(private breakpointObserver: BreakpointObserver,
               private notificationService: NotificationService,
               private authService: AuthService,
@@ -36,6 +38,8 @@ export class NavigationComponent implements OnInit {
     this.initFCM();
     this.initNotificationPanel();
     */
+
+    this.authService.user.subscribe(u => this.defaultPasswordMsg = u.firstLogin);
 
   }
 
@@ -73,8 +77,8 @@ export class NavigationComponent implements OnInit {
 
   initNotificationPanel(): void {
     /**
-    this.notificationService.getPage({page: 0, size: 0})
-      .subscribe(items => {
+     this.notificationService.getPage({page: 0, size: 0})
+     .subscribe(items => {
         this.items = items.content;
         this.refreshNewNotifications();
       });*/

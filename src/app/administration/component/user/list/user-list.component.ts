@@ -1,14 +1,14 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatSort, MatTableDataSource} from "@angular/material";
-import User from "../../../core/domain/security/user";
-import {UserService} from "../../service/user.service";
-import {AuthService} from "../../../core/security/service/auth.service";
+import User from "../../../../core/domain/security/user";
+import {UserService} from "../../../service/user.service";
+import {AuthService} from "../../../../core/security/service/auth.service";
 import {FormControl} from "@angular/forms";
 import {debounceTime} from "rxjs/operators";
 import {Router} from "@angular/router";
-import {Pageable} from "../../../core/domain/pagination/pageable";
-import {GlobalAppService} from "../../../core/commons/service/global-app.service";
-import {ConfirmDialogService} from "../../../core/commons/service/confirm-dialog.service";
+import {Pageable} from "../../../../core/domain/pagination/pageable";
+import {GlobalAppService} from "../../../../core/commons/service/global-app.service";
+import {ConfirmDialogService} from "../../../../core/commons/service/confirm-dialog.service";
 
 @Component({
   selector: 'app-user-list',

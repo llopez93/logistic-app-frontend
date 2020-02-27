@@ -1,14 +1,14 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatSort, MatTableDataSource} from "@angular/material";
-import {Pageable} from "../../../core/domain/pagination/pageable";
+import {Pageable} from "../../../../core/domain/pagination/pageable";
 import {FormControl} from "@angular/forms";
-import {AuthService} from "../../../core/security/service/auth.service";
-import {GlobalAppService} from "../../../core/commons/service/global-app.service";
-import {ConfirmDialogService} from "../../../core/commons/service/confirm-dialog.service";
+import {AuthService} from "../../../../core/security/service/auth.service";
+import {GlobalAppService} from "../../../../core/commons/service/global-app.service";
+import {ConfirmDialogService} from "../../../../core/commons/service/confirm-dialog.service";
 import {Router} from "@angular/router";
 import {debounceTime} from "rxjs/operators";
-import {RoleService} from "../../service/role.service";
-import {Role} from "../../../core/domain/security/role";
+import {RoleService} from "../../../service/role.service";
+import {Role} from "../../../../core/domain/security/role";
 
 @Component({
   selector: 'app-role-list',

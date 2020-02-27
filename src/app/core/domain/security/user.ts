@@ -3,13 +3,11 @@ import {FX} from './fx';
 import {Role} from './role';
 
 export default class User extends Entity {
-  //username = "";
   firstName = "";
   lastName = "";
   email = "";
   enabled = true;
-  //profilePhoto = '';
-  //fxs: FX[] = [];
+  firstLogin = false;
   role: Role = new Role();
 
   constructor(value: Partial<User> = {}) {

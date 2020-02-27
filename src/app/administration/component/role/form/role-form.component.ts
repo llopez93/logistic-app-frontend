@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ValidationMessages} from "../../../core/service/validation-messages";
+import {ValidationMessages} from "../../../../core/service/validation-messages";
 import {Observable} from "rxjs";
-import {Role} from "../../../core/domain/security/role";
+import {Role} from "../../../../core/domain/security/role";
 import {ActivatedRoute, Params, Router} from "@angular/router";
-import {RoleService} from "../../service/role.service";
+import {RoleService} from "../../../service/role.service";
 import {filter, map, switchMap} from "rxjs/operators";
 
 @Component({

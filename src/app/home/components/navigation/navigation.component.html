@@ -1,11 +1,11 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #drawer class="sidenav" fixedInViewport
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="opened">
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="opened">
     <mat-toolbar class="fiscalia-title">
-        <h2>Abogados del Estado</h2>
-        <h3>Provincia de Río Negro</h3>
+      <h2>Nombre del sistema</h2>
+      <h3>Subtítulo</h3>
     </mat-toolbar>
     <app-sidenav-profile></app-sidenav-profile>
     <app-menu></app-menu>
@@ -25,29 +25,30 @@
       <div>
         <mat-menu class="toolbar-menu" #notificationsMenu="matMenu">
           <ng-template matMenuContent>
-              <mat-card  *ngFor="let item of items"
-                (click)="navigate(item)"
-                class="item-card"
-                [style.background-color]="getColor(item.viewed)"
-                matRipple
-                >
-                <mat-card-header>
-                  <div mat-card-avatar class="notification-item">
-                    <i class="material-icons">{{ item.icon }}</i>
-                  </div>
-                  <mat-card-title class="notification-title">{{ item.title }}</mat-card-title>
-                  <mat-card-subtitle class="notification-subtitle">
-                    {{ item.body }}
-                    <p class="date">{{ getDate(item.emittedTime) }}</p>
-                  </mat-card-subtitle>
-                </mat-card-header>
-              </mat-card>
+            <mat-card  *ngFor="let item of items"
+              (click)="navigate(item)"
+              class="item-card"
+              [style.background-color]="getColor(item.viewed)"
+              matRipple
+            >
+              <mat-card-header>
+                <div mat-card-avatar class="notification-item">
+                  <i class="material-icons">{{ item.icon }}</i>
+                </div>
+                <mat-card-title class="notification-title">{{ item.title }}</mat-card-title>
+                <mat-card-subtitle class="notification-subtitle">
+                  {{ item.body }}
+                  <p class="date">{{ getDate(item.emittedTime) }}</p>
+                </mat-card-subtitle>
+              </mat-card-header>
+            </mat-card>
           </ng-template>
         </mat-menu>
 
 
         <button class="toolbar-button" mat-icon-button [matMenuTriggerFor]="notificationsMenu">
-          <mat-icon [matBadge]="newNotifications > 0 ? newNotifications : null" matBadgeSize="small" matBadgeColor="warn">
+          <mat-icon [matBadge]="newNotifications > 0 ? newNotifications : null" matBadgeSize="small"
+                                                                                matBadgeColor="warn">
             {{showNotificationIcon() ? 'notifications_active' : 'notifications_none' }}
           </mat-icon>
         </button>
@@ -67,6 +68,17 @@
 
 
     </mat-toolbar>
+
+    <mat-card *ngIf="defaultPasswordMsg" class="default-password-msg-container">
+      <mat-icon>
+        warning
+      </mat-icon>
+      <p>
+        Por motivos de seguridad le sugerimos que modique la contraseña de su usuario
+      </p>
+
+    </mat-card>
+
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

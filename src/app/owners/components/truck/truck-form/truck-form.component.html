@@ -1,0 +1,83 @@
+<div class="container">
+  <mat-card fxFlex="80">
+    <mat-card-title>
+      <h5>
+        {{ isEdition() ? "Editar camión" : "Nuevo camión" }}
+      </h5>
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-card-content fxLayoutAlign="strech">
+
+      <form novalidate [formGroup]="truckForm" (ngSubmit)="saveData()"
+            fxLayout="column" fxFlex="100">
+
+        <div fxLayout="row wrap">
+          <mat-form-field appearance="outline" fxFlex="100">
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="name">
+            <mat-error *ngFor="let error  of validation.errorMessages(truckForm.controls.name)">
+              {{ error }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="row">
+          <mat-form-field appearance="outline" fxFlex="50" class="padding-right">
+            <mat-label>Dominio</mat-label>
+            <input matInput formControlName="domain">
+            <mat-error *ngFor="let error  of validation.errorMessages(truckForm.controls.domain)">
+              {{ error }}
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" fxFlex="50">
+            <mat-label>Año</mat-label>
+            <input matInput formControlName="year">
+            <mat-error *ngFor="let error  of validation.errorMessages(truckForm.controls.year)">
+              {{ error }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="row">
+          <mat-form-field appearance="outline" fxFlex="50" class="padding-right">
+            <mat-label>
+              Marca
+            </mat-label>
+            <mat-select required>
+              <mat-option>Seleccione una marca</mat-option>
+              <mat-option *ngFor="let brandTmp of brandsAsync | async" [value]="brandTmp" (click)="findByBrand(brandTmp.id)">
+                {{brandTmp.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex="50">
+            <mat-label>
+              Modelo
+            </mat-label>
+            <mat-select required formControlName="model" [compareWith]="compareModel">
+              <mat-option>Seleccione un modelo</mat-option>
+              <mat-option *ngFor="let modelTmp of modelsAsync | async" [value]="modelTmp">
+                {{modelTmp.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-error *ngFor="let error  of validation.errorMessages(truckForm.controls.model)">
+            {{ error }}
+          </mat-error>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="end end" fxLayoutGap="10px" fxFill>
+          <button fxFlex="15" type="submit" mat-raised-button [disabled]="truckForm.invalid" class="dark-green-btn">
+            <mat-icon>send</mat-icon>
+            <span class="ui-button-text ui-c">Guardar</span>
+          </button>
+
+          <button fxFlex="15" mat-raised-button (click)="goBack()">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

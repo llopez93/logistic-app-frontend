@@ -1,0 +1,116 @@
+<div class="container">
+  <mat-card>
+    <mat-card-title>
+      <h5>
+        Listado de camiones
+      </h5>
+      <button
+        mat-button
+        class="green-btn create-btn"
+        (click)="create()">
+        Nuevo camión
+        <mat-icon>add</mat-icon>
+      </button>
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+      <mat-table [dataSource]="data" matSort matSortDirection="asc">
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef>
+            Camión
+            <mat-form-field class="header-filter">
+              <input
+                [formControl]="nameFilterControl"
+                matInput
+                placeholder="Filtrar"
+              />
+              <button
+                mat-button
+                *ngIf="isClearIconVisible(nameFilterControl)"
+                matSuffix
+                mat-icon-button
+                aria-label="Clear"
+                (click)="clearInputValue(nameFilterControl)">
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let truck">{{ truck.name }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="domain">
+          <mat-header-cell *matHeaderCellDef>
+            Dominio
+            <mat-form-field class="header-filter">
+              <input
+                [formControl]="domainFilterControl"
+                matInput
+                placeholder="Filtrar"
+              />
+              <button
+                mat-button
+                *ngIf="isClearIconVisible(domainFilterControl)"
+                matSuffix
+                mat-icon-button
+                aria-label="Clear"
+                (click)="clearInputValue(domainFilterControl)">
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let truck">{{ truck.domain }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="year">
+          <mat-header-cell *matHeaderCellDef>
+            Año
+          </mat-header-cell>
+          <mat-cell *matCellDef="let truck">{{ truck.year }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="model">
+          <mat-header-cell *matHeaderCellDef>
+            Marca/Modelo
+          </mat-header-cell>
+          <mat-cell *matCellDef="let truck">{{ truck.model.brand.name }} / {{ truck.model.name }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="acciones">
+          <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
+          <mat-cell *matCellDef="let truck" class="actions-cell">
+            <button
+              mat-mini-fab
+              (click)="gotoDetail(truck)"
+              matTooltip="Ver detalle"
+              matTooltipPosition="above"
+              class="green-btn"
+            >
+              <i class="icon material-icons">edit</i>
+            </button>
+
+            <button
+              mat-mini-fab
+              matTooltip="Eliminar"
+              matTooltipPosition="above"
+              class="red-btn">
+              <i class="icon material-icons">delete</i>
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      </mat-table>
+      <div *ngIf="resultsLength === 0" id="noResults">
+        No se encontraron camiones
+      </div>
+      <mat-paginator
+        #paginator
+        [length]="resultsLength"
+        [pageSizeOptions]="[5, 10, 20]"
+        [pageSize]="5"
+      >
+      </mat-paginator>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,13 +1,14 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatSort, MatTableDataSource} from "@angular/material";
 import {Pageable} from "../../../core/domain/pagination/pageable";
-import User from "../../../core/domain/security/user";
 import {FormControl} from "@angular/forms";
 import {GlobalAppService} from "../../../core/commons/service/global-app.service";
 import {ConfirmDialogService} from "../../../core/commons/service/confirm-dialog.service";
 import {Router} from "@angular/router";
 import {debounceTime} from "rxjs/operators";
 import {ClientService} from "../../service/client.service";
+import {Client} from "../../domain/client";
+import {SnackbarService} from "../../../core/service/snackbar.service";
 
 @Component({
   selector: 'app-client-list',
@@ -31,6 +32,7 @@ export class ClientListComponent implements OnInit {
 
   constructor(private readonly clientService: ClientService,
               private readonly appService: GlobalAppService,
+              private readonly snackbarService: SnackbarService,
               private readonly confirmationService: ConfirmDialogService,
               private readonly router: Router) {
   }
@@ -101,8 +103,8 @@ export class ClientListComponent implements OnInit {
     control.patchValue("");
   }
 
-  public gotoDetail(user: User) {
-    this.router.navigate(["home", "clients", user.id]);
+  public gotoDetail(client: Client) {
+    this.router.navigate(["home", "clients", client.id]);
   }
 
   public create() {
@@ -111,6 +113,26 @@ export class ClientListComponent implements OnInit {
 
   showPhoneType(phoneType: string) {
     return phoneType !== "Sin definir";
+  }
+
+  delete(client: Client): void {
+    this.confirmationService.showDialog({
+      title: "Atención",
+      message: "¿Está seguro que desea eliminar el cliente?",
+      icon: "warning",
+      onAccept: () => {
+        this.appService.setLoading(true);
+        this.clientService.delete(client).subscribe(value => {
+          this.snackbarService.show({
+            type : "success",
+            title : "Operación exitosa",
+            body : "El cliente fue eliminado correctamente",
+            duration: 1000
+          });
+          this.applyFilter();
+        });
+      }
+    }, 400).subscribe(value => this.appService.setLoading(false));
   }
 
 }

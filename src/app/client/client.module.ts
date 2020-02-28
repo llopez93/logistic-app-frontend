@@ -8,11 +8,12 @@ import {
   MatDividerModule,
   MatFormFieldModule,
   MatIconModule,
-  MatInputModule, MatPaginatorModule,
+  MatInputModule, MatPaginatorModule, MatSelectModule,
   MatTableModule
 } from "@angular/material";
 import {ReactiveFormsModule} from "@angular/forms";
 import {ClientRoutingModule} from "./client-routing.module";
+import {FlexModule} from "@angular/flex-layout";
 
 
 
@@ -29,7 +30,9 @@ import {ClientRoutingModule} from "./client-routing.module";
     MatInputModule,
     ReactiveFormsModule,
     MatPaginatorModule,
-    ClientRoutingModule
+    ClientRoutingModule,
+    FlexModule,
+    MatSelectModule
   ]
 })
 export class ClientModule { }

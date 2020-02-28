@@ -1,1 +1,73 @@
-<p>form-list works!</p>
+<div class="container">
+  <mat-card fxFlex="80">
+    <mat-card-title>
+      <h5>
+        {{ isEdition() ? "Edición de un cliente" : "Nuevo cliente" }}
+      </h5>
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-card-content fxLayoutAlign="strech">
+
+      <form novalidate [formGroup]="clientForm" (ngSubmit)="saveData()"
+            fxLayout="column" fxFlex="100">
+        <div fxLayout="row wrap">
+          <mat-form-field appearance="outline" fxFlex="100">
+            <mat-label>Nombre / Razón social</mat-label>
+            <input matInput formControlName="name">
+            <mat-error *ngFor="let error  of validation.errorMessages(clientForm.controls.name)">
+              {{ error }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex="20" class="padding-right">
+            <mat-label>
+              Tipo de teléfono
+            </mat-label>
+            <mat-select required formControlName="phoneType">
+              <mat-option *ngFor="let p of phoneTypes" [value]="p">
+                {{p}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngFor="let error  of validation.errorMessages(clientForm.controls.phoneType)">
+              {{ error }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex="80">
+            <mat-label>Teléfono</mat-label>
+            <input matInput formControlName="phone">
+            <mat-error *ngFor="let error  of validation.errorMessages(clientForm.controls.phone)">
+              {{ error }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="row">
+          <mat-form-field appearance="outline" fxFlex="100">
+            <mat-label>Correo electrónico</mat-label>
+            <input matInput formControlName="email">
+            <mat-hint>
+              Este campo no es obligatorio
+            </mat-hint>
+            <mat-error *ngFor="let error  of validation.errorMessages(clientForm.controls.email)">
+              {{ error }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="end end" fxLayoutGap="10px" fxFill>
+          <button fxFlex="20" type="submit" mat-raised-button [disabled]="clientForm.invalid" class="dark-green-btn">
+            <mat-icon>send</mat-icon>
+            <span class="ui-button-text ui-c">Guardar</span>
+          </button>
+
+          <button fxFlex="20" mat-raised-button (click)="goBack()">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+</div>
+

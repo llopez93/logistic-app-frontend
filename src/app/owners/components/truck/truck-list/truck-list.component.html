@@ -4,6 +4,13 @@
       <h5>
         Listado de camiones
       </h5>
+      <button
+        mat-button
+        class="green-btn create-btn"
+        (click)="create()">
+        Nuevo camión
+        <mat-icon>add</mat-icon>
+      </button>
     </mat-card-title>
     <mat-divider></mat-divider>
     <mat-card-content>
@@ -56,9 +63,16 @@
 
         <ng-container matColumnDef="year">
           <mat-header-cell *matHeaderCellDef>
-            Anio
+            Año
           </mat-header-cell>
           <mat-cell *matCellDef="let truck">{{ truck.year }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="model">
+          <mat-header-cell *matHeaderCellDef>
+            Marca/Modelo
+          </mat-header-cell>
+          <mat-cell *matCellDef="let truck">{{ truck.model.brand.name }} / {{ truck.model.name }}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="acciones">

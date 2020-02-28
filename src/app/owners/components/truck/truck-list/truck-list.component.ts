@@ -21,7 +21,7 @@ export class TruckListComponent implements OnInit {
   paginator: MatPaginator;
   @ViewChild(MatSort, {static: false})
   sort: MatSort;
-  displayedColumns = ["name", "domain", "year", "acciones"];
+  displayedColumns = ["name", "domain", "year", "model", "acciones"];
   data = new MatTableDataSource([]);
   paginationOptions: Pageable = new Pageable();
   resultsLength: number;
@@ -108,8 +108,7 @@ export class TruckListComponent implements OnInit {
     this.router.navigate(["home", "owners", "trucks", truck.id]);
   }
 
-  public create(truck: Truck) {
+  public create() {
     this.router.navigate(["home", "owners", "trucks", "new"]);
   }
-
 }

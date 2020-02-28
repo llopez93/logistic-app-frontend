@@ -53,27 +53,9 @@ export const menuItems = [
       new MenuItem({label: "Roles", icon: "security", route: "administration/roles", requiredRoles: ["Administrador"]}),
     ]
   }),
-  /**
-   new MenuItem({
-    label: "Formularios", icon: "description", children: [
-      new MenuItem({label: "Dictámenes", icon: "library_books", route: "forms", requiredFxs: ['Form.FINDALL']}),
-      new MenuItem({label: "Mis dictámenes", icon: "class", route: "forms/data", requiredFxs: ['FormData.GETUSERFORMSDATA']}),
-    ]
-  }),
-
-   new MenuItem({
-    label: "Vistas modelo", icon: "library_books", children: [
-      new MenuItem({label: "Vistas modelo", icon: "description", route: 'view', requiredFxs: ['View.FINDALL']}),
-      new MenuItem({label: "Vistas modelo completadas", icon: "class", route: "view/filled", requiredFxs: ['ViewData.FINDALL']}),
-    ]
-  }),
-
-   new MenuItem({label: "Biblioteca", icon: "cloud", route: 'repository'}),
-   new MenuItem({
-    label: "Foro de consultas", icon: "forum", route: "post",
-    requiredFxs: ['Topic.FINDBYNAME', 'Post.FINDBYTOPIC', 'Post.FINDLASTPOSTS']
-  }),
-   new MenuItem({label: "Mensajeria interna", icon: "mail", route: 'chat'}),
-   new MenuItem({label: "Reportar errores", icon: "report", route: "report-errors"}),
-   */
+  new MenuItem({
+    label: "Clientes",
+    icon: "people_outline",
+    route: "clients",
+    requiredRoles: ["Administrador"]}),
 ] as MenuItem[];

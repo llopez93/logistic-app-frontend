@@ -1,0 +1,117 @@
+<div class="container">
+  <mat-card>
+    <mat-card-title>
+      <h5>
+        Listado de clientes
+      </h5>
+
+      <button
+        mat-button
+        class="green-btn create-btn"
+        (click)="create()">
+        Nuevo cliente
+        <mat-icon>add</mat-icon>
+      </button>
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+      <mat-table [dataSource]="data" matSort matSortDirection="asc">
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef>
+            Nombre / Razón social
+            <mat-form-field class="header-filter">
+              <input
+                [formControl]="nameFilterControl"
+                matInput
+                placeholder="Filtrar"
+              />
+              <button
+                mat-button
+                *ngIf="isClearIconVisible(nameFilterControl)"
+                matSuffix
+                mat-icon-button
+                aria-label="Clear"
+                (click)="clearInputValue(nameFilterControl)">
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let client">{{ client.name }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <mat-header-cell *matHeaderCellDef>
+            Correo electrónico
+            <mat-form-field class="header-filter">
+              <input
+                [formControl]="emailFilterControl"
+                matInput
+                placeholder="Filtrar"
+              />
+              <button
+                mat-button
+                *ngIf="isClearIconVisible(emailFilterControl)"
+                matSuffix
+                mat-icon-button
+                aria-label="Clear"
+                (click)="clearInputValue(emailFilterControl)">
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let client">{{ client.email }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="phone">
+          <mat-header-cell *matHeaderCellDef>
+            Teléfono
+          </mat-header-cell>
+          <mat-cell *matCellDef="let client">
+            {{ showPhoneType(client.phoneType) ? client.phoneType +" "+client.phone: client.phone}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
+          <mat-cell *matCellDef="let client" class="actions-cell">
+            <button
+              mat-mini-fab
+              (click)="gotoDetail(client)"
+              matTooltip="Ver detalle"
+              matTooltipPosition="above"
+              class="green-btn"
+            >
+              <i class="icon material-icons">edit</i>
+            </button>
+
+            <button
+              mat-mini-fab
+              matTooltip="Eliminar"
+              matTooltipPosition="above"
+              class="red-btn">
+              <i class="icon material-icons">delete</i>
+            </button>
+          </mat-cell>
+
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      </mat-table>
+      <div *ngIf="resultsLength === 0" id="noResults" class="no-results">
+        No se encontraron clientes
+      </div>
+      <mat-paginator
+        #paginator
+        [length]="resultsLength"
+        [pageSizeOptions]="[5, 10, 20]"
+        [pageSize]="5"
+      >
+      </mat-paginator>
+
+    </mat-card-content>
+  </mat-card>
+
+</div>
+
+

@@ -12,8 +12,12 @@ const routes: Routes = [
         loadChildren: () => import('../user-profile/user-profile.module').then(mod => mod.UserProfileModule),
         canActivate: [AuthGuard], canActivateChild: [AuthGuard]
       },
-      {path: 'chat', loadChildren: () => import('../chat/chat.module').then(mod => mod.ChatModule)},
-      {path: 'administration', loadChildren: () => import('../administration/administration.module').then(mod => mod.AdministrationModule)}
+      {path: 'chat',
+        loadChildren: () => import('../chat/chat.module').then(mod => mod.ChatModule)},
+      {path: 'administration',
+        loadChildren: () => import('../administration/administration.module').then(mod => mod.AdministrationModule)},
+      {path: 'clients',
+        loadChildren: () => import('../client/client.module').then(mod => mod.ClientModule)}
     ]
   },
 

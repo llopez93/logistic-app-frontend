@@ -23,4 +23,8 @@ export default class Model extends Entity {
   public hasBrand(brandName: string): boolean {
     return this.brand.compareNameTo(brandName);
   }
+
+  public compareToBrandName(model: Model): boolean {
+    return this.brand.name.toLocaleLowerCase() === model.brand.name.toLocaleLowerCase();
+  }
 }

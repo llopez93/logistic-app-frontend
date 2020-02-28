@@ -38,15 +38,27 @@
           </mat-form-field>
         </div>
 
-        <div fxLayout="row wrap">
-          <mat-form-field appearance="outline" fxFlex="100">
+        <div fxLayout="row">
+          <mat-form-field appearance="outline" fxFlex="50" class="padding-right">
+            <mat-label>
+              Marca
+            </mat-label>
+            <mat-select required>
+              <mat-option>Seleccione una marca</mat-option>
+              <mat-option *ngFor="let brandTmp of brandsAsync | async" [value]="brandTmp" (click)="findByBrand(brandTmp.id)">
+                {{brandTmp.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex="50">
             <mat-label>
               Modelo
             </mat-label>
             <mat-select required formControlName="model" [compareWith]="compareModel">
               <mat-option>Seleccione un modelo</mat-option>
               <mat-option *ngFor="let modelTmp of modelsAsync | async" [value]="modelTmp">
-                {{modelTmp.brand.name}} {{modelTmp.name}}
+                {{modelTmp.name}}
               </mat-option>
             </mat-select>
           </mat-form-field>

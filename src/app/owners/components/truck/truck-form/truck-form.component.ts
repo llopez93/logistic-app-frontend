@@ -9,6 +9,8 @@ import Truck from '../../../domain/truck';
 import {TruckService} from "../../../services/truck.service";
 import Model from '../../../domain/model';
 import {ModelService} from "../../../services/model.service";
+import Brand from '../../../domain/brand';
+import {BrandService} from "../../../services/brand.service";
 
 
 @Component({
@@ -20,6 +22,7 @@ export class TruckFormComponent implements OnInit {
 
   truckForm: FormGroup;
   modelsAsync: Observable<Model[]>;
+  brandsAsync: Observable<Brand[]>;
   validation: ValidationMessages = new ValidationMessages();
 
   constructor(
@@ -27,7 +30,8 @@ export class TruckFormComponent implements OnInit {
     private readonly activatedRoute: ActivatedRoute,
     private readonly fb: FormBuilder,
     private readonly truckService: TruckService,
-    private readonly modelService: ModelService
+    private readonly modelService: ModelService,
+    private readonly brandService: BrandService
   ) {
     this.truckForm = fb.group({
       id: [null],
@@ -39,7 +43,7 @@ export class TruckFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.modelsAsync = this.modelService.getAll();
+    this.brandsAsync = this.brandService.getAll();
     const action: Observable<Params> = this.activatedRoute.params;
     action.pipe(
       filter(data => data.id !== "new"),
@@ -62,9 +66,18 @@ export class TruckFormComponent implements OnInit {
     );
   }
 
+  findByBrand(brandId: number) {
+    this.modelsAsync = this.modelService.findByBrand(brandId);
+  }
+
   compareModel(model1: Model, model2: Model): boolean {
+    console.log(model1);
     return model1.compareTo(model2);
   }
+
+  // compareToBrandName(brand1: Model, brand2: Model): boolean {
+  //   return brand1.compareToBrandName(brand2);
+  // }
 
   isEdition(): boolean {
     return this.truckForm.get("id").value !== null;

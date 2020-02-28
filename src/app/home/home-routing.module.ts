@@ -13,7 +13,8 @@ const routes: Routes = [
         canActivate: [AuthGuard], canActivateChild: [AuthGuard]
       },
       {path: 'chat', loadChildren: () => import('../chat/chat.module').then(mod => mod.ChatModule)},
-      {path: 'administration', loadChildren: () => import('../administration/administration.module').then(mod => mod.AdministrationModule)}
+      {path: 'administration', loadChildren: () => import('../administration/administration.module').then(mod => mod.AdministrationModule)},
+      {path: 'owners', loadChildren: () => import('../owners/owners.module').then(mod => mod.OwnersModule)}
     ]
   },
 

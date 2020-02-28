@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { TruckListComponent } from './components/truck/truck-list/truck-list.component';
+import { TruckFormComponent } from './components/truck/truck-form/truck-form.component';
 
 const routes: Routes = [
   {
-    path: '', component: TruckListComponent, children: [
-      {
-        path: 'trucks', component: TruckListComponent,
-      }
+    path: 'trucks', children: [
+      {path: '', component: TruckListComponent},
+      {path: ':id', component: TruckFormComponent}
     ]
   }
 ];

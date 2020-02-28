@@ -53,6 +53,7 @@ export const menuItems = [
       new MenuItem({label: "Roles", icon: "security", route: "administration/roles", requiredRoles: ["Administrador"]}),
     ]
   }),
+  new MenuItem({label: "Camiones", icon: "directions_bus", route: "owners/trucks", requiredRoles: ["Administrador"]}),
   /**
    new MenuItem({
     label: "Formularios", icon: "description", children: [

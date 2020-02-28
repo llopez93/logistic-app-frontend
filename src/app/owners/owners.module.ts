@@ -15,11 +15,12 @@ import {
 } from "@angular/material";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {FlexLayoutModule} from "@angular/flex-layout";
+import { TruckFormComponent } from './components/truck/truck-form/truck-form.component';
 
 
 
 @NgModule({
-  declarations: [TruckListComponent],
+  declarations: [TruckListComponent, TruckFormComponent],
   imports: [
     CommonModule,
     OwnersRoutingModule,

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ValidationMessages} from "../../../../core/service/validation-messages";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Params, Router} from "@angular/router";
@@ -38,28 +38,37 @@ export class TruckFormComponent implements OnInit {
       name: ["", [Validators.required, Validators.minLength(1)]],
       domain: ["", [Validators.required, Validators.minLength(1)]],
       year: ["", [Validators.required, Validators.minLength(1), Validators.min(1900)]],
-      model: [null, Validators.required]
+      model: [null, Validators.required],
+      brand: [null]
     });
   }
 
   ngOnInit() {
+
+    this.truckForm.get("brand").valueChanges.subscribe(value => {
+      this.modelsAsync = this.modelService.findByBrand(value.id);
+    });
+
     this.brandsAsync = this.brandService.getAll();
     const action: Observable<Params> = this.activatedRoute.params;
     action.pipe(
       filter(data => data.id !== "new"),
       map(data => data.id),
-      switchMap(id => this.truckService.get(id))
-    ).subscribe(truck => {
-      this.truckForm.patchValue(truck);
-    });
+      switchMap(id => this.truckService.get(id)),
+    )
+      .subscribe(truck => {
+        this.truckForm.patchValue(truck);
+        this.truckForm.get("brand").patchValue(truck.model.brand);
+      });
   }
 
   saveData() {
     let response: Observable<any>;
+    const {brand, ...data} = this.truckForm.value;
     if (this.isEdition())
-      response = this.truckService.update(new Truck(this.truckForm.value));
+      response = this.truckService.update(new Truck(data));
     else
-      response = this.truckService.create(this.truckForm.value);
+      response = this.truckService.create(data);
 
     response.subscribe(() =>
       this.goBack()
@@ -71,13 +80,15 @@ export class TruckFormComponent implements OnInit {
   }
 
   compareModel(model1: Model, model2: Model): boolean {
-    console.log(model1);
-    return model1.compareTo(model2);
+    if (model1 instanceof Model)
+      return model1.compareTo(model2);
+    else
+      return new Model(model1).compareTo(model2);
   }
 
-  // compareToBrandName(brand1: Model, brand2: Model): boolean {
-  //   return brand1.compareToBrandName(brand2);
-  // }
+  compareToBrandName(brand1: Brand, brand2: Brand): boolean {
+    return brand1.compareTo(brand2);
+  }
 
   isEdition(): boolean {
     return this.truckForm.get("id").value !== null;

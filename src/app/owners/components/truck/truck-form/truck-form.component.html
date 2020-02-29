@@ -43,9 +43,9 @@
             <mat-label>
               Marca
             </mat-label>
-            <mat-select required>
+            <mat-select formControlName="brand" [compareWith]="compareModel">
               <mat-option>Seleccione una marca</mat-option>
-              <mat-option *ngFor="let brandTmp of brandsAsync | async" [value]="brandTmp" (click)="findByBrand(brandTmp.id)">
+              <mat-option *ngFor="let brandTmp of brandsAsync | async" [value]="brandTmp">
                 {{brandTmp.name}}
               </mat-option>
             </mat-select>
@@ -55,7 +55,7 @@
             <mat-label>
               Modelo
             </mat-label>
-            <mat-select required formControlName="model" [compareWith]="compareModel">
+            <mat-select formControlName="model" [compareWith]="compareModel">
               <mat-option>Seleccione un modelo</mat-option>
               <mat-option *ngFor="let modelTmp of modelsAsync | async" [value]="modelTmp">
                 {{modelTmp.name}}

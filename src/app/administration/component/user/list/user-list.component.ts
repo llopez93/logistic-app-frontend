@@ -9,6 +9,7 @@ import {Router} from "@angular/router";
 import {Pageable} from "../../../../core/domain/pagination/pageable";
 import {GlobalAppService} from "../../../../core/commons/service/global-app.service";
 import {ConfirmDialogService} from "../../../../core/commons/service/confirm-dialog.service";
+import {SnackbarService} from "../../../../core/service/snackbar.service";
 
 @Component({
   selector: 'app-user-list',
@@ -36,6 +37,7 @@ export class UserListComponent implements OnInit {
               private readonly authService: AuthService,
               private readonly appService: GlobalAppService,
               private readonly confirmationService: ConfirmDialogService,
+              private readonly snackbarService: SnackbarService,
               private readonly router: Router) {
   }
 
@@ -158,6 +160,26 @@ export class UserListComponent implements OnInit {
         onClose: () => user.enabled = !user.enabled
       }, 400).subscribe(value => this.appService.setLoading(false));
     }
+  }
+
+  delete(u: User): void {
+    this.confirmationService.showDialog({
+      title: "Atención",
+      message: "¿Está seguro que desea eliminar al usuario " + u.firstName + " " + u.lastName + "?",
+      icon: "warning",
+      onAccept: () => {
+        this.appService.setLoading(true);
+        this.userService.delete(u).subscribe(value => {
+          this.snackbarService.show({
+            type: "success",
+            title: "Operación exitosa",
+            body: "El usuario fue eliminado correctamente",
+            duration: 1000
+          });
+          this.applyFilter();
+        });
+      }
+    }, 400).subscribe(value => this.appService.setLoading(false));
   }
 
 

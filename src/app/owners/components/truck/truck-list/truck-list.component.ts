@@ -1,6 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatSort, MatTableDataSource} from "@angular/material";
-import Truck from "../../../../core/domain/security/user";
 import {TruckService} from "../../../services/truck.service";
 import {FormControl} from "@angular/forms";
 import {debounceTime} from "rxjs/operators";
@@ -9,6 +8,8 @@ import {Router} from "@angular/router";
 import {Pageable} from "../../../../core/domain/pagination/pageable";
 import {GlobalAppService} from "../../../../core/commons/service/global-app.service";
 import {ConfirmDialogService} from "../../../../core/commons/service/confirm-dialog.service";
+import {SnackbarService} from "../../../../core/service/snackbar.service";
+import Truck from "../../../domain/truck";
 
 @Component({
   selector: 'app-truck-list',
@@ -34,6 +35,7 @@ export class TruckListComponent implements OnInit {
     private readonly truckService: TruckService,
     private readonly appService: GlobalAppService,
     private readonly confirmationService: ConfirmDialogService,
+    private readonly snackbarService: SnackbarService,
     private readonly router: Router) {
   }
 
@@ -55,7 +57,7 @@ export class TruckListComponent implements OnInit {
         debounceTime(400)
       )
       .subscribe(value => {
-        this.paginationOptions.addFilter("name", value);
+          this.paginationOptions.addFilter("name", value);
           this.applyFilterAndReset();
         }
       );
@@ -96,7 +98,7 @@ export class TruckListComponent implements OnInit {
     Clear inputs
   */
   isClearIconVisible(control: FormControl): boolean {
-    if (control.value != "") return true;
+    if (control.value !== "") return true;
     else return false;
   }
 
@@ -110,5 +112,25 @@ export class TruckListComponent implements OnInit {
 
   public create() {
     this.router.navigate(["home", "owners", "trucks", "new"]);
+  }
+
+  delete(truck: Truck): void {
+    this.confirmationService.showDialog({
+      title: "Atención",
+      message: "¿Está seguro que desea eliminar el camión?",
+      icon: "warning",
+      onAccept: () => {
+        this.appService.setLoading(true);
+        this.truckService.delete(truck).subscribe(value => {
+          this.snackbarService.show({
+            type: "success",
+            title: "Operación exitosa",
+            body: "El camión fue eliminado correctamente",
+            duration: 1000
+          });
+          this.applyFilter();
+        });
+      }
+    }, 400).subscribe(value => this.appService.setLoading(false));
   }
 }

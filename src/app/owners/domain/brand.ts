@@ -1,7 +1,7 @@
 import Entity from '../../core/domain/entity';
 
 export default class Brand extends Entity {
-  name = "";
+  name: string;
 
   constructor(value: Partial<Brand> = {}) {
     super();

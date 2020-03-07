@@ -2,7 +2,7 @@ import Entity from '../../core/domain/entity';
 import Brand from './brand';
 
 export default class Model extends Entity {
-  name = "";
+  name: string;
   brand: Brand = new Brand();
 
   constructor(value: Partial<Model> = {}) {

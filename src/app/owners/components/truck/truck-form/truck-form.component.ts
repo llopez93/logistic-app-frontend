@@ -39,7 +39,13 @@ export class TruckFormComponent implements OnInit {
       domain: ["", [Validators.required, Validators.minLength(1)]],
       year: ["", [Validators.required, Validators.minLength(1), Validators.min(1900)]],
       model: [null, Validators.required],
-      brand: [null]
+      brand: [null],
+      owner: fb.group({
+        firstName: ["", [Validators.required, Validators.minLength(1)]],
+        lastName: ["", [Validators.required, Validators.minLength(1)]],
+        cuil: ["", [Validators.required, Validators.minLength(1), Validators.maxLength(11)]],
+        email: [null, Validators.email],
+      }),
     });
   }
 

@@ -13,7 +13,10 @@ export default class Model extends Entity {
   }
 
   public compareTo(model: Model): boolean {
-    return this.name.toLocaleLowerCase() === model.name.toLocaleLowerCase();
+    if (model) {
+      return this.name.toLocaleLowerCase() === model.name.toLocaleLowerCase();
+    }
+    return false;
   }
 
   public compareNameTo(modelName: string): boolean {

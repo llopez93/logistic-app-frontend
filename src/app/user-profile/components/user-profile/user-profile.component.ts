@@ -10,7 +10,7 @@ import {MinistryService} from "../../service/ministry.service";
 import {MatDialog} from "@angular/material";
 import {GlobalAppService} from "../../../core/commons/service/global-app.service";
 import {Phone} from "../../domain/phone";
-import {Address} from "../../domain/address";
+import {Address} from "../../../core/domain/address/address";
 import {SnackbarService} from "../../../core/service/snackbar.service";
 import Entity from "../../../core/domain/entity";
 import {PhotoCropDialogComponent} from "../photo-crop-dialog/photo-crop-dialog.component";

@@ -1,4 +1,4 @@
-import { Address } from "../address";
+import { Address } from "../../../core/domain/address/address";
 import Entity from "../../../core/domain/entity";
 
 export class Ministry extends Entity {

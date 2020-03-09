@@ -21,7 +21,7 @@ export class ClientListComponent implements OnInit {
   paginator: MatPaginator;
   @ViewChild(MatSort, {static: false})
   sort: MatSort;
-  displayedColumns = ["name", "email", "phone", "actions"];
+  displayedColumns = ["name", "socialReason", "cuil", "email", "phone", "actions"];
   data = new MatTableDataSource([]);
   paginationOptions: Pageable = new Pageable();
   resultsLength: number;
@@ -29,6 +29,8 @@ export class ClientListComponent implements OnInit {
   // Filtros
   nameFilterControl: FormControl;
   emailFilterControl: FormControl;
+  socialReasonFilterControl: FormControl;
+  cuilFilterControl: FormControl;
 
   constructor(private readonly clientService: ClientService,
               private readonly appService: GlobalAppService,
@@ -40,6 +42,8 @@ export class ClientListComponent implements OnInit {
   ngOnInit() {
     this.nameFilterControl = new FormControl("");
     this.emailFilterControl = new FormControl("");
+    this.socialReasonFilterControl = new FormControl("");
+    this.cuilFilterControl = new FormControl("");
 
     this.applyFilter();
     this.paginator.page.subscribe(() => {
@@ -66,6 +70,28 @@ export class ClientListComponent implements OnInit {
       )
       .subscribe(value => {
           this.paginationOptions.addFilter("email", value);
+          this.applyFilterAndReset();
+        }
+      );
+
+    this.socialReasonFilterControl
+      .valueChanges
+      .pipe(
+        debounceTime(400)
+      )
+      .subscribe(value => {
+          this.paginationOptions.addFilter("socialReason", value);
+          this.applyFilterAndReset();
+        }
+      );
+
+    this.cuilFilterControl
+      .valueChanges
+      .pipe(
+        debounceTime(400)
+      )
+      .subscribe(value => {
+          this.paginationOptions.addFilter("cuil", value);
           this.applyFilterAndReset();
         }
       );
@@ -124,9 +150,9 @@ export class ClientListComponent implements OnInit {
         this.appService.setLoading(true);
         this.clientService.delete(client).subscribe(value => {
           this.snackbarService.show({
-            type : "success",
-            title : "Operación exitosa",
-            body : "El cliente fue eliminado correctamente",
+            type: "success",
+            title: "Operación exitosa",
+            body: "El cliente fue eliminado correctamente",
             duration: 1000
           });
           this.applyFilter();

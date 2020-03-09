@@ -1,4 +1,4 @@
-import {Address} from "./address";
+import {Address} from "../../core/domain/address/address";
 import {Phone} from "./phone";
 import {AreaOfInterest} from "./area-of-interest";
 import {Ministry} from "./ministry/ministry";

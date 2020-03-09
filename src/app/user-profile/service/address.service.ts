@@ -1,11 +1,11 @@
 import {Injectable} from "@angular/core";
-import {Address} from "../domain/address";
 import {GenericService} from "../../core/service/generic.service";
+import {Address} from "../../core/domain/address/address";
 
 @Injectable({providedIn: "root"})
 export class AddressService extends GenericService<Address> {
 
-    private addressUrl = "/addresses";
+    private addressUrl = "/address";
 
     protected valueToEntity(value: any): Address {
         return new Address(value);

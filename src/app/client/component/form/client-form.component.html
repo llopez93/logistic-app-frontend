@@ -11,10 +11,26 @@
       <form novalidate [formGroup]="clientForm" (ngSubmit)="saveData()"
             fxLayout="column" fxFlex="100">
         <div fxLayout="row wrap">
-          <mat-form-field appearance="outline" fxFlex="100">
-            <mat-label>Nombre / Razón social</mat-label>
+          <mat-form-field appearance="outline" fxFlex="50" class="padding-right">
+            <mat-label>Nombre</mat-label>
             <input matInput formControlName="name">
             <mat-error *ngFor="let error  of validation.errorMessages(clientForm.controls.name)">
+              {{ error }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex="50">
+            <mat-label>Razón social</mat-label>
+            <input matInput formControlName="socialReason">
+            <mat-error *ngFor="let error  of validation.errorMessages(clientForm.controls.socialReason)">
+              {{ error }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex="100">
+            <mat-label>CUIL / CUIT</mat-label>
+            <input matInput mask="00-00000000-0" formControlName="cuil">
+            <mat-error *ngFor="let error  of validation.errorMessages(clientForm.controls.cuil)">
               {{ error }}
             </mat-error>
           </mat-form-field>
@@ -55,7 +71,55 @@
           </mat-form-field>
         </div>
 
-        <div fxLayout="row" fxLayoutAlign="end end" fxLayoutGap="10px" fxFill>
+        <div fxLayout="row wrap" formGroupName="address">
+          <div fxFlex="100">
+            <p>
+              Dirección
+            </p>
+          </div>
+
+          <mat-form-field appearance="outline" fxFlex="70" class="padding-right">
+            <mat-label>Calle</mat-label>
+            <input matInput formControlName="street">
+            <mat-error *ngFor="let error  of validation.errorMessages(clientForm.controls.address.get('street'))">
+              {{ error }}
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" fxFlex="30" class="padding-right">
+            <mat-label>Número</mat-label>
+            <input matInput formControlName="number">
+            <mat-error *ngFor="let error  of validation.errorMessages(clientForm.controls.address.get('number'))">
+              {{ error }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex="50" class="padding-right">
+            <mat-label>
+              Province
+            </mat-label>
+            <mat-select formControlName="province" [compareWith]="compareProvince">
+              <mat-option>Seleccione una provincia</mat-option>
+              <mat-option *ngFor="let province of provincesAsync | async" [value]="province">
+                {{province.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex="50">
+            <mat-label>
+              Ciudad
+            </mat-label>
+            <mat-select formControlName="city" [compareWith]="compareCity">
+              <mat-option>Seleccione un ciudad</mat-option>
+              <mat-option *ngFor="let city of citiesAsync | async" [value]="city">
+                {{city.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="end end" fxLayoutGap="10px">
           <button fxFlex="20" type="submit" mat-raised-button [disabled]="clientForm.invalid" class="dark-green-btn">
             <mat-icon>send</mat-icon>
             <span class="ui-button-text ui-c">Guardar</span>

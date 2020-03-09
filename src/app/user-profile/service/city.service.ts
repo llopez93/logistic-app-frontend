@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {GenericService} from "../../core/service/generic.service";
-import {City} from "../domain/city";
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
+import {City} from "../../core/domain/address/city";
 
 
 @Injectable({providedIn: "root"})

@@ -16,8 +16,8 @@ export class ValidationMessages {
     return config[validatorName];
   }
 
-  errorMessages(control: FormControl): string[] {
-    let messages = [];
+  errorMessages(control: AbstractControl): string[] {
+    const messages = [];
     if (control) {
       for (let propertyName in control.errors) {
         if (!control.pristine) {

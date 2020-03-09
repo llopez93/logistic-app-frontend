@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ClientListComponent } from './component/list/client-list.component';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {ClientListComponent} from './component/list/client-list.component';
 import {ClientFormComponent} from "./component/form/client-form.component";
 import {
   MatButtonModule,
@@ -8,13 +8,17 @@ import {
   MatDividerModule,
   MatFormFieldModule,
   MatIconModule,
-  MatInputModule, MatPaginatorModule, MatSelectModule,
+  MatInputModule,
+  MatPaginatorModule,
+  MatSelectModule,
   MatTableModule
 } from "@angular/material";
 import {ReactiveFormsModule} from "@angular/forms";
 import {ClientRoutingModule} from "./client-routing.module";
 import {FlexModule} from "@angular/flex-layout";
+import {IConfig, NgxMaskModule} from "ngx-mask";
 
+// export options: Partial<IConfig> | (() => Partial<IConfig>);
 
 
 @NgModule({
@@ -32,7 +36,9 @@ import {FlexModule} from "@angular/flex-layout";
     MatPaginatorModule,
     ClientRoutingModule,
     FlexModule,
-    MatSelectModule
+    MatSelectModule,
+    NgxMaskModule.forRoot({}),
   ]
 })
-export class ClientModule { }
+export class ClientModule {
+}

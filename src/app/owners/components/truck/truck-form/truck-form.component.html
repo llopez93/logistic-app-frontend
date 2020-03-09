@@ -1,15 +1,13 @@
 <div class="container">
-  <mat-card fxFlex="80">
+  <form novalidate [formGroup]="truckForm" (ngSubmit)="saveData()" fxFlex="80">
+  <mat-card>
     <mat-card-title>
       <h5>
         {{ isEdition() ? "Editar camión" : "Nuevo camión" }}
       </h5>
     </mat-card-title>
     <mat-divider></mat-divider>
-    <mat-card-content fxLayoutAlign="strech">
-
-      <form novalidate [formGroup]="truckForm" (ngSubmit)="saveData()"
-            fxLayout="column" fxFlex="100">
+    <mat-card-content fxLayoutAlign="strech" fxLayout="column">
 
         <div fxLayout="row wrap">
           <mat-form-field appearance="outline" fxFlex="100">
@@ -67,7 +65,52 @@
           </mat-error>
         </div>
 
-        <div fxLayout="row" fxLayoutAlign="end end" fxLayoutGap="10px" fxFill>
+        <div fxLayout="row" formGroupName="owner">
+          <mat-card fxFlex="100">
+            <mat-card-title>
+              <h5>
+                {{ isEdition() ? "Editar propietario" : "Nuevo propietario" }}
+              </h5>
+            </mat-card-title>
+            <mat-divider></mat-divider>
+            <mat-card-content fxLayout="column">
+              <div fxLayout="row">
+                <mat-form-field appearance="outline" fxFlex="50" class="padding-right">
+                  <mat-label>Nombre</mat-label>
+                  <input matInput formControlName="firstName">
+                  <mat-error *ngFor="let error  of validation.errorMessages(truckForm.controls.owner.controls.lastName)">
+                    {{ error }}
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex="50">
+                  <mat-label>Apellido</mat-label>
+                  <input matInput formControlName="lastName">
+                  <mat-error *ngFor="let error  of validation.errorMessages(truckForm.controls.owner.controls.lastName)">
+                    {{ error }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div fxLayout="row">
+                <mat-form-field appearance="outline" fxFlex="50" class="padding-right">
+                  <mat-label>Email</mat-label>
+                  <input matInput formControlName="email">
+                  <mat-error *ngFor="let error  of validation.errorMessages(truckForm.controls.owner.controls.email)">
+                    {{ error }}
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex="50">
+                  <mat-label>CUIL/CUIT</mat-label>
+                  <input matInput formControlName="cuil">
+                  <mat-error *ngFor="let error  of validation.errorMessages(truckForm.controls.owner.controls.cuil)">
+                    {{ error }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="end end" fxLayoutGap="10px" fxFill class="pt-30">
           <button fxFlex="15" type="submit" mat-raised-button [disabled]="truckForm.invalid" class="dark-green-btn">
             <mat-icon>send</mat-icon>
             <span class="ui-button-text ui-c">Guardar</span>
@@ -77,7 +120,7 @@
             Cancelar
           </button>
         </div>
-      </form>
     </mat-card-content>
   </mat-card>
+</form>
 </div>

@@ -69,11 +69,30 @@
           <mat-card fxFlex="100">
             <mat-card-title>
               <h5>
-                {{ isEdition() ? "Editar propietario" : "Nuevo propietario" }}
+                <span>{{ isEdition() ? "Editar propietario" : "Nuevo propietario" }}</span>
               </h5>
             </mat-card-title>
             <mat-divider></mat-divider>
             <mat-card-content fxLayout="column">
+              <div fxLayout="row">
+                <mat-form-field appearance="outline" fxFlex="100">
+                  <mat-label>Buscar por CUIL / CUIT</mat-label>
+                  <input matInput [formControl]="cuilSearchControl" [matAutocomplete]="ownersAutocomplete">
+                  <mat-hint>
+                    Buscar datos del propietario en el sistema
+                  </mat-hint>
+                  <mat-autocomplete #ownersAutocomplete="matAutocomplete" [displayWith]="displayFnOwner" (optionSelected)="findOwnerById($event)">
+                    <mat-option *ngIf="isLoading">
+                      <mat-spinner diameter="50"></mat-spinner>
+                    </mat-option>
+                    <ng-container *ngIf="!isLoading">
+                      <mat-option *ngFor="let owner of filteredOwners" [value]="owner">
+                        {{ displayFnOwner(owner) }}
+                      </mat-option>
+                    </ng-container>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </div>
               <div fxLayout="row">
                 <mat-form-field appearance="outline" fxFlex="50" class="padding-right">
                   <mat-label>Nombre</mat-label>
@@ -99,8 +118,8 @@
                   </mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" fxFlex="50">
-                  <mat-label>CUIL/CUIT</mat-label>
-                  <input matInput formControlName="cuil">
+                  <mat-label>CUIL / CUIT</mat-label>
+                  <input matInput mask="00-00000000-0" formControlName="cuil">
                   <mat-error *ngFor="let error  of validation.errorMessages(truckForm.controls.owner.controls.cuil)">
                     {{ error }}
                   </mat-error>

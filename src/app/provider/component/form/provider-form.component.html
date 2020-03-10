@@ -1,0 +1,187 @@
+<div class="container">
+  <mat-card fxFlex="80">
+    <mat-card-title>
+      <h5>
+        {{ isEdition() ? "Edición de un proveedor" : "Nuevo proveedor" }}
+      </h5>
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-card-content fxLayoutAlign="strech">
+      <form novalidate [formGroup]="providerForm" (ngSubmit)="saveData()"
+            fxLayout="column" fxFlex="100">
+        <div fxLayout="row wrap">
+
+          <!-- TODO: Incorporar botón para deshabilitar la busqueda de datos por CUIL -->
+
+          <mat-form-field appearance="outline" fxFlex="100" *ngIf="!isEdition()">
+            <mat-label>Buscar por CUIL / CUIT</mat-label>
+            <input matInput [formControl]="cuilSearchControl"
+                   [matAutocomplete]="clientsAutocomplete">
+            <mat-hint>
+              Buscar datos del proveedor en el sistema
+            </mat-hint>
+            <mat-autocomplete #clientsAutocomplete="matAutocomplete" (optionSelected)="findClientById($event)">
+              <mat-option *ngFor="let c of clientsAsync | async" [value]="c">
+                {{c.name + " / " + c.socialReason}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex="50" class="padding-right">
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="name">
+            <mat-error *ngFor="let error  of validation.errorMessages(providerForm.controls.name)">
+              {{ error }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex="50">
+            <mat-label>Razón social</mat-label>
+            <input matInput formControlName="socialReason">
+            <mat-error *ngFor="let error  of validation.errorMessages(providerForm.controls.socialReason)">
+              {{ error }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex="100" *ngIf="isEdition()">
+            <mat-label>CUIL / CUIT</mat-label>
+            <input matInput mask="00-00000000-0" formControlName="cuil">
+            <mat-error *ngFor="let error  of validation.errorMessages(providerForm.controls.cuil)">
+              {{ error }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex="20" class="padding-right">
+            <mat-label>
+              Tipo de teléfono
+            </mat-label>
+            <mat-select required formControlName="phoneType">
+              <mat-option *ngFor="let p of phoneTypes" [value]="p">
+                {{p}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngFor="let error  of validation.errorMessages(providerForm.controls.phoneType)">
+              {{ error }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex="80">
+            <mat-label>Teléfono</mat-label>
+            <input matInput formControlName="phone">
+            <mat-error *ngFor="let error  of validation.errorMessages(providerForm.controls.phone)">
+              {{ error }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="row">
+          <mat-form-field appearance="outline" fxFlex="100">
+            <mat-label>Correo electrónico</mat-label>
+            <input matInput formControlName="email">
+            <mat-hint>
+              Este campo no es obligatorio
+            </mat-hint>
+            <mat-error *ngFor="let error  of validation.errorMessages(providerForm.controls.email)">
+              {{ error }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="row wrap" formGroupName="address">
+          <div fxFlex="100">
+            <p>
+              Dirección
+            </p>
+          </div>
+
+          <mat-form-field appearance="outline" fxFlex="70" class="padding-right">
+            <mat-label>Calle</mat-label>
+            <input matInput formControlName="street">
+            <mat-error *ngFor="let error  of validation.errorMessages(providerForm.controls.address.get('street'))">
+              {{ error }}
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" fxFlex="30" class="padding-right">
+            <mat-label>Número</mat-label>
+            <input matInput formControlName="number">
+            <mat-error *ngFor="let error  of validation.errorMessages(providerForm.controls.address.get('number'))">
+              {{ error }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex="50" class="padding-right">
+            <mat-label>
+              Province
+            </mat-label>
+            <mat-select formControlName="province" [compareWith]="compareProvince">
+              <mat-option>Seleccione una provincia</mat-option>
+              <mat-option *ngFor="let province of provincesAsync | async" [value]="province">
+                {{province.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex="50">
+            <mat-label>
+              Ciudad
+            </mat-label>
+            <mat-select formControlName="city" [compareWith]="compareCity">
+              <mat-option>Seleccione un ciudad</mat-option>
+              <mat-option *ngFor="let city of citiesAsync | async" [value]="city">
+                {{city.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+        </div>
+
+        <div fxLayout="row wrap">
+          <div fxFlex="100">
+            <p>
+              Listado de materiales
+            </p>
+          </div>
+          <div fxFlex="100" fxLayout="column" formArrayName="materials">
+            <div fxLayout="row wrap" fxFlex="100"
+                 *ngFor="let material of providerForm.get('materials').controls; let i=index">
+              <div [formGroupName]="i.toString()" fxFlex="100">
+                <mat-form-field appearance="outline" fxFlex="30" class="padding-right">
+                  <mat-label>Unidad</mat-label>
+                  <mat-select required formControlName="unit">
+                    <mat-option *ngFor="let u of unitTypes" [value]="u">
+                      {{u}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex="70">
+                  <mat-label>Material</mat-label>
+                  <input matInput formControlName="name">
+                </mat-form-field>
+              </div>
+            </div>
+
+            <!-- TODO: usar autocomplete con los materiales -->
+
+            <div class="add-btn-container" fxLayout="row" fxLayoutAlign="center center">
+              <button mat-mini-fab type="button" class="button-add dark-green-btn" (click)="addMaterial()"
+                      matTooltip="Agregar material">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="end end" fxLayoutGap="10px">
+          <button fxFlex="20" type="submit" mat-raised-button [disabled]="providerForm.invalid" class="dark-green-btn">
+            <mat-icon>send</mat-icon>
+            <span class="ui-button-text ui-c">Guardar</span>
+          </button>
+
+          <button fxFlex="20" mat-raised-button (click)="goBack()">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

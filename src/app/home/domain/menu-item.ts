@@ -57,6 +57,13 @@ export const menuItems = [
     label: "Clientes",
     icon: "people_outline",
     route: "clients",
-    requiredRoles: ["Administrador"]}),
+    requiredRoles: ["Administrador"]
+  }),
+  new MenuItem({
+    label: "Proveedores",
+    icon: "people_outline",
+    route: "providers",
+    requiredRoles: ["Administrador"]
+  }),
   new MenuItem({label: "Camiones", icon: "directions_bus", route: "owners/trucks", requiredRoles: ["Administrador"]}),
 ] as MenuItem[];

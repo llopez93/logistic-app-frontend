@@ -1,16 +1,9 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {UserPhotoComponent} from "./user-photo/user-photo.component";
-import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
-import {
-  MatButtonModule,
-  MatDialogModule,
-  MatIconModule,
-  MatInputModule,
-  MatProgressSpinnerModule
-} from "@angular/material";
-import {GlobalAppService} from "./service/global-app.service";
-import { MatSelectSearchComponent } from './mat-select-search/mat-select-search.component';
+import {ConfirmDialogComponent} from './confirm-dialog/confirm-dialog.component';
+import {MatButtonModule, MatDialogModule, MatIconModule, MatInputModule, MatProgressSpinnerModule} from "@angular/material";
+import {MatSelectSearchComponent} from './mat-select-search/mat-select-search.component';
 
 /*
 *  Poner en este modulo componentes que se usen en varios modulos de la aplicacion
@@ -33,4 +26,5 @@ import { MatSelectSearchComponent } from './mat-select-search/mat-select-search.
     MatSelectSearchComponent
   ]
 })
-export class AppCommonsModule { }
+export class AppCommonsModule {
+}

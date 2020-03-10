@@ -1,7 +1,12 @@
 @import 'theme.scss';
 
 
-body {
+.cdk-overlay-backdrop.cdk-overlay-backdrop-showing.dark-backdrop {
+  background: #000;
+  opacity: 0.75 !important;
+}
+
+  body {
   padding: 0;
   border: 0;
   margin: 0;

@@ -191,7 +191,7 @@ export class UserProfileComponent implements OnInit {
 
   get phonesArray(): FormArray {
     return this.profileFormGroup.get('phonesArray') as FormArray;
-  };
+  }
 
   addPhone() {
     const phone = new Phone({phone: '', phoneType: this.phonetypesSelectItems[0].value});

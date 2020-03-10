@@ -1,6 +1,7 @@
-import { Injectable } from "@angular/core";
-import { MatPaginatorIntl } from "@angular/material";
+import {Injectable} from "@angular/core";
+import {MatPaginatorIntl} from "@angular/material";
 import {BehaviorSubject, Observable, Subject} from "rxjs";
+import {OverlayService} from "./overlay.service";
 
 
 @Injectable()
@@ -11,7 +12,10 @@ export class GlobalAppService {
 
   private loading$ = new BehaviorSubject<boolean>(false);
 
-  constructor(private paginatorService: MatPaginatorIntl) {
+  constructor(
+    private readonly overlayService: OverlayService,
+    private paginatorService: MatPaginatorIntl) {
+    /*
     this.paginatorService.itemsPerPageLabel = "Items por página";
     this.paginatorService.nextPageLabel = "Siguiente";
     this.paginatorService.previousPageLabel = "Anterior";
@@ -31,22 +35,21 @@ export class GlobalAppService {
           : startIndex + pageSize;
       return `${startIndex + 1} - ${endIndex} de ${length}`;
     };
+
+     */
   }
+
   public getMsgs(): Observable<Message> {
     return this.$msg.asObservable();
   }
 
   public sendMsg(severity: string, summary: string, detail: string) {
-    this.msg = { severity: severity, summary: summary, detail: detail };
+    this.msg = {severity: severity, summary: summary, detail: detail};
     this.$msg.next(this.msg);
   }
 
-  public getLoading(): Observable<boolean> {
-    return this.loading$.asObservable();
-  }
-
   public setLoading(loading: boolean) {
-    this.loading$.next(loading);
+    this.overlayService.spin$.next(loading);
   }
 }
 

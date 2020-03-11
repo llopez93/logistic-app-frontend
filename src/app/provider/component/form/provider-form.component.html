@@ -12,8 +12,14 @@
         <div fxLayout="row wrap">
 
           <!-- TODO: Incorporar botón para deshabilitar la busqueda de datos por CUIL -->
-
-          <mat-form-field appearance="outline" fxFlex="100" *ngIf="!isEdition()">
+          <div fxFlex="100" class="toggle-container">
+            <mat-slide-toggle
+              [checked]="manualDataCharge"
+              (change)="toggleSearchInput($event)">
+              Ingresar los datos de forma manual
+            </mat-slide-toggle>
+          </div>
+          <mat-form-field appearance="outline" fxFlex="100" *ngIf="showSearchInput()">
             <mat-label>Buscar por CUIL / CUIT</mat-label>
             <input matInput [formControl]="cuilSearchControl"
                    [matAutocomplete]="clientsAutocomplete">
@@ -43,7 +49,7 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" fxFlex="100" *ngIf="isEdition()">
+          <mat-form-field appearance="outline" fxFlex="100" *ngIf="isEdition() || manualDataCharge">
             <mat-label>CUIL / CUIT</mat-label>
             <input matInput mask="00-00000000-0" formControlName="cuil">
             <mat-error *ngFor="let error  of validation.errorMessages(providerForm.controls.cuil)">
@@ -155,7 +161,17 @@
                 </mat-form-field>
                 <mat-form-field appearance="outline" fxFlex="70">
                   <mat-label>Material</mat-label>
-                  <input matInput formControlName="name">
+                  <input matInput formControlName="name" [matAutocomplete]="materialAutocomplete">
+                  <mat-error
+                    *ngFor="let error  of validation.errorMessages(providerForm.get('materials').get(i.toString()).get('name'))">
+                    {{ error }}
+                  </mat-error>
+                  <mat-autocomplete #materialAutocomplete="matAutocomplete"
+                                    (optionSelected)="setMaterial($event, i.toString())">
+                    <mat-option *ngFor="let m of materials" [value]="m">
+                      {{m.name}}
+                    </mat-option>
+                  </mat-autocomplete>
                 </mat-form-field>
               </div>
             </div>

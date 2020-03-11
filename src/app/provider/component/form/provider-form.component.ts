@@ -13,10 +13,12 @@ import {Client} from "../../../client/domain/client";
 import {Address} from "../../../core/domain/address/address";
 import {ProviderService} from "../../service/provider.service";
 import {Provider} from "../../../domain/provider";
-import {MatAutocompleteSelectedEvent} from "@angular/material";
+import {MatAutocompleteSelectedEvent, MatSlideToggleChange} from "@angular/material";
 import {ClientService} from "../../../client/service/client.service";
 import {GlobalAppService} from "../../../core/commons/service/global-app.service";
 import {MaterialUnitType} from "../../../domain/material.unit.type";
+import {MaterialService} from "../../service/material.service";
+import {Material} from "../../../domain/material";
 
 @Component({
   selector: 'app-provider-form',
@@ -35,8 +37,10 @@ export class ProviderFormComponent implements OnInit {
   provincesAsync: Observable<Province[]>;
   citiesAsync: Observable<City[]>;
 
+  manualDataCharge = false;
   cuilSearchControl: FormControl;
   clientsAsync: Observable<Provider[]>;
+  materials: Material[];
 
   constructor(private readonly cd: ChangeDetectorRef,
               private readonly router: Router,
@@ -46,7 +50,9 @@ export class ProviderFormComponent implements OnInit {
               private readonly providerService: ProviderService,
               private readonly cityService: CityService,
               private readonly provinceService: ProvinceService,
-              private readonly clientService: ClientService) {
+              private readonly clientService: ClientService,
+              private readonly materialService: MaterialService,
+  ) {
 
     this.providerForm = fb.group({
       id: [null],
@@ -72,6 +78,7 @@ export class ProviderFormComponent implements OnInit {
 
   ngOnInit() {
     this.provincesAsync = this.provinceService.getAll();
+    this.materialService.getAll().subscribe( materials => this.materials = materials);
 
     const action: Observable<Params> = this.activatedRoute.params;
     action.pipe(
@@ -81,7 +88,8 @@ export class ProviderFormComponent implements OnInit {
     ).subscribe(provider => {
       this.providerForm.patchValue(provider);
       this.providerForm.get("address").get("province").patchValue(provider.address.city.province);
-      const array = provider.materials.map(m => {;
+      const array = provider.materials.map(m => {
+
         return this.fb.group({
           id: [m.id],
           unit: [m.unit, Validators.required],
@@ -109,16 +117,15 @@ export class ProviderFormComponent implements OnInit {
     let response: Observable<any>;
     const {province, ...addressData} = this.providerForm.get("address").value;
     const {address, ...clientData} = this.providerForm.value;
-    const c = new Client(clientData);
-    c.address = new Address(addressData);
+    const p = new Provider(clientData);
+    p.address = new Address(addressData);
     if (this.isEdition())
-      response = this.providerService.update(null);
+      response = this.providerService.update(p);
     else
-      response = this.providerService.create(null);
+      response = this.providerService.create(p);
 
     response.subscribe(() =>
-      this.router.navigate(["home", "clients"])
-    );
+      this.goBack());
 
   }
 
@@ -127,7 +134,7 @@ export class ProviderFormComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(["home", "clients"]);
+    this.router.navigate(["home", "providers"]);
   }
 
   compareProvince(p1: Province, p2: Province): boolean {
@@ -154,10 +161,27 @@ export class ProviderFormComponent implements OnInit {
     });
   }
 
+  setMaterial(event: MatAutocompleteSelectedEvent, formGroupName: string) {
+    const m: Material = event.option.value;
+    this.materials = this.materials.filter( val => val.id !== m.id);
+    this.providerForm.get("materials").get(formGroupName).patchValue(m);
+  }
+
   addMaterial(): void {
     (this.providerForm.get("materials") as FormArray).push(this.fb.group({
+      id: [null],
       unit: ['', Validators.required],
       name: ['', Validators.required]
     }));
   }
+
+  showSearchInput(): boolean {
+    return !this.manualDataCharge && !this.isEdition();
+  }
+
+  toggleSearchInput(e: MatSlideToggleChange) {
+    this.manualDataCharge = e.checked;
+    this.cd.markForCheck();
+  }
+
 }

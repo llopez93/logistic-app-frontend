@@ -66,4 +66,10 @@ export const menuItems = [
     requiredRoles: ["Administrador"]
   }),
   new MenuItem({label: "Camiones", icon: "directions_bus", route: "owners/trucks", requiredRoles: ["Administrador"]}),
+  new MenuItem({
+    label: "Carga de viajes",
+    icon: "people_outline",
+    route: "trips/new",
+    requiredRoles: []
+  }),
 ] as MenuItem[];

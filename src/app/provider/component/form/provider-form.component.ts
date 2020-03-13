@@ -9,7 +9,6 @@ import {ActivatedRoute, Params, Router} from "@angular/router";
 import {CityService} from "../../../core/service/city.service";
 import {ProvinceService} from "../../../core/service/province.service";
 import {debounceTime, distinctUntilChanged, filter, map, switchMap} from "rxjs/operators";
-import {Client} from "../../../client/domain/client";
 import {Address} from "../../../core/domain/address/address";
 import {ProviderService} from "../../service/provider.service";
 import {Provider} from "../../../domain/provider";
@@ -37,6 +36,7 @@ export class ProviderFormComponent implements OnInit {
   provincesAsync: Observable<Province[]>;
   citiesAsync: Observable<City[]>;
 
+  edition = false;
   manualDataCharge = false;
   cuilSearchControl: FormControl;
   clientsAsync: Observable<Provider[]>;
@@ -78,26 +78,35 @@ export class ProviderFormComponent implements OnInit {
 
   ngOnInit() {
     this.provincesAsync = this.provinceService.getAll();
-    this.materialService.getAll().subscribe( materials => this.materials = materials);
+    // this.materialService.getAll().subscribe(materials => this.materials = materials);
 
     const action: Observable<Params> = this.activatedRoute.params;
     action.pipe(
       filter(data => data.id !== "new"),
       map(data => data.id),
-      switchMap(id => this.providerService.get(id))
-    ).subscribe(provider => {
-      this.providerForm.patchValue(provider);
-      this.providerForm.get("address").get("province").patchValue(provider.address.city.province);
-      const array = provider.materials.map(m => {
-
-        return this.fb.group({
-          id: [m.id],
-          unit: [m.unit, Validators.required],
-          name: [m.name, Validators.required]
+      switchMap(id => this.providerService.get(id)))
+      .subscribe(provider => {
+        this.edition = true;
+        this.providerForm.patchValue(provider);
+        this.providerForm.get("address").get("province").patchValue(provider.address.city.province);
+        const array = provider.materials.map(m => {
+          return this.fb.group({
+            id: [m.id],
+            unit: [m.unit, Validators.required],
+            name: [m.name, Validators.required]
+          });
+        });
+        this.providerForm.setControl("materials", this.fb.array(array));
+        this.materialService.getAll().subscribe(materials => {
+          materials = materials.filter(m => !provider.materials.some(value => value.id === m.id));
+          this.materials = materials;
         });
       });
-      this.providerForm.setControl("materials", this.fb.array(array));
-    });
+
+    action.pipe(
+      filter(data => data.id === "new"),
+      switchMap(() => this.materialService.getAll())
+    ).subscribe(materials => this.materials = materials);
 
     this.providerForm.get("address").get("province").valueChanges.subscribe(() => {
       this.citiesAsync = this.cityService.getCitiesByProvinceId(this.providerForm.get("address").get("province").value.id);
@@ -130,7 +139,7 @@ export class ProviderFormComponent implements OnInit {
   }
 
   isEdition(): boolean {
-    return this.providerForm.get("id").value !== null;
+    return this.edition;
   }
 
   goBack() {
@@ -156,6 +165,7 @@ export class ProviderFormComponent implements OnInit {
     const p: Provider = event.option.value;
     this.clientService.get(p.id).subscribe(clientInfo => {
       this.providerForm.patchValue(clientInfo);
+      this.cuilSearchControl.patchValue(clientInfo.cuil);
       this.providerForm.get("address").get("province").patchValue(clientInfo.address.city.province);
       this.appService.setLoading(false);
     });
@@ -163,7 +173,7 @@ export class ProviderFormComponent implements OnInit {
 
   setMaterial(event: MatAutocompleteSelectedEvent, formGroupName: string) {
     const m: Material = event.option.value;
-    this.materials = this.materials.filter( val => val.id !== m.id);
+    this.materials = this.materials.filter(val => val.id !== m.id);
     this.providerForm.get("materials").get(formGroupName).patchValue(m);
   }
 
@@ -182,6 +192,10 @@ export class ProviderFormComponent implements OnInit {
   toggleSearchInput(e: MatSlideToggleChange) {
     this.manualDataCharge = e.checked;
     this.cd.markForCheck();
+  }
+
+  removeMaterial(formIndex: number) {
+    (this.providerForm.get("materials") as FormArray).removeAt(formIndex);
   }
 
 }

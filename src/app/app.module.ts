@@ -10,7 +10,14 @@ import {SnackbarComponent} from './core/components/snackbar/snackbar.component';
 import {Interceptor} from "./core/security/interceptor/interceptor";
 import {AuthService} from "./core/security/service/auth.service";
 import {LoginModule} from "./login/login.module";
-import {ErrorStateMatcher, MAT_DATE_LOCALE, MatProgressSpinnerModule, MatSpinner, ShowOnDirtyErrorStateMatcher} from "@angular/material";
+import {
+  ErrorStateMatcher,
+  MAT_DATE_LOCALE,
+  MatNativeDateModule,
+  MatProgressSpinnerModule,
+  MatSpinner,
+  ShowOnDirtyErrorStateMatcher
+} from "@angular/material";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {GlobalAppService} from "./core/commons/service/global-app.service";
 import {SnackbarService} from "./core/service/snackbar.service";
@@ -36,7 +43,8 @@ import {OverlayService} from "./core/commons/service/overlay.service";
     HttpClientModule,
     MatSnackBarModule,
     FlexLayoutModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatNativeDateModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true},

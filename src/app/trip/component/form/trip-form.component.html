@@ -1,0 +1,72 @@
+<div class="container">
+  <mat-card fxFlex="100">
+    <mat-card-title>
+      <h5>
+        {{ isEdition() ? "Edición información de un viaje" : "Nuevo viaje" }}
+      </h5>
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-card-content fxLayoutAlign="strech">
+      <form novalidate [formGroup]="tripForm" fxFlex="100" fxLayout="row wrap">
+        <div class="client-truck-container" fxLayout="row">
+          <mat-form-field appearance="outline" class="padding-right" fxFlex="40">
+            <mat-label>Cliente</mat-label>
+            <mat-select formControlName="client">
+              <mat-select-search [formControl]="clientSearchControl"></mat-select-search>
+              <mat-option *ngFor="let m of clientsFilter | async" [value]="m.value">
+                {{m.label}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="padding-right" fxFlex="30">
+            <mat-label>Camión</mat-label>
+            <mat-select formControlName="truck">
+              <mat-select-search [formControl]="truckSearchControl"></mat-select-search>
+              <mat-option *ngFor="let m of truckFilter | async" [value]="m.value">
+                {{m.label}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- TODO: Cambiar el formato de la fecha a español -->
+
+          <mat-form-field appearance="outline" fxFlex="30">
+            <mat-label>Fecha del viaje</mat-label>
+            <input matInput [matDatepicker]="tripDate" formControlName="date">
+            <mat-datepicker-toggle matSuffix [for]="tripDate"></mat-datepicker-toggle>
+            <mat-datepicker #tripDate></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div formGroupName="tripInfo" fxFlex="100" class="trip-info" fxLayout="row wrap">
+          <div fxFlex="100" class="title">
+            <p>
+              Información del viaje
+            </p>
+          </div>
+
+          <mat-form-field appearance="outline" fxFlex="50" class="padding-right">
+            <mat-label>Origen</mat-label>
+            <mat-select formControlName="origin">
+              <mat-select-search [formControl]="providerSearchControl"></mat-select-search>
+              <mat-option *ngFor="let m of providerFilter | async" [value]="m.value">
+                {{m.label}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex="50" class="padding-right">
+            <mat-label>Destino</mat-label>
+            <input matInput formControlName="destination">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex="50" class="padding-right">
+            <mat-label>Precio</mat-label>
+            <input matInput mask="000000000" prefix="$ " formControlName="price">
+          </mat-form-field>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

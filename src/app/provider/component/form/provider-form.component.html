@@ -11,8 +11,7 @@
             fxLayout="column" fxFlex="100">
         <div fxLayout="row wrap">
 
-          <!-- TODO: Incorporar botón para deshabilitar la busqueda de datos por CUIL -->
-          <div fxFlex="100" class="toggle-container">
+          <div *ngIf="!edition" fxFlex="100" class="toggle-container">
             <mat-slide-toggle
               [checked]="manualDataCharge"
               (change)="toggleSearchInput($event)">
@@ -151,7 +150,7 @@
             <div fxLayout="row wrap" fxFlex="100"
                  *ngFor="let material of providerForm.get('materials').controls; let i=index">
               <div [formGroupName]="i.toString()" fxFlex="100">
-                <mat-form-field appearance="outline" fxFlex="30" class="padding-right">
+                <mat-form-field appearance="outline" fxFlex="20" class="padding-right">
                   <mat-label>Unidad</mat-label>
                   <mat-select required formControlName="unit">
                     <mat-option *ngFor="let u of unitTypes" [value]="u">
@@ -159,7 +158,7 @@
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
-                <mat-form-field appearance="outline" fxFlex="70">
+                <mat-form-field appearance="outline" fxFlex="65">
                   <mat-label>Material</mat-label>
                   <input matInput formControlName="name" [matAutocomplete]="materialAutocomplete">
                   <mat-error
@@ -173,10 +172,14 @@
                     </mat-option>
                   </mat-autocomplete>
                 </mat-form-field>
+                <div fxFlex="15" fxLayoutAlign="center" class="remove-btn-container">
+                  <button mat-mini-fab type="button" class="red-btn" (click)="removeMaterial(i)"
+                          matTooltip="Eliminar">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
               </div>
             </div>
-
-            <!-- TODO: usar autocomplete con los materiales -->
 
             <div class="add-btn-container" fxLayout="row" fxLayoutAlign="center center">
               <button mat-mini-fab type="button" class="button-add dark-green-btn" (click)="addMaterial()"

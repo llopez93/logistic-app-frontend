@@ -7,7 +7,8 @@
     </mat-card-title>
     <mat-divider></mat-divider>
     <mat-card-content fxLayoutAlign="strech">
-      <form novalidate [formGroup]="tripForm" fxFlex="100" fxLayout="row wrap">
+      <form novalidate (ngSubmit)="saveData()"
+            [formGroup]="tripForm" fxFlex="100" fxLayout="row wrap">
         <div class="client-truck-container" fxLayout="row">
           <mat-form-field appearance="outline" class="padding-right" fxFlex="40">
             <mat-label>Cliente</mat-label>
@@ -46,7 +47,7 @@
             </p>
           </div>
 
-          <mat-form-field appearance="outline" fxFlex="50" class="padding-right">
+          <mat-form-field appearance="outline" fxFlex="50" class="padding-right" *ngIf="tripForm.controls.tripInfo.get('origin').enabled">
             <mat-label>Origen</mat-label>
             <mat-select formControlName="origin">
               <mat-select-search [formControl]="providerSearchControl"></mat-select-search>
@@ -56,15 +57,122 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" fxFlex="50" class="padding-right">
-            <mat-label>Destino</mat-label>
-            <input matInput formControlName="destination">
+          <mat-form-field appearance="outline" fxFlex="50" class="padding-right" *ngIf="tripForm.controls.tripInfo.get('originName').enabled">
+            <mat-label>Origen</mat-label>
+            <input matInput formControlName="originName"/>
+            <mat-error
+              *ngFor="let error  of validation.errorMessages(tripForm.controls.tripInfo.get('originName'))">
+              {{ error }}
+            </mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" fxFlex="50" class="padding-right">
-            <mat-label>Precio</mat-label>
-            <input matInput mask="000000000" prefix="$ " formControlName="price">
+
+          <mat-form-field appearance="outline" fxFlex="50">
+            <mat-label>Destino</mat-label>
+            <input matInput formControlName="destination"/>
+            <mat-error
+              *ngFor="let error  of validation.errorMessages(tripForm.controls.tripInfo.get('destination'))">
+              {{ error }}
+            </mat-error>
           </mat-form-field>
+
+          <div fxFlex="100" >
+            <mat-slide-toggle formControlName="manualOriginCharge">
+              Ingresar el origen de manualmente
+            </mat-slide-toggle>
+          </div>
+
+          <div formGroupName="material" fxFlex="70" fxLayout="row" class="padding-right">
+
+            <mat-form-field appearance="outline" fxFlex="30" class="padding-right">
+              <mat-label>Unidad</mat-label>
+              <input readonly matInput formControlName="unit"/>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex="70">
+              <mat-label>Material</mat-label>
+              <mat-select formControlName="name"
+                          (selectionChange)="setMaterial($event.value)">
+                <mat-option *ngFor="let m of materials" [value]="m.name">
+                  {{m.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+          </div>
+
+          <mat-form-field appearance="outline" fxFlex="30">
+            <mat-label>Tamaño de batea</mat-label>
+            <input matInput
+                   formControlName="loadSize">
+            <mat-hint>
+              Indica la cantidad de m3/kg del viaje
+            </mat-hint>
+            <mat-error
+              *ngFor="let error  of validation.errorMessages(tripForm.controls.tripInfo.get('loadSize'))">
+              {{ error }}
+            </mat-error>
+          </mat-form-field>
+
+          <div fxFlex="100" class="load-cost-container">
+            <mat-slide-toggle formControlName="loadCost">
+              Se incluye el costo de carga
+            </mat-slide-toggle>
+          </div>
+
+          <div fxFlex="100">
+
+            <mat-form-field appearance="outline" fxFlex="30">
+              <mat-label>Gas Oil (lts)</mat-label>
+              <input matInput
+                     formControlName="fuel">
+              <mat-error
+                *ngFor="let error  of validation.errorMessages(tripForm.controls.tripInfo.get('fuel'))">
+                {{ error }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <mat-form-field appearance="outline" fxFlex="30">
+            <mat-label>Precio final</mat-label>
+            <input matInput
+                   formControlName="price">
+            <mat-error
+              *ngFor="let error  of validation.errorMessages(tripForm.controls.tripInfo.get('price'))">
+              {{ error }}
+            </mat-error>
+          </mat-form-field>
+
+          <div fxFlex="100" class="laps-container">
+            <button mat-icon-button
+                    type="button"
+                    [disabled]="!enableRemoveBtn()"
+                    (click)="removeLap()">
+              <mat-icon>remove</mat-icon>
+            </button>
+            <span class="laps">
+              {{ getLapCount() }}
+            </span>
+            <button mat-icon-button
+                    type="button"
+                    (click)="addLap()"
+                    class="add-lap-btn">
+              <mat-icon>add</mat-icon>
+            </button>
+
+          </div>
+
+        </div>
+
+        <div fxFlex="100" class="btns-container">
+
+          <button mat-raised-button
+                  type="submit"
+                  [disabled]="!formValid()"
+                  class="dark-green-btn">
+            <mat-icon>favorite</mat-icon>
+            Registrar viaje
+          </button>
         </div>
       </form>
     </mat-card-content>

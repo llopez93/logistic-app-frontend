@@ -7,6 +7,8 @@ import {MaterialService} from "../../../provider/service/material.service";
 import {ActivatedRoute} from "@angular/router";
 import {BehaviorSubject, Subject} from "rxjs";
 import {filter, switchMap} from "rxjs/operators";
+import {Material} from "../../../domain/material";
+import {ValidationMessages} from "../../../core/service/validation-messages";
 
 @Component({
   selector: 'app-trip-form',
@@ -17,6 +19,7 @@ import {filter, switchMap} from "rxjs/operators";
 export class TripFormComponent implements OnInit {
 
   tripForm: FormGroup;
+  readonly validation: ValidationMessages = new ValidationMessages();
 
   // Select con buscador para Clientes
   clientsFilter: BehaviorSubject<SelectItem[]> = new BehaviorSubject(null);
@@ -33,6 +36,9 @@ export class TripFormComponent implements OnInit {
   providers: SelectItem[] = [{label: 'Selecciona un proveedor', value: null}];
   providerSearchControl: FormControl = new FormControl();
 
+  materials: Material[] = [];
+  materialsChangeEvent: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
   constructor(private readonly fb: FormBuilder,
               private readonly route: ActivatedRoute,
               private readonly clientService: ClientService,
@@ -48,23 +54,64 @@ export class TripFormComponent implements OnInit {
       tripInfo: this.fb.group({
         material: this.fb.group({
           id: [null, Validators.required],
-          name: [null, Validators.required],
-          unit: [null, Validators.required]
+          name: ['', Validators.required],
+          unit: ['', Validators.required],
         }),
         origin: [null, Validators.required],
         destination: ['', [Validators.required, Validators.minLength(1)]],
-        price: ['', [Validators.required, Validators.min(1)]]
+        manualOriginCharge: [false],
+        originName: ['', [Validators.required, Validators.minLength(1)]],
+        loadSize: ['', [Validators.required, Validators.min(1), this.validation.isNumber()]],
+        price: ['', [Validators.required, Validators.min(1), this.validation.isNumber()]],
+        loadCost: [false],
+        fuel: ['', [Validators.required, Validators.min(1), this.validation.isNumber()]],
+        lapCount: [1]
       })
     });
-
     this.tripForm.get("tripInfo").disable();
     this.tripForm.get("client").valueChanges.subscribe(() => this.enableTripForm());
     this.tripForm.get("truck").valueChanges.subscribe(() => this.enableTripForm());
+
     this.tripForm.get("tripInfo").get("origin").valueChanges.pipe(
-      filter( value => value),
+      filter(value => value),
       switchMap(() => this.materialService.getByProvider(this.tripForm.get("tripInfo").get("origin").value))
     )
-      .subscribe(materials => console.log(materials));
+      .subscribe(materials => {
+        if (materials.length > 0) {
+          this.materials = materials;
+          this.materialsChangeEvent.next(true);
+        } else
+          this.materialService.getAll().subscribe(res => {
+            this.materials = res;
+            this.materialsChangeEvent.next(true);
+          });
+      });
+
+    this.materialsChangeEvent.asObservable()
+      .pipe(
+        filter(event => event === true)
+      )
+      .subscribe(() => {
+        this.tripForm.get("tripInfo").get("material").patchValue(this.materials[0]);
+      });
+
+    this.tripForm.get("tripInfo").get("manualOriginCharge").valueChanges
+      .subscribe(manualLoad => {
+        if (manualLoad) {
+          this.tripForm.get("tripInfo").get("origin").disable();
+          this.tripForm.get("tripInfo").get("originName").enable();
+          this.materialService.getAll().subscribe(res => {
+            this.materials = res;
+            this.materialsChangeEvent.next(true);
+          });
+        } else {
+          this.materials = [];
+          this.tripForm.get("tripInfo").get("origin").enable();
+          this.tripForm.get("tripInfo").get("originName").disable();
+        }
+      });
+
+
   }
 
   ngOnInit() {
@@ -118,11 +165,46 @@ export class TripFormComponent implements OnInit {
   }
 
   enableTripForm() {
-    if (this.tripForm.get("client").value && this.tripForm.get("truck").value)
+    if (this.tripForm.get("client").value && this.tripForm.get("truck").value) {
       this.tripForm.get("tripInfo").enable();
-    else
+      this.tripForm.get("tripInfo").get("originName").disable();
+    } else
       this.tripForm.get("tripInfo").disable();
 
+  }
+
+  setMaterial(materialName: string) {
+    const m: Material = this.materials.filter(val => val.name === materialName).pop();
+    this.tripForm.get("tripInfo").get("material").patchValue(m);
+  }
+
+  getLapCount(): number {
+    return this.tripForm.get("tripInfo").get("lapCount").value;
+  }
+
+  enableRemoveBtn(): boolean {
+    return this.tripForm.get("tripInfo").get("lapCount").value > 1;
+  }
+
+  addLap() {
+    this.tripForm.get("tripInfo").get("lapCount").patchValue(
+      this.tripForm.get("tripInfo").get("lapCount").value + 1
+    );
+
+  }
+
+  removeLap() {
+    this.tripForm.get("tripInfo").get("lapCount").patchValue(
+      this.tripForm.get("tripInfo").get("lapCount").value - 1
+    );
+  }
+
+  formValid(): boolean {
+    return this.tripForm.get("tripInfo").valid && this.tripForm.get("tripInfo").enabled && this.tripForm.valid;
+  }
+
+  saveData(){
+    console.log(this.tripForm.value);
   }
 
 }

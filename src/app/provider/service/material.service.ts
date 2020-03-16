@@ -17,7 +17,7 @@ export class MaterialService extends GenericService<Material> {
     return new Material(o);
   }
 
-  public getByProvider(p: Provider): Observable<Material> {
+  public getByProvider(p: Provider): Observable<Material[]> {
     const url = this.baseUrl + this.getResourcePath() + '/by-provider/' + p.id;
     return this.doRequest({url, method: "GET", map: this.mapToEntityArray});
   }

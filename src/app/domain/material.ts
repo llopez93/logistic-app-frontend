@@ -11,4 +11,9 @@ export class Material extends Entity {
     Object.assign(this, o);
   }
 
+
+  compareTo(o: Material): boolean{
+    return this.name === o.name;
+  }
+
 }

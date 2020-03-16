@@ -8,3 +8,19 @@
     padding-bottom: 10px;
   }
 }
+
+.load-cost-container {
+  padding: 0 0 15px 0;
+}
+
+.laps-container {
+  .laps {
+    font-size: 18px;
+    font-weight: 100;
+  }
+
+  .remove-lap-btn {
+    position: relative;
+    bottom: 10px;
+  }
+}

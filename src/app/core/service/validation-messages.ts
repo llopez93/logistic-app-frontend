@@ -9,8 +9,8 @@ export class ValidationMessages {
       'invalidPassword': 'Password invalido. El password debe al menos 6 caracteres, y contener un numero.',
       'minlength': `Este campo debe tener al menos ${validatorValue.requiredLength} caracteres.`,
       'maxlength': `Este campo no debe tener mas de ${validatorValue.requiredLength} caracteres.`,
-      'min': `Este campo debe tener al menos ${validatorValue.min} caracteres.`,
-      'max': `Este campo no debe tener mas de ${validatorValue.max} caracteres.`,
+      'min': `El valor mínimo de este campo es ${validatorValue.min}.`,
+      'max': `El valor máximo de este campo es ${validatorValue.max}.`,
       'isNumber': 'Este campo solo puede contener números.'
     };
     return config[validatorName];
@@ -26,7 +26,7 @@ export class ValidationMessages {
       }
     }
 
-    return messages;
+    return messages.slice(0, 1);
   }
 
   passwordValidator(control) {
@@ -43,7 +43,7 @@ export class ValidationMessages {
   isNumber(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
       const exp = new RegExp('^[0-9]+$');
-      const valid = exp.test( control.value );
+      const valid = exp.test(control.value);
       return valid ? null : {'isNumber': {value: control.value}};
     };
   }

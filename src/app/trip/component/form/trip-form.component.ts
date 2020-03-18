@@ -9,6 +9,10 @@ import {BehaviorSubject, Subject} from "rxjs";
 import {filter, switchMap} from "rxjs/operators";
 import {Material} from "../../../domain/material";
 import {ValidationMessages} from "../../../core/service/validation-messages";
+import {Trip} from "../../../domain/trip";
+import Truck from "../../../owners/domain/truck";
+import {Client} from 'src/app/client/domain/client';
+import {TripService} from "../../service/trip.service";
 
 @Component({
   selector: 'app-trip-form',
@@ -44,7 +48,8 @@ export class TripFormComponent implements OnInit {
               private readonly clientService: ClientService,
               private readonly truckService: TruckService,
               private readonly providerService: ProviderService,
-              private readonly materialService: MaterialService) {
+              private readonly materialService: MaterialService,
+              private readonly tripService: TripService) {
 
     this.tripForm = this.fb.group({
       id: [null],
@@ -203,8 +208,19 @@ export class TripFormComponent implements OnInit {
     return this.tripForm.get("tripInfo").valid && this.tripForm.get("tripInfo").enabled && this.tripForm.valid;
   }
 
-  saveData(){
-    console.log(this.tripForm.value);
+  saveData() {
+    const client: Client = new Client(this.tripForm.get("client").value);
+    const truck: Truck = new Truck(this.tripForm.get("truck").value);
+    const tripDate: Date = this.tripForm.get("date").value;
+    const laps: number = this.tripForm.get("tripInfo").get("lapCount").value;
+
+    const {manualOriginCharge, lapCount, ...tripData} = this.tripForm.get("tripInfo").value;
+    const trip: Trip = new Trip(tripData);
+    trip.client = client;
+    trip.truck = truck;
+    trip.tripDate = tripDate;
+
+    this.tripService.createTrip(trip, laps).subscribe();
   }
 
 }

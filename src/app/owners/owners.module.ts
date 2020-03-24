@@ -22,9 +22,10 @@ import {
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { TruckFormComponent } from "./components/truck/truck-form/truck-form.component";
+import { OwnerListComponent } from './components/owner/list/owner-list.component';
 
 @NgModule({
-  declarations: [TruckListComponent, TruckFormComponent],
+  declarations: [TruckListComponent, TruckFormComponent, OwnerListComponent],
   imports: [
     CommonModule,
     OwnersRoutingModule,

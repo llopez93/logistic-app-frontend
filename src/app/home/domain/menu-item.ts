@@ -65,7 +65,12 @@ export const menuItems = [
     route: "providers",
     requiredRoles: ["Administrador"]
   }),
-  new MenuItem({label: "Camiones", icon: "directions_bus", route: "owners/trucks", requiredRoles: ["Administrador"]}),
+  new MenuItem({
+    label: "Activos", icon: "dashboard", children: [
+      new MenuItem({label: "Camiones", icon: "directions_bus", route: "owners/trucks", requiredRoles: ["Administrador"]}),
+      new MenuItem({label: "Propietarios", icon: "assignment_ind", route: "owners", requiredRoles: ["Administrador"]}),
+    ]
+  }),
   new MenuItem({
     label: "Carga de viajes",
     icon: "people_outline",

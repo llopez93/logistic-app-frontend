@@ -17,15 +17,23 @@ import {
   MatSelectModule,
   MatProgressSpinnerModule,
   MatTableModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatSlideToggleModule
 } from "@angular/material";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { TruckFormComponent } from "./components/truck/truck-form/truck-form.component";
-import { OwnerListComponent } from './components/owner/list/owner-list.component';
+import { OwnerListComponent } from "./components/owner/list/owner-list.component";
+import { OwnerFormComponent } from "./components/owner/form/owner-form.component";
+import { NgxMaskModule } from "ngx-mask";
 
 @NgModule({
-  declarations: [TruckListComponent, TruckFormComponent, OwnerListComponent],
+  declarations: [
+    TruckListComponent,
+    TruckFormComponent,
+    OwnerListComponent,
+    OwnerFormComponent
+  ],
   imports: [
     CommonModule,
     OwnersRoutingModule,
@@ -44,7 +52,9 @@ import { OwnerListComponent } from './components/owner/list/owner-list.component
     FlexLayoutModule,
     MatDividerModule,
     MatSelectModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatSlideToggleModule,
+    NgxMaskModule.forRoot({}),
   ]
 })
 export class OwnersModule {}

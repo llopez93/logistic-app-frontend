@@ -68,7 +68,7 @@ export const menuItems = [
   new MenuItem({
     label: "Activos", icon: "dashboard", children: [
       new MenuItem({label: "Camiones", icon: "directions_bus", route: "owners/trucks", requiredRoles: ["Administrador"]}),
-      new MenuItem({label: "Propietarios", icon: "assignment_ind", route: "owners", requiredRoles: ["Administrador"]}),
+      new MenuItem({label: "Propietarios", icon: "assignment_ind", route: "owners/persons", requiredRoles: ["Administrador"]}),
     ]
   }),
   new MenuItem({

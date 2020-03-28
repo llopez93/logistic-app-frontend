@@ -116,7 +116,6 @@ export class TruckFormComponent implements OnInit {
   saveData() {
     let response: Observable<any>;
     const { brand, ...data } = this.truckForm.value;
-    console.log(data);
     if (this.isEdition()) response = this.truckService.update(new Truck(data));
     else response = this.truckService.create(data);
 

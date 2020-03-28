@@ -128,11 +128,11 @@ export class OwnerListComponent implements OnInit {
   }
 
   public gotoDetail(owner: Owner) {
-    this.router.navigate(["home", "owners", owner.id]);
+    this.router.navigate(["home", "owners", "persons", owner.id]);
   }
 
   public create() {
-    this.router.navigate(["home", "owners", "new"]);
+    this.router.navigate(["home", "owners", "persons", "new"]);
   }
 
   showShovelText(shovelCost: number) {

@@ -3,11 +3,15 @@ import { Routes, RouterModule } from "@angular/router";
 import { TruckListComponent } from "./components/truck/truck-list/truck-list.component";
 import { TruckFormComponent } from "./components/truck/truck-form/truck-form.component";
 import { OwnerListComponent } from "./components/owner/list/owner-list.component";
+import { OwnerFormComponent } from "./components/owner/form/owner-form.component";
 
 const routes: Routes = [
   {
-    path: "",
-    children: [{ path: "", component: OwnerListComponent }]
+    path: "persons",
+    children: [
+      { path: "", component: OwnerListComponent },
+      { path: ":id", component: OwnerFormComponent }
+    ]
   },
   {
     path: "trucks",

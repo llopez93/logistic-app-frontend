@@ -1,5 +1,4 @@
 import Entity from '../../core/domain/entity';
-import Truck from './truck';
 
 export default class Owner extends Entity {
   firstName: string;
@@ -7,7 +6,6 @@ export default class Owner extends Entity {
   email: string;
   cuil: string;
   shovelCost: number = 0;
-  trucks: Truck[] = [];
 
   constructor(value: Partial<Owner> = {}) {
     super();

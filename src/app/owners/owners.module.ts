@@ -18,7 +18,8 @@ import {
   MatProgressSpinnerModule,
   MatTableModule,
   MatTooltipModule,
-  MatSlideToggleModule
+  MatSlideToggleModule,
+  MatListModule
 } from "@angular/material";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { FlexLayoutModule } from "@angular/flex-layout";
@@ -55,6 +56,7 @@ import { NgxMaskModule } from "ngx-mask";
     MatProgressSpinnerModule,
     MatSlideToggleModule,
     NgxMaskModule.forRoot({}),
+    MatListModule
   ]
 })
 export class OwnersModule {}

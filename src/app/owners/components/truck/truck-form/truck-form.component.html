@@ -69,7 +69,7 @@
           <mat-card fxFlex="100">
             <mat-card-title>
               <h5>
-                <span>{{ isEdition() ? "Editar propietario" : "Nuevo propietario" }}</span>
+                <span>Propietario del camión</span>
               </h5>
             </mat-card-title>
             <mat-divider></mat-divider>
@@ -96,14 +96,20 @@
               <div fxLayout="row">
                 <mat-form-field appearance="outline" fxFlex="50" class="padding-right">
                   <mat-label>Nombre</mat-label>
-                  <input matInput formControlName="firstName">
+                  <input matInput formControlName="firstName" readonly="true">
+                  <mat-hint>
+                    Sólo lectura
+                  </mat-hint>
                   <mat-error *ngFor="let error  of validation.errorMessages(truckForm.controls.owner.controls.lastName)">
                     {{ error }}
                   </mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" fxFlex="50">
                   <mat-label>Apellido</mat-label>
-                  <input matInput formControlName="lastName">
+                  <input matInput formControlName="lastName" readonly="true">
+                  <mat-hint>
+                    Sólo lectura
+                  </mat-hint>
                   <mat-error *ngFor="let error  of validation.errorMessages(truckForm.controls.owner.controls.lastName)">
                     {{ error }}
                   </mat-error>
@@ -112,14 +118,20 @@
               <div fxLayout="row">
                 <mat-form-field appearance="outline" fxFlex="50" class="padding-right">
                   <mat-label>Email</mat-label>
-                  <input matInput formControlName="email">
+                  <mat-hint>
+                    Sólo lectura
+                  </mat-hint>
+                  <input matInput formControlName="email" readonly="true">
                   <mat-error *ngFor="let error  of validation.errorMessages(truckForm.controls.owner.controls.email)">
                     {{ error }}
                   </mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" fxFlex="50">
                   <mat-label>CUIL / CUIT</mat-label>
-                  <input matInput mask="00-00000000-0" formControlName="cuil">
+                  <mat-hint>
+                    Sólo lectura
+                  </mat-hint>
+                  <input matInput mask="00-00000000-0" formControlName="cuil" readonly="true">
                   <mat-error *ngFor="let error  of validation.errorMessages(truckForm.controls.owner.controls.cuil)">
                     {{ error }}
                   </mat-error>

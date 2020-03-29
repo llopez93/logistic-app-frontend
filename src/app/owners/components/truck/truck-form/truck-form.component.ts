@@ -1,6 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { ValidationMessages } from "../../../../core/service/validation-messages";
-import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormControl
+} from "@angular/forms";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import {
   filter,
@@ -21,8 +26,8 @@ import Brand from "../../../domain/brand";
 import { BrandService } from "../../../services/brand.service";
 import Owner from "src/app/owners/domain/owner";
 import { OwnerService } from "src/app/owners/services/owner.service";
-import { MatAutocompleteSelectedEvent } from '@angular/material';
-import { GlobalAppService } from 'src/app/core/commons/service/global-app.service';
+import { MatAutocompleteSelectedEvent } from "@angular/material";
+import { GlobalAppService } from "src/app/core/commons/service/global-app.service";
 
 @Component({
   selector: "app-truck-form",
@@ -38,6 +43,8 @@ export class TruckFormComponent implements OnInit {
   cuilSearchControl: FormControl;
   filteredOwners: Owner[] = [];
   isLoading = false;
+  // Tiene queryParams
+  isOwnerId: boolean = false;
 
   constructor(
     private readonly router: Router,
@@ -75,7 +82,7 @@ export class TruckFormComponent implements OnInit {
       })
     });
 
-    this.cuilSearchControl = new FormControl('');
+    this.cuilSearchControl = new FormControl("");
   }
 
   ngOnInit() {
@@ -85,8 +92,8 @@ export class TruckFormComponent implements OnInit {
     });
 
     // Obtener el propietario segun el CUIL
-    this.cuilSearchControl
-      .valueChanges.pipe(
+    this.cuilSearchControl.valueChanges
+      .pipe(
         debounceTime(500),
         tap(() => (this.isLoading = true)),
         filter(e => e !== ""),
@@ -101,6 +108,20 @@ export class TruckFormComponent implements OnInit {
 
     this.brandsAsync = this.brandService.getAll();
     const action: Observable<Params> = this.activatedRoute.params;
+
+    // Nuevo
+    action.pipe(filter(params => params.id === "new")).subscribe(() =>
+      this.activatedRoute.queryParams
+        .pipe(filter(queryParams => queryParams.ownerId))
+        .subscribe(queryParams => {
+          this.ownerService.get(queryParams.ownerId).subscribe(ownerInfo => {
+            this.truckForm.get("owner").patchValue(ownerInfo);
+            this.isOwnerId = true;
+          });
+        })
+    );
+
+    // Editar
     action
       .pipe(
         filter(data => data.id !== "new"),

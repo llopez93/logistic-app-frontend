@@ -43,6 +43,14 @@
             </mat-error>
           </mat-form-field>
 
+          <mat-form-field appearance="outline" fxFlex="100">
+            <mat-label>Costo del viaje</mat-label>
+            <input type="number" matInput formControlName="tripCost">
+            <mat-error *ngFor="let error  of validation.errorMessages(ownerForm.controls.tripCost)">
+              {{ error }}
+            </mat-error>
+          </mat-form-field>
+
         </div>
 
         <div fxLayaout="row">

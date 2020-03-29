@@ -108,6 +108,13 @@
           <mat-cell *matCellDef="let owner">{{ owner.email }}</mat-cell>
         </ng-container>
 
+        <ng-container matColumnDef="tripCost">
+          <mat-header-cell *matHeaderCellDef>
+            Costo del viaje
+          </mat-header-cell>
+          <mat-cell *matCellDef="let owner">$ {{ owner.tripCost }}</mat-cell>
+        </ng-container>
+
         <ng-container matColumnDef="shovelCost">
           <mat-header-cell *matHeaderCellDef>
             Tiene pala

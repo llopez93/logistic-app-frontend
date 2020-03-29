@@ -37,7 +37,7 @@ export class OwnerFormComponent implements OnInit {
       cuil: ["", [Validators.required, Validators.minLength(1)]],
       email: [null, [Validators.required, Validators.email]],
       shovelCost: [0, Validators.min(0)],
-      trucks: fb.array([]),
+      tripCost: [0, Validators.min(0)],
       slideShovel: [false]
     });
 

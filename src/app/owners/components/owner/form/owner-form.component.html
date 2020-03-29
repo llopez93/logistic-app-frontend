@@ -1,0 +1,141 @@
+<div class="container">
+  <mat-card fxFlex="80">
+    <mat-card-title>
+      <h5>
+        {{ isEdition() ? "Editar propietario" : "Nuevo propietario" }}
+      </h5>
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-card-content fxLayoutAlign="strech">
+
+      <form novalidate [formGroup]="ownerForm" (ngSubmit)="saveData()"
+            fxLayout="column" fxFlex="100">
+        <div fxLayout="row wrap">
+          <mat-form-field appearance="outline" fxFlex="50" class="padding-right">
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="firstName">
+            <mat-error *ngFor="let error  of validation.errorMessages(ownerForm.controls.firstName)">
+              {{ error }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex="50">
+            <mat-label>Apellido</mat-label>
+            <input matInput formControlName="lastName">
+            <mat-error *ngFor="let error  of validation.errorMessages(ownerForm.controls.lastName)">
+              {{ error }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex="100">
+            <mat-label>CUIL / CUIT</mat-label>
+            <input matInput mask="00-00000000-0" formControlName="cuil">
+            <mat-error *ngFor="let error  of validation.errorMessages(ownerForm.controls.cuil)">
+              {{ error }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex="100">
+            <mat-label>Correo electrónico</mat-label>
+            <input matInput formControlName="email">
+            <mat-error *ngFor="let error  of validation.errorMessages(ownerForm.controls.email)">
+              {{ error }}
+            </mat-error>
+          </mat-form-field>
+
+        </div>
+
+        <div fxLayaout="row">
+
+          <div fxFlex="100" >
+            <mat-slide-toggle formControlName="slideShovel">
+              Cuenta con pala?
+            </mat-slide-toggle>
+          </div>
+
+        </div>
+
+        <div fxLayout="row">
+
+          <mat-form-field appearance="outline" fxFlex="100">
+            <mat-label>Precio pala</mat-label>
+            <input type="number" matInput formControlName="shovelCost">
+            <mat-error *ngFor="let error  of validation.errorMessages(ownerForm.controls.shovelCost)">
+              {{ error }}
+            </mat-error>
+          </mat-form-field>
+
+        </div>
+
+        <mat-card *ngIf="isEdition()">
+          <mat-card-title>
+            <h5>
+              Listado de camiones
+            </h5>
+            <button
+              mat-button
+              class="green-btn create-btn"
+              (click)="createTruck()">
+              Nuevo camion
+              <mat-icon>add</mat-icon>
+            </button>
+          </mat-card-title>
+          <mat-divider></mat-divider>
+          <mat-card-content>
+            <table mat-table [dataSource]="trucks" class="mat-elevation-z8">
+
+              <!-- Name Column -->
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                <td mat-cell *matCellDef="let element"> {{ element.name }} </td>
+              </ng-container>
+
+              <!-- Domain Column -->
+              <ng-container matColumnDef="domain">
+                <th mat-header-cell *matHeaderCellDef> Dominio </th>
+                <td mat-cell *matCellDef="let element"> {{ element.domain }} </td>
+              </ng-container>
+
+              <!-- Year Column -->
+              <ng-container matColumnDef="year">
+                <th mat-header-cell *matHeaderCellDef> Año </th>
+                <td mat-cell *matCellDef="let element"> {{ element.year }} </td>
+              </ng-container>
+
+              <!-- Actions Column -->
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Acciones</th>
+                <td mat-cell *matCellDef="let truck">
+                  <button
+                    mat-mini-fab
+                    (click)="gotoDetailTruck(truck.id)"
+                    matTooltip="Ver detalle"
+                    matTooltipPosition="above"
+                    class="green-btn"
+                  >
+                    <i class="icon material-icons">edit</i>
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </mat-card-content>
+        </mat-card>
+
+        <div class="buttons" fxLayout="row" fxLayoutAlign="end end" fxLayoutGap="10px">
+          <button fxFlex="20" type="submit" mat-raised-button [disabled]="ownerForm.invalid" class="dark-green-btn">
+            <mat-icon>send</mat-icon>
+            <span class="ui-button-text ui-c">Guardar</span>
+          </button>
+
+          <button fxFlex="20" mat-raised-button (click)="goBack()">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+</div>

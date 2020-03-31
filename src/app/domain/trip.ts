@@ -3,6 +3,7 @@ import {Client} from '../client/domain/client';
 import Truck from "../owners/domain/truck";
 import {Provider} from "./provider";
 import {Material} from "./material";
+import User from "../core/domain/security/user";
 
 export class Trip extends Entity {
 
@@ -17,6 +18,7 @@ export class Trip extends Entity {
   loadCost: boolean;
   fuel = 0;
   price = 0;
+  createdBy: User = null;
 
   constructor(o: Trip | Partial<Trip>) {
     super();
@@ -29,6 +31,8 @@ export class Trip extends Entity {
       this.material = new Material(this.material);
     if (this.origin)
       this.origin = new Provider(this.origin);
+    if (this.createdBy)
+      this.createdBy = new User(this.createdBy);
   }
 
 }

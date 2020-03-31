@@ -61,7 +61,7 @@ export const menuItems = [
   }),
   new MenuItem({
     label: "Proveedores",
-    icon: "people_outline",
+    icon: "terrain",
     route: "providers",
     requiredRoles: ["Administrador"]
   }),
@@ -73,7 +73,7 @@ export const menuItems = [
   }),
   new MenuItem({
     label: "Carga de viajes",
-    icon: "people_outline",
+    icon: "local_shipping",
     route: "trips/new",
     requiredRoles: []
   }),

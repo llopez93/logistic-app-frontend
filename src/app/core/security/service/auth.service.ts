@@ -16,7 +16,7 @@ export class AuthService {
 
   baseUrl: string = environment.backendHost;
   authUrl = '/auth';
-  jwtHelper: JwtHelperService = new JwtHelperService();
+  jwtHelper: JwtHelperService = new JwtHelperService( );
   private _user: BehaviorSubject<User> = new BehaviorSubject<User>(null);
 
   constructor(private http: HttpClient, private router: Router) {
@@ -63,7 +63,8 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     const token = localStorage.getItem(environment.tokenName);
-    return (token !== null && !this.jwtHelper.isTokenExpired(token));
+    return token !== null && !this.jwtHelper.isTokenExpired(token);
   }
 
 }
+

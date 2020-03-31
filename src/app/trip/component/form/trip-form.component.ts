@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ClientService} from "../../../client/service/client.service";
 import {TruckService} from "../../../owners/services/truck.service";
@@ -13,6 +13,9 @@ import {Trip} from "../../../domain/trip";
 import Truck from "../../../owners/domain/truck";
 import {Client} from 'src/app/client/domain/client';
 import {TripService} from "../../service/trip.service";
+import {GlobalAppService} from "../../../core/commons/service/global-app.service";
+import {ConfirmDialogService} from "../../../core/commons/service/confirm-dialog.service";
+import {SnackbarService} from "../../../core/service/snackbar.service";
 
 @Component({
   selector: 'app-trip-form',
@@ -20,7 +23,7 @@ import {TripService} from "../../service/trip.service";
   styleUrls: ['./trip-form.component.scss'],
   providers: [ClientService, TruckService, ProviderService, MaterialService]
 })
-export class TripFormComponent implements OnInit {
+export class TripFormComponent implements OnInit, AfterViewInit {
 
   tripForm: FormGroup;
   readonly validation: ValidationMessages = new ValidationMessages();
@@ -44,6 +47,9 @@ export class TripFormComponent implements OnInit {
   materialsChangeEvent: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(private readonly fb: FormBuilder,
+              private readonly appService: GlobalAppService,
+              private readonly confirmationService: ConfirmDialogService,
+              private readonly snackbarService: SnackbarService,
               private readonly route: ActivatedRoute,
               private readonly clientService: ClientService,
               private readonly truckService: TruckService,
@@ -82,14 +88,15 @@ export class TripFormComponent implements OnInit {
       switchMap(() => this.materialService.getByProvider(this.tripForm.get("tripInfo").get("origin").value))
     )
       .subscribe(materials => {
+        this.tripForm.get("tripInfo").get("material").reset();
         if (materials.length > 0) {
           this.materials = materials;
           this.materialsChangeEvent.next(true);
-        } else
-          this.materialService.getAll().subscribe(res => {
-            this.materials = res;
-            this.materialsChangeEvent.next(true);
-          });
+          this.tripForm.get("tripInfo").get("material").enable();
+        } else {
+          this.materials = [];
+          this.tripForm.get("tripInfo").get("material").disable();
+        }
       });
 
     this.materialsChangeEvent.asObservable()
@@ -106,11 +113,14 @@ export class TripFormComponent implements OnInit {
           this.tripForm.get("tripInfo").get("origin").disable();
           this.tripForm.get("tripInfo").get("originName").enable();
           this.materialService.getAll().subscribe(res => {
+            this.tripForm.get("tripInfo").get("material").enable();
             this.materials = res;
             this.materialsChangeEvent.next(true);
           });
         } else {
           this.materials = [];
+          this.tripForm.get("tripInfo").get("material").reset();
+          this.tripForm.get("tripInfo").get("material").disable();
           this.tripForm.get("tripInfo").get("origin").enable();
           this.tripForm.get("tripInfo").get("originName").disable();
         }
@@ -120,6 +130,8 @@ export class TripFormComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.appService.setLoading(true);
+
     this.clientService.getAll()
       .subscribe(clients => {
         this.clients = this.clients.concat(clients.map(c => ({label: c.name + " | " + c.socialReason, value: c})));
@@ -152,6 +164,10 @@ export class TripFormComponent implements OnInit {
       .subscribe(() => {
         this.selectFilter(this.providers, this.providerSearchControl.value, this.providerFilter);
       });
+  }
+
+  ngAfterViewInit(): void {
+    this.appService.setLoading(false);
   }
 
   isEdition(): boolean {
@@ -205,7 +221,10 @@ export class TripFormComponent implements OnInit {
   }
 
   formValid(): boolean {
-    return this.tripForm.get("tripInfo").valid && this.tripForm.get("tripInfo").enabled && this.tripForm.valid;
+    return this.tripForm.get("tripInfo").valid
+      && this.tripForm.get("tripInfo").enabled
+      && this.tripForm.get("tripInfo").get("material").enabled
+      && this.tripForm.valid;
   }
 
   saveData() {
@@ -220,7 +239,29 @@ export class TripFormComponent implements OnInit {
     trip.truck = truck;
     trip.tripDate = tripDate;
 
-    this.tripService.createTrip(trip, laps).subscribe();
+    this.confirmationService.showDialog({
+      title: "Atención",
+      message: "¿Está seguro que registrar el/los viaje/s?",
+      icon: "warning",
+      onAccept: () => {
+        this.appService.setLoading(true);
+        this.tripService.createTrip(trip, laps).subscribe(value => {
+          console.log("Refrescar el listado");
+          this.snackbarService.show({
+            type: "success",
+            title: "Operación exitosa",
+            body: "La información fue registrada correctamente.",
+            duration: 1000
+          });
+        });
+      }
+    }, 400).subscribe(value => this.appService.setLoading(false));
+  }
+
+  providerWithoutMaterials(): boolean {
+    return this.tripForm.get("tripInfo").get("origin").enabled
+      && this.tripForm.get("tripInfo").get("origin").valid
+      && this.materials.length === 0;
   }
 
 }

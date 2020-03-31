@@ -150,29 +150,41 @@
             <div fxLayout="row wrap" fxFlex="100"
                  *ngFor="let material of providerForm.get('materials').controls; let i=index">
               <div [formGroupName]="i.toString()" fxFlex="100">
-                <mat-form-field appearance="outline" fxFlex="20" class="padding-right">
-                  <mat-label>Unidad</mat-label>
-                  <mat-select required formControlName="unit">
-                    <mat-option *ngFor="let u of unitTypes" [value]="u">
-                      {{u}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <mat-form-field appearance="outline" fxFlex="65">
-                  <mat-label>Material</mat-label>
-                  <input matInput formControlName="name" [matAutocomplete]="materialAutocomplete">
+                <div formGroupName="material" class="padding-right" fxFlex="60">
+                  <mat-form-field appearance="outline" fxFlex="20" class="padding-right">
+                    <mat-label>Unidad</mat-label>
+                    <mat-select required formControlName="unit">
+                      <mat-option *ngFor="let u of unitTypes" [value]="u">
+                        {{u}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" fxFlex="80">
+                    <mat-label>Material</mat-label>
+                    <input matInput formControlName="name" [matAutocomplete]="materialAutocomplete">
+                    <mat-error
+                      *ngFor="let error  of validation.errorMessages(providerForm.get('materials').get(i.toString()).get('name'))">
+                      {{ error }}
+                    </mat-error>
+                    <mat-autocomplete #materialAutocomplete="matAutocomplete"
+                                      (optionSelected)="setMaterial($event, i.toString())">
+                      <mat-option *ngFor="let m of materials" [value]="m">
+                        {{m.name}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                </div>
+
+                <mat-form-field appearance="outline" fxFlex="30">
+                  <mat-label>Precio del material</mat-label>
+                  <input matInput formControlName="price">
                   <mat-error
-                    *ngFor="let error  of validation.errorMessages(providerForm.get('materials').get(i.toString()).get('name'))">
+                    *ngFor="let error  of validation.errorMessages(providerForm.get('materials').get(i.toString()).get('material').get('price'))">
                     {{ error }}
                   </mat-error>
-                  <mat-autocomplete #materialAutocomplete="matAutocomplete"
-                                    (optionSelected)="setMaterial($event, i.toString())">
-                    <mat-option *ngFor="let m of materials" [value]="m">
-                      {{m.name}}
-                    </mat-option>
-                  </mat-autocomplete>
                 </mat-form-field>
-                <div fxFlex="15" fxLayoutAlign="center" class="remove-btn-container">
+
+                <div fxFlex="10" fxLayoutAlign="center" class="remove-btn-container">
                   <button mat-mini-fab type="button" class="red-btn" (click)="removeMaterial(i)"
                           matTooltip="Eliminar">
                     <mat-icon>close</mat-icon>

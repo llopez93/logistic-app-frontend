@@ -1,6 +1,7 @@
 import {Address} from "../core/domain/address/address";
 import {Material} from "./material";
 import Entity from "../core/domain/entity";
+import {MaterialPrice} from "./material-price";
 
 
 export class Provider extends Entity {
@@ -12,7 +13,7 @@ export class Provider extends Entity {
   phoneType: string;
   email: string;
   address: Address;
-  materials: Material[];
+  materials: MaterialPrice[];
 
   constructor(o: Provider | Partial<Provider>) {
     super();
@@ -20,6 +21,6 @@ export class Provider extends Entity {
     if (this.address)
       this.address = new Address(this.address);
     if (this.materials)
-      this.materials = this.materials.map(m => new Material(m));
+      this.materials = this.materials.map(m => new MaterialPrice(m));
   }
 }

@@ -11,16 +11,17 @@ import {
   MatFormFieldModule, MatIconModule,
   MatInputModule,
   MatSelectModule,
-  MatSlideToggleModule
+  MatSlideToggleModule, MatTableModule
 } from "@angular/material";
 import {FlexModule} from "@angular/flex-layout";
 import {AppCommonsModule} from "../core/commons/commons.module";
 import {ReactiveFormsModule} from "@angular/forms";
 import {NgxMaskModule} from "ngx-mask";
+import { LatestListComponent } from './component/latest-list/latest-list.component';
 
 
 @NgModule({
-  declarations: [TripFormComponent],
+  declarations: [TripFormComponent, LatestListComponent],
   imports: [
     CommonModule,
     TripRoutingModule,
@@ -37,6 +38,7 @@ import {NgxMaskModule} from "ngx-mask";
     MatSlideToggleModule,
     MatIconModule,
     MatButtonModule,
+    MatTableModule,
   ]
 })
 export class TripModule { }

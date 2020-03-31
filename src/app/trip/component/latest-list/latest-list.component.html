@@ -1,0 +1,47 @@
+<mat-card fxFlex="100">
+  <mat-card-title>
+    <h5>
+      Últimos viajes registrados
+    </h5>
+  </mat-card-title>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+    <mat-table [dataSource]="tableDataSource" class="no-filters-table">
+      <ng-container matColumnDef="client">
+        <mat-header-cell *matHeaderCellDef>
+          Cliente
+        </mat-header-cell>
+        <mat-cell *matCellDef="let trip">{{ trip.client.name }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="truck">
+        <mat-header-cell *matHeaderCellDef>
+          Camión
+        </mat-header-cell>
+        <mat-cell *matCellDef="let trip">{{ trip.truck.domain }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="material">
+        <mat-header-cell *matHeaderCellDef>
+          Material
+        </mat-header-cell>
+        <mat-cell *matCellDef="let trip">{{ trip.material.name }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="date">
+        <mat-header-cell *matHeaderCellDef>
+          Fecha
+        </mat-header-cell>
+        <mat-cell *matCellDef="let trip">{{ "dd/mm/aaaa" }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="user">
+        <mat-header-cell *matHeaderCellDef>
+          Cargado por
+        </mat-header-cell>
+        <mat-cell *matCellDef="let trip">{{ trip.createdBy.getFullName() }}</mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+    <div *ngIf="tableDataSource.data.length === 0" id="noResults" class="no-results">
+      Todavía no se cargaron viajes
+    </div>
+  </mat-card-content>
+</mat-card>

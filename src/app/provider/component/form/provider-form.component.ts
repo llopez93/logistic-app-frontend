@@ -92,15 +92,22 @@ export class ProviderFormComponent implements OnInit {
         const array = provider.materials.map(m => {
           return this.fb.group({
             id: [m.id],
-            unit: [m.unit, Validators.required],
-            name: [m.name, Validators.required]
+            price: [m.price, Validators.required],
+            material: this.fb.group({
+              id: [m.material.id],
+              unit: [m.material.unit, Validators.required],
+              name: [m.material.name, Validators.required]
+            })
           });
         });
         this.providerForm.setControl("materials", this.fb.array(array));
-        this.materialService.getAll().subscribe(materials => {
+        this.materialService.getAll()
+          .subscribe(materials => {
           materials = materials.filter(m => !provider.materials.some(value => value.id === m.id));
           this.materials = materials;
         });
+
+        console.log(this.providerForm.value);
       });
 
     action.pipe(
@@ -174,14 +181,18 @@ export class ProviderFormComponent implements OnInit {
   setMaterial(event: MatAutocompleteSelectedEvent, formGroupName: string) {
     const m: Material = event.option.value;
     this.materials = this.materials.filter(val => val.id !== m.id);
-    this.providerForm.get("materials").get(formGroupName).patchValue(m);
+    this.providerForm.get("materials").get(formGroupName).get("material").patchValue(m);
   }
 
   addMaterial(): void {
     (this.providerForm.get("materials") as FormArray).push(this.fb.group({
       id: [null],
-      unit: ['', Validators.required],
-      name: ['', Validators.required]
+      price: ['', Validators.required],
+      material: this.fb.group({
+          id: [null],
+          unit: ['', Validators.required],
+          name: ['', Validators.required]
+      })
     }));
   }
 

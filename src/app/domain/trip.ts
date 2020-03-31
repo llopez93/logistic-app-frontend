@@ -17,6 +17,7 @@ export class Trip extends Entity {
   loadSize: number;
   loadCost: boolean;
   fuel = 0;
+  materialPrice = 0;
   price = 0;
   createdBy: User = null;
 

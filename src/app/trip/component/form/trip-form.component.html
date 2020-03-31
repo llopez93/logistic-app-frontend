@@ -104,8 +104,8 @@
               <mat-label>Material</mat-label>
               <mat-select formControlName="name"
                           (selectionChange)="setMaterial($event.value)">
-                <mat-option *ngFor="let m of materials" [value]="m.name">
-                  {{m.name}}
+                <mat-option *ngFor="let m of materials" [value]="m.material.name">
+                  {{m.material.name}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
@@ -132,6 +132,16 @@
           </div>
 
           <div fxFlex="100">
+
+            <mat-form-field appearance="outline" fxFlex="30" class="padding-right">
+              <mat-label>Precio del material</mat-label>
+              <input matInput
+                     formControlName="materialPrice">
+              <mat-error
+                *ngFor="let error  of validation.errorMessages(tripForm.controls.tripInfo.get('materialPrice'))">
+                {{ error }}
+              </mat-error>
+            </mat-form-field>
 
             <mat-form-field appearance="outline" fxFlex="30">
               <mat-label>Gas Oil (lts)</mat-label>

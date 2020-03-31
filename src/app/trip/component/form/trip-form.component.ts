@@ -16,6 +16,7 @@ import {TripService} from "../../service/trip.service";
 import {GlobalAppService} from "../../../core/commons/service/global-app.service";
 import {ConfirmDialogService} from "../../../core/commons/service/confirm-dialog.service";
 import {SnackbarService} from "../../../core/service/snackbar.service";
+import {MaterialPrice} from "../../../domain/material-price";
 
 @Component({
   selector: 'app-trip-form',
@@ -43,7 +44,7 @@ export class TripFormComponent implements OnInit, AfterViewInit {
   providers: SelectItem[] = [{label: 'Selecciona un proveedor', value: null}];
   providerSearchControl: FormControl = new FormControl();
 
-  materials: Material[] = [];
+  materials: MaterialPrice[] = [];
   materialsChangeEvent: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(private readonly fb: FormBuilder,
@@ -63,6 +64,7 @@ export class TripFormComponent implements OnInit, AfterViewInit {
       truck: [null, Validators.required],
       date: [new Date(), Validators.required],
       tripInfo: this.fb.group({
+        materialPrice: ['', Validators.required],
         material: this.fb.group({
           id: [null, Validators.required],
           name: ['', Validators.required],
@@ -73,9 +75,9 @@ export class TripFormComponent implements OnInit, AfterViewInit {
         manualOriginCharge: [false],
         originName: ['', [Validators.required, Validators.minLength(1)]],
         loadSize: ['', [Validators.required, Validators.min(1), this.validation.isNumber()]],
-        price: ['', [Validators.required, Validators.min(1), this.validation.isNumber()]],
+        price: [0, [Validators.required, this.validation.isNumber()]],
         loadCost: [false],
-        fuel: ['', [Validators.required, Validators.min(1), this.validation.isNumber()]],
+        fuel: [0, [Validators.required, this.validation.isNumber()]],
         lapCount: [1]
       })
     });
@@ -85,9 +87,10 @@ export class TripFormComponent implements OnInit, AfterViewInit {
 
     this.tripForm.get("tripInfo").get("origin").valueChanges.pipe(
       filter(value => value),
-      switchMap(() => this.materialService.getByProvider(this.tripForm.get("tripInfo").get("origin").value))
-    )
+      switchMap(() =>
+        this.materialService.getPricesByProvider(this.tripForm.get("tripInfo").get("origin").value)))
       .subscribe(materials => {
+        console.log(materials);
         this.tripForm.get("tripInfo").get("material").reset();
         if (materials.length > 0) {
           this.materials = materials;
@@ -104,7 +107,8 @@ export class TripFormComponent implements OnInit, AfterViewInit {
         filter(event => event === true)
       )
       .subscribe(() => {
-        this.tripForm.get("tripInfo").get("material").patchValue(this.materials[0]);
+        this.tripForm.get("tripInfo").get("material").patchValue(this.materials[0].material);
+        this.tripForm.get("tripInfo").get("materialPrice").patchValue(this.materials[0].price);
       });
 
     this.tripForm.get("tripInfo").get("manualOriginCharge").valueChanges
@@ -113,8 +117,9 @@ export class TripFormComponent implements OnInit, AfterViewInit {
           this.tripForm.get("tripInfo").get("origin").disable();
           this.tripForm.get("tripInfo").get("originName").enable();
           this.materialService.getAll().subscribe(res => {
+
             this.tripForm.get("tripInfo").get("material").enable();
-            this.materials = res;
+            this.materials = res.map(m => new MaterialPrice({price: 0, material: m}));
             this.materialsChangeEvent.next(true);
           });
         } else {
@@ -195,8 +200,9 @@ export class TripFormComponent implements OnInit, AfterViewInit {
   }
 
   setMaterial(materialName: string) {
-    const m: Material = this.materials.filter(val => val.name === materialName).pop();
-    this.tripForm.get("tripInfo").get("material").patchValue(m);
+    const m: MaterialPrice = this.materials.filter(val => val.material.name === materialName).pop();
+    this.tripForm.get("tripInfo").get("material").patchValue(m.material);
+    this.tripForm.get("tripInfo").get("materialPrice").patchValue(m.price);
   }
 
   getLapCount(): number {

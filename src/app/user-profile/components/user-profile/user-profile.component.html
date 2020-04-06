@@ -9,7 +9,7 @@
       <mat-tab label="Mi Perfil">
         <mat-card-content class="tab-content">
           <form class="form" [formGroup]="profileFormGroup">
-            
+
             <div fxLayout="row" fxLayout.lt-sm="column" >
                 <div class="inputs-column" fxFlex.gt-sm="30" fxFlex.lt-sm="100" fxLayout="column">
 
@@ -103,8 +103,10 @@
 
               <h4 class="bold">Teléfonos</h4>
 
+
               <div fxLayout="column" class="phones-container" fxLayoutAlign="center start">
                 <div formArrayName="phonesArray">
+                  <!--
                   <mat-card *ngFor="let telefono of profileFormGroup.get('phonesArray').controls; let i=index" class="card">
                     <button mat-icon-button *ngIf="profileFormGroup.get('phonesArray').controls.length >= 1" type="button"
                             matTooltip="Eliminar telefono" (click)="removePhone(i)" class="button-remove">
@@ -132,7 +134,7 @@
                       <mat-icon>add</mat-icon>
                     </button>
                   </div>
-
+                  -->
                 </div>
 
 

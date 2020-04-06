@@ -18,6 +18,8 @@ export class Trip extends Entity {
   loadCost: boolean;
   fuel = 0;
   materialPrice = 0;
+  shipmentPrice = 0;
+  shovelPrice = 0;
   price = 0;
   createdBy: User = null;
 

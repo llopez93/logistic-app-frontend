@@ -100,7 +100,7 @@
                   <mat-hint>
                     Sólo lectura
                   </mat-hint>
-                  <mat-error *ngFor="let error  of validation.errorMessages(truckForm.controls.owner.controls.lastName)">
+                  <mat-error *ngFor="let error  of validation.errorMessages(truckForm.controls.owner.get('lastName'))">
                     {{ error }}
                   </mat-error>
                 </mat-form-field>
@@ -110,7 +110,7 @@
                   <mat-hint>
                     Sólo lectura
                   </mat-hint>
-                  <mat-error *ngFor="let error  of validation.errorMessages(truckForm.controls.owner.controls.lastName)">
+                  <mat-error *ngFor="let error  of validation.errorMessages(truckForm.controls.owner.get('lastName'))">
                     {{ error }}
                   </mat-error>
                 </mat-form-field>
@@ -122,7 +122,7 @@
                     Sólo lectura
                   </mat-hint>
                   <input matInput formControlName="email" readonly="true">
-                  <mat-error *ngFor="let error  of validation.errorMessages(truckForm.controls.owner.controls.email)">
+                  <mat-error *ngFor="let error  of validation.errorMessages(truckForm.controls.owner.get('email'))">
                     {{ error }}
                   </mat-error>
                 </mat-form-field>
@@ -132,7 +132,7 @@
                     Sólo lectura
                   </mat-hint>
                   <input matInput mask="00-00000000-0" formControlName="cuil" readonly="true">
-                  <mat-error *ngFor="let error  of validation.errorMessages(truckForm.controls.owner.controls.cuil)">
+                  <mat-error *ngFor="let error  of validation.errorMessages(truckForm.controls.owner.get('cuil'))">
                     {{ error }}
                   </mat-error>
                 </mat-form-field>

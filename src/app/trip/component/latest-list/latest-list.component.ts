@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {MatTableDataSource} from "@angular/material";
 import {TripService} from "../../service/trip.service";
+import {Trip} from "../../../domain/trip";
+import moment from "moment";
 
 @Component({
   selector: 'app-latest-list',
@@ -19,6 +21,9 @@ export class LatestListComponent implements OnInit {
     this.tripService.findLatestsTrips().subscribe(trips => this.tableDataSource.data = trips);
   }
 
-  //TODO: Mostrar la fecha usando Moment
+  formatDate(t: Trip) {
+    moment.locale("ES");
+    return moment(t.tripDate).format("D/MM/YYYY");
+  }
 
 }

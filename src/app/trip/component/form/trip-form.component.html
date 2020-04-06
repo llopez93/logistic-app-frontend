@@ -9,7 +9,7 @@
     <mat-card-content fxLayoutAlign="strech">
       <form novalidate (ngSubmit)="saveData()"
             [formGroup]="tripForm" fxFlex="100" fxLayout="row wrap">
-        <div class="client-truck-container" fxFlex="100" fxLayout="row">
+        <div class="client-truck-container" fxFlex="100" fxLayout="row wrap">
           <mat-form-field appearance="outline" class="padding-right" fxFlex="40">
             <mat-label>Cliente</mat-label>
             <mat-select formControlName="client">
@@ -125,13 +125,38 @@
             </mat-error>
           </mat-form-field>
 
-          <div fxFlex="100" class="load-cost-container">
-            <mat-slide-toggle formControlName="loadCost">
-              Se incluye el costo de carga
-            </mat-slide-toggle>
-          </div>
+          <div fxFlex="100" fxLayout="row wrap">
 
-          <div fxFlex="100">
+            <div fxFlex="100" fxLayout="row wrap">
+
+              <p fxFlex="100" *ngIf="hasShovel">
+                <mat-icon>
+                  warning
+                </mat-icon>
+                El valor de la carga del camión se incluyó en el costo del transportista
+              </p>
+
+              <mat-form-field appearance="outline" fxFlex="30" class="padding-right">
+                <mat-label>Precio del flete</mat-label>
+                <input matInput readonly
+                       formControlName="shipmentPrice">
+                <mat-error
+                  *ngFor="let error  of validation.errorMessages(tripForm.controls.tripInfo.get('shipmentPrice'))">
+                  {{ error }}
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" fxFlex="30" class="padding-right" *ngIf="!hasShovel">
+                <mat-label>Precio de la pala cargadora</mat-label>
+                <input matInput
+                       formControlName="shovelPrice">
+                <mat-error
+                  *ngFor="let error  of validation.errorMessages(tripForm.controls.tripInfo.get('shovelPrice'))">
+                  {{ error }}
+                </mat-error>
+              </mat-form-field>
+
+            </div>
 
             <mat-form-field appearance="outline" fxFlex="30" class="padding-right">
               <mat-label>Precio del material</mat-label>

@@ -91,7 +91,7 @@
             <mat-checkbox
               [(ngModel)]="user.enabled"
               name="'{{ user.id }}'"
-              (click)="updateUser(user, checked)"
+              (click)="updateUser(user, $event)"
               [disabled]="user.id === userLogged.id"
             >
             </mat-checkbox>

@@ -7,7 +7,6 @@ import {MaterialService} from "../../../provider/service/material.service";
 import {ActivatedRoute} from "@angular/router";
 import {BehaviorSubject, Subject} from "rxjs";
 import {filter, switchMap} from "rxjs/operators";
-import {Material} from "../../../domain/material";
 import {ValidationMessages} from "../../../core/service/validation-messages";
 import {Trip} from "../../../domain/trip";
 import Truck from "../../../owners/domain/truck";
@@ -47,6 +46,8 @@ export class TripFormComponent implements OnInit, AfterViewInit {
   materials: MaterialPrice[] = [];
   materialsChangeEvent: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
+  hasShovel = false;
+
   constructor(private readonly fb: FormBuilder,
               private readonly appService: GlobalAppService,
               private readonly confirmationService: ConfirmDialogService,
@@ -64,7 +65,8 @@ export class TripFormComponent implements OnInit, AfterViewInit {
       truck: [null, Validators.required],
       date: [new Date(), Validators.required],
       tripInfo: this.fb.group({
-        materialPrice: ['', Validators.required],
+        materialPrice: [0, Validators.required],
+        shipmentPrice: [0, Validators.required],
         material: this.fb.group({
           id: [null, Validators.required],
           name: ['', Validators.required],
@@ -76,6 +78,7 @@ export class TripFormComponent implements OnInit, AfterViewInit {
         originName: ['', [Validators.required, Validators.minLength(1)]],
         loadSize: ['', [Validators.required, Validators.min(1), this.validation.isNumber()]],
         price: [0, [Validators.required, this.validation.isNumber()]],
+        shovelPrice: [0, Validators.required],
         loadCost: [false],
         fuel: [0, [Validators.required, this.validation.isNumber()]],
         lapCount: [1]
@@ -83,14 +86,17 @@ export class TripFormComponent implements OnInit, AfterViewInit {
     });
     this.tripForm.get("tripInfo").disable();
     this.tripForm.get("client").valueChanges.subscribe(() => this.enableTripForm());
-    this.tripForm.get("truck").valueChanges.subscribe(() => this.enableTripForm());
+    this.tripForm.get("truck").valueChanges.subscribe(t => {
+      this.tripForm.get("tripInfo").get("shipmentPrice").patchValue((t as Truck).owner.tripCost);
+      this.hasShovel = (t as Truck).owner.hasShovel();
+      this.enableTripForm();
+    });
 
     this.tripForm.get("tripInfo").get("origin").valueChanges.pipe(
       filter(value => value),
       switchMap(() =>
         this.materialService.getPricesByProvider(this.tripForm.get("tripInfo").get("origin").value)))
       .subscribe(materials => {
-        console.log(materials);
         this.tripForm.get("tripInfo").get("material").reset();
         if (materials.length > 0) {
           this.materials = materials;
@@ -130,8 +136,6 @@ export class TripFormComponent implements OnInit, AfterViewInit {
           this.tripForm.get("tripInfo").get("originName").disable();
         }
       });
-
-
   }
 
   ngOnInit() {
@@ -252,7 +256,7 @@ export class TripFormComponent implements OnInit, AfterViewInit {
       onAccept: () => {
         this.appService.setLoading(true);
         this.tripService.createTrip(trip, laps).subscribe(value => {
-          console.log("Refrescar el listado");
+          // TODO: refrescar el listado de viajes.
           this.snackbarService.show({
             type: "success",
             title: "Operación exitosa",

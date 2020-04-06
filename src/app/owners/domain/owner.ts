@@ -12,5 +12,9 @@ export default class Owner extends Entity {
     super();
     Object.assign(this, value);
   }
+
+  hasShovel(): boolean {
+    return this.shovelCost !== null;
+  }
 }
 

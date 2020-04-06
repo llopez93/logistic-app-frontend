@@ -103,9 +103,9 @@ export class ProviderFormComponent implements OnInit {
         this.providerForm.setControl("materials", this.fb.array(array));
         this.materialService.getAll()
           .subscribe(materials => {
-          materials = materials.filter(m => !provider.materials.some(value => value.id === m.id));
-          this.materials = materials;
-        });
+            materials = materials.filter(m => !provider.materials.some(value => value.id === m.id));
+            this.materials = materials;
+          });
 
         console.log(this.providerForm.value);
       });
@@ -189,9 +189,9 @@ export class ProviderFormComponent implements OnInit {
       id: [null],
       price: ['', Validators.required],
       material: this.fb.group({
-          id: [null],
-          unit: ['', Validators.required],
-          name: ['', Validators.required]
+        id: [null],
+        unit: ['', Validators.required],
+        name: ['', Validators.required]
       })
     }));
   }
@@ -207,6 +207,10 @@ export class ProviderFormComponent implements OnInit {
 
   removeMaterial(formIndex: number) {
     (this.providerForm.get("materials") as FormArray).removeAt(formIndex);
+  }
+
+  getMaterials(): FormArray {
+    return this.providerForm.get("materials") as FormArray;
   }
 
 }

@@ -19,4 +19,6 @@ export default class Truck extends Entity {
   public hasModel(modelName: string): boolean {
     return this.model.compareNameTo(modelName);
   }
+
+
 }

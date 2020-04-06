@@ -148,7 +148,7 @@
           </div>
           <div fxFlex="100" fxLayout="column" formArrayName="materials">
             <div fxLayout="row wrap" fxFlex="100"
-                 *ngFor="let material of providerForm.get('materials').controls; let i=index">
+                 *ngFor="let material of getMaterials().controls; let i=index">
               <div [formGroupName]="i.toString()" fxFlex="100">
                 <div formGroupName="material" class="padding-right" fxFlex="60">
                   <mat-form-field appearance="outline" fxFlex="20" class="padding-right">

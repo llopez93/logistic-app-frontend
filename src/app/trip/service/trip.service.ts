@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {GenericService} from "../../core/service/generic.service";
 import {Trip} from "../../domain/trip";
 import {Observable} from "rxjs";
-import {Provider} from "../../domain/provider";
+import * as moment from "moment";
 
 @Injectable({
   providedIn: 'root'

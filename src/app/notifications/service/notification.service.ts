@@ -1,26 +1,24 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {GenericService} from "../../core/service/generic.service";
 import {Notification as NotificationEntity} from "../domain/notification";
 import {HttpClient} from "@angular/common/http";
 import {BehaviorSubject, Observable} from "rxjs";
-import firebase from 'firebase/app';
-import 'firebase/messaging';
-import {FirebaseConfig} from "../../core/configuration/firebase.config";
-import Messaging = firebase.messaging.Messaging;
 
 @Injectable({
   providedIn: 'root'
 })
-export class NotificationService extends GenericService<NotificationEntity>  {
+export class NotificationService extends GenericService<NotificationEntity> {
 
   updateSubject = new BehaviorSubject(null);
   currentConversationId = new BehaviorSubject(null);
   notification: NotificationEntity = new NotificationEntity({});
   currentMessage = new BehaviorSubject(this.notification);
-  messaging: Messaging;
 
-  constructor(protected http: HttpClient){
+  // messaging: Messaging;
+
+  constructor(protected http: HttpClient) {
     super(http);
+    /*
     firebase.initializeApp(FirebaseConfig);
     this.messaging = firebase.messaging();
 
@@ -29,6 +27,7 @@ export class NotificationService extends GenericService<NotificationEntity>  {
         this.setViewedConversation(id).subscribe();
       }
     })
+    */
   }
 
   protected getResourcePath(): string {
@@ -44,19 +43,21 @@ export class NotificationService extends GenericService<NotificationEntity>  {
   }
 
   getPermission() {
+    /*
     Notification.requestPermission().then(() => {
-        return this.messaging.getToken();
-      })
+      return this.messaging.getToken();
+    })
       .then(token => {
         this.updateToken(token).subscribe();
       })
       .catch(err => {
         console.error("Unable to get permission to notify.", err);
       });
-
+    */
   }
 
   receiveMessage(): void {
+    /*
     this.messaging.onMessage(payload => {
       const notification = new NotificationEntity(payload.data);
       if (this.currentConversationId.getValue() != null &&
@@ -70,14 +71,16 @@ export class NotificationService extends GenericService<NotificationEntity>  {
       }
 
     });
+
+     */
   }
 
   updateToken(token): Observable<any> {
     return this.doRequest({
       url: this.baseUrl + this.getResourcePath() + "/updateToken",
       method: "POST",
-      options: { body: {token } },
-    })
+      options: {body: {token}},
+    });
   }
 
   setViewed(id: number): Observable<any> {
@@ -85,7 +88,7 @@ export class NotificationService extends GenericService<NotificationEntity>  {
       url: this.baseUrl + this.getResourcePath() + "/setViewed",
       method: "POST",
       options: {
-        body: { id }
+        body: {id}
       }
     });
   }
@@ -95,7 +98,7 @@ export class NotificationService extends GenericService<NotificationEntity>  {
     return this.doRequest({
       url: this.baseUrl + this.getResourcePath() + "/setViewedConversation",
       method: "POST",
-      options: { body: { id }}
+      options: {body: {id}}
     });
   }
 }

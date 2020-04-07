@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  backendHost: 'http://localhost:3000',
+  backendHost: 'http://vps-1742719-x.dattaweb.com/api',
   backendApiPath: '/',
   backendPublicApiPath: '/public',
   tokenName: 'token',
